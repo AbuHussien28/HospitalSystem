@@ -29,7 +29,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             User = user;
             AdminTabContol.SelectedIndexChanged += AdminTabContol_SelectedIndexChanged;
             doctorForm = new AdminDoctorCRUDOpeartionForm(User);
-            receptionistForm = new AdminReceptionsitCRUDOpeartion();
+            receptionistForm = new AdminReceptionsitCRUDOpeartion(User);
 
         }
 

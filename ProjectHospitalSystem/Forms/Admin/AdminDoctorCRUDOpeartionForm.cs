@@ -48,6 +48,11 @@ namespace ProjectHospitalSystem.Forms.Admin
                 MessageBox.Show("Password Not Match");
                 return;
             }
+            if (_context.Users.Any(u => u.UserName == txt_username.Text))
+            {
+                MessageBox.Show("This username already exists!");
+                return;
+            }
             User user = new User()
             {
                 UserName = txt_username.Text,

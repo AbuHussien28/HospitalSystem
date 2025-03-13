@@ -96,35 +96,42 @@
             dgv_AdminReceptionist.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgv_AdminReceptionist.Location = new Point(473, 42);
             dgv_AdminReceptionist.Name = "dgv_AdminReceptionist";
-            dgv_AdminReceptionist.Size = new Size(758, 342);
+            dgv_AdminReceptionist.Size = new Size(692, 342);
             dgv_AdminReceptionist.TabIndex = 60;
+            dgv_AdminReceptionist.RowHeaderMouseDoubleClick += dgv_AdminReceptionist_RowHeaderMouseDoubleClick;
             // 
             // btn_removeReceptionist
             // 
-            btn_removeReceptionist.Location = new Point(225, 429);
+            btn_removeReceptionist.Location = new Point(267, 428);
             btn_removeReceptionist.Name = "btn_removeReceptionist";
             btn_removeReceptionist.Size = new Size(105, 53);
             btn_removeReceptionist.TabIndex = 59;
             btn_removeReceptionist.Text = "Remove";
             btn_removeReceptionist.UseVisualStyleBackColor = true;
+            btn_removeReceptionist.Visible = false;
+            btn_removeReceptionist.Click += btn_removeReceptionist_Click;
             // 
             // btn_UpdateReceptionist
             // 
-            btn_UpdateReceptionist.Location = new Point(298, 359);
+            btn_UpdateReceptionist.Location = new Point(340, 358);
             btn_UpdateReceptionist.Name = "btn_UpdateReceptionist";
             btn_UpdateReceptionist.Size = new Size(105, 53);
             btn_UpdateReceptionist.TabIndex = 58;
             btn_UpdateReceptionist.Text = "Update";
             btn_UpdateReceptionist.UseVisualStyleBackColor = true;
+            btn_UpdateReceptionist.Visible = false;
+            btn_UpdateReceptionist.Click += btn_UpdateReceptionist_Click;
             // 
             // btn_AddReceptionist
             // 
-            btn_AddReceptionist.Location = new Point(170, 359);
+            btn_AddReceptionist.Location = new Point(212, 358);
             btn_AddReceptionist.Name = "btn_AddReceptionist";
             btn_AddReceptionist.Size = new Size(105, 53);
             btn_AddReceptionist.TabIndex = 57;
             btn_AddReceptionist.Text = "Add ";
             btn_AddReceptionist.UseVisualStyleBackColor = true;
+            btn_AddReceptionist.Visible = false;
+            btn_AddReceptionist.Click += btn_AddReceptionist_Click;
             // 
             // txt_Email
             // 
@@ -148,6 +155,7 @@
             txt_confirmPassword.Name = "txt_confirmPassword";
             txt_confirmPassword.Size = new Size(233, 23);
             txt_confirmPassword.TabIndex = 51;
+            txt_confirmPassword.Visible = false;
             // 
             // lb_confirmPassword
             // 
@@ -157,6 +165,7 @@
             lb_confirmPassword.Size = new Size(104, 15);
             lb_confirmPassword.TabIndex = 55;
             lb_confirmPassword.Text = "ConfirmPassword:";
+            lb_confirmPassword.Visible = false;
             // 
             // txt_Password
             // 
@@ -164,6 +173,7 @@
             txt_Password.Name = "txt_Password";
             txt_Password.Size = new Size(233, 23);
             txt_Password.TabIndex = 50;
+            txt_Password.Visible = false;
             // 
             // lb_password
             // 
@@ -173,6 +183,7 @@
             lb_password.Size = new Size(60, 15);
             lb_password.TabIndex = 54;
             lb_password.Text = "Password:";
+            lb_password.Visible = false;
             // 
             // txt_Fname
             // 
