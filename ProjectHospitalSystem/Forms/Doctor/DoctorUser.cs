@@ -664,7 +664,7 @@ namespace ProjectHospitalSystem.Forms.Doctor
             }
             try
             {
-                IQueryable<Patient> query = db.Patients.AsQueryable();
+                IQueryable<Patient> query = db.Patients.AsQueryable().Where(n => n.DoctorDetailsId == _loggedUser.doctorDetails.DoctorDetailsId); ;
 
                 switch (searchCriteria)
                 {

@@ -22,6 +22,7 @@ namespace ProjectHospitalSystem.Forms.Admin
         private AdminPatientCRUD AdminPatientCRUD;
         private AdminDepartmentCRUD AdminDepartmentCRUD;
         private AdminPaymentMethod AdminPaymentMethod;
+        private Appointment_Form Appointment_Form;
         public AdminUserDashBoardScreen(User user)
         {
             InitializeComponent();
@@ -36,6 +37,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             AdminPatientCRUD = new AdminPatientCRUD(User);
             AdminDepartmentCRUD = new AdminDepartmentCRUD();
             AdminPaymentMethod = new AdminPaymentMethod();
+            Appointment_Form = new Appointment_Form();
 
         }
 
@@ -81,6 +83,10 @@ namespace ProjectHospitalSystem.Forms.Admin
             else if (selectedTab == tabPageReports)
             {
                 //LoadForm(appointmentForm, panelAppointment);
+            }
+            else if (selectedTab == tabAppoinments)
+            {
+                LoadForm(Appointment_Form, panelAppoiments);
             }
             else if (selectedTab == tabPageLogOut)
             {
