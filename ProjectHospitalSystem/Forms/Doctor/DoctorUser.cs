@@ -1,12 +1,14 @@
 ﻿using System.Configuration;
 using Dapper;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using ProjectHospitalSystem.Models;
 using QRCoder;
-using Xceed.Document.NET;
-using Xceed.Words.NET;
+//using Xceed.Document.NET;
+//using Xceed.Words.NET;
+
 namespace ProjectHospitalSystem.Forms.Doctor
 {
     public partial class DoctorUser : Form
@@ -45,10 +47,10 @@ namespace ProjectHospitalSystem.Forms.Doctor
 
         public void loadDataOfHomePage()
         {
-            var query = db.Users.Where(n => n.DoctorDetailsId == _loggedUser.DoctorDetailsId).Select(n => new { FullName = n.FName + " " + n.LName });
+            var query = db.Users.Where(n => n.doctorDetails.DoctorDetailsId == _loggedUser.doctorDetails.DoctorDetailsId).Select(n => new { FullName = n.FName + " " + n.LName });
             label36.Text = query.FirstOrDefault().FullName;
 
-            dgv_patientListHome.DataSource = db.Patients.Where(n => n.DoctorDetailsId == _loggedUser.DoctorDetailsId).Select(n => new { n.PatientId, FullName = n.FirstName + " " + n.LastName }).ToList();
+            dgv_patientListHome.DataSource = db.Patients.Where(n => n.DoctorDetailsId == _loggedUser.doctorDetails.DoctorDetailsId).Select(n => new { n.PatientId, FullName = n.FirstName + " " + n.LastName }).ToList();
             dgv_patientListHome.Columns["PatientId"].Visible = false;
 
             var dt = new System.Data.DataTable();
@@ -62,7 +64,12 @@ namespace ProjectHospitalSystem.Forms.Doctor
 
 
             var results = con.Query(
-                "SELECT A.AppointmentId, A.AppointmentDateTime, A.Status, A.Note, P.FirstName, P.LastName " +
+                @"SELECT A.AppointmentId, A.AppointmentDateTime,  
+                CASE  WHEN A.Status = 0 THEN 'Upcoming'
+                        WHEN A.Status = 1 THEN 'Cancel'         
+                        WHEN A.Status = 2 THEN 'Done'            
+                        ELSE 'Unknown'   
+                    END AS Status, A.Note, P.FirstName, P.LastName " +
                 "FROM Appointments A " +
                 "INNER JOIN Patients P ON A.PatientId = P.PatientId " +
                 "WHERE A.DoctorDetailsId = @doctorId " +
@@ -70,9 +77,9 @@ namespace ProjectHospitalSystem.Forms.Doctor
                 "AND A.Status = @status",
                 new
                 {
-                    doctorId = _loggedUser.DoctorDetailsId,
+                    doctorId = _loggedUser.doctorDetails.DoctorDetailsId,
                     currentDateTime = DateTime.Now,
-                    status = 1
+                    status = AppointmentStatus.Upcoming
                 }
             );
 
@@ -97,7 +104,7 @@ namespace ProjectHospitalSystem.Forms.Doctor
             panel_patient.Hide();
             panel_appointment.Hide();
 
-            var query = con.Query("select U.FName,U.LName,Dr.Specialization,U.Email\r\nfrom Users U Inner Join Doctors Dr\r\non U.UserId = Dr.UserId\r\nwhere Dr.DoctorDetailsId = @DoctorId", new { DoctorId = _loggedUser.DoctorDetailsId }).ToList();
+            var query = con.Query("select U.FName,U.LName,Dr.Specialization,U.Email\r\nfrom Users U Inner Join Doctors Dr\r\non U.UserId = Dr.UserId\r\nwhere Dr.DoctorDetailsId = @DoctorId", new { DoctorId = _loggedUser.doctorDetails.DoctorDetailsId }).ToList();
 
             txt_firstName.Text = query.FirstOrDefault()?.FName;
             txt_lastName.Text = query.FirstOrDefault()?.LName;
@@ -136,7 +143,7 @@ namespace ProjectHospitalSystem.Forms.Doctor
 
                     var doctor = context.Doctors
                         .Include(d => d.User)
-                        .FirstOrDefault(d => d.DoctorDetailsId == _loggedUser.DoctorDetailsId);
+                        .FirstOrDefault(d => d.DoctorDetailsId == _loggedUser.doctorDetails.DoctorDetailsId);
 
                     if (doctor == null)
                     {
@@ -235,7 +242,7 @@ namespace ProjectHospitalSystem.Forms.Doctor
             try
             {
                 dgv_medicalrecord.DataSource = db.MedicalRecords
-                    .Where(n => n.DoctorDetailsId == _loggedUser.DoctorDetailsId)
+                    .Where(n => n.DoctorDetailsId == _loggedUser.doctorDetails.DoctorDetailsId)
                     .Select(n => new { n.MedicalId, n.DateOfVist, n.Diaqnois, n.Prescription, n.LabResult, n.TreatmentDetails, n.PatientId, n.DoctorDetailsId })
                     .ToList();
 
@@ -265,7 +272,7 @@ namespace ProjectHospitalSystem.Forms.Doctor
                     LabResult = txt_labResult.Text,
                     TreatmentDetails = txt_treatment.Text,
                     PatientId = (int)cb_patient.SelectedValue,
-                    DoctorDetailsId = (int)_loggedUser.DoctorDetailsId
+                    DoctorDetailsId = (int)_loggedUser.doctorDetails.DoctorDetailsId
                 };
 
                 db.MedicalRecords.Add(m);
@@ -377,7 +384,7 @@ namespace ProjectHospitalSystem.Forms.Doctor
             panel_appointment.Hide();
 
 
-            dgv_patientlist.DataSource = db.Patients.Where(n => n.DoctorDetailsId == _loggedUser.DoctorDetailsId).Select(n => new { n.PatientId, FullName = n.FirstName + " " + n.LastName }).ToList();
+            dgv_patientlist.DataSource = db.Patients.Where(n => n.DoctorDetailsId == _loggedUser.doctorDetails.DoctorDetailsId).Select(n => new { n.PatientId, FullName = n.FirstName + " " + n.LastName }).ToList();
             dgv_patientlist.Columns["PatientId"].Visible = false;
             btn_updatemedicalhistory.Hide();
             cb_searchitem.Items.AddRange(new string[] { "Full Name", "Email", "Phone Number" });
@@ -464,7 +471,7 @@ namespace ProjectHospitalSystem.Forms.Doctor
                 QRCodeData qRCodeData = qRCodeGenerator.CreateQrCode(patientData, QRCodeGenerator.ECCLevel.Q);
                 QRCode qRCode = new QRCode(qRCodeData);
 
-                Bitmap qrCodeImage = qRCode.GetGraphic(20, Color.Black, Color.White, true);
+                Bitmap qrCodeImage = qRCode.GetGraphic(20, System.Drawing.Color.Black, System.Drawing.Color.White, true);
                 pictureBox.Image = qrCodeImage;
                 pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
 
@@ -534,69 +541,69 @@ namespace ProjectHospitalSystem.Forms.Doctor
             }
 
             string patientData = pictureBox.Tag.ToString();
-            SaveToWordWithDocX(patientData);
+            //SaveToWordWithDocX(patientData);
         }
 
-        public void SaveToWordWithDocX(string data)
-        {
-            try
-            {
+        //public void SaveToWordWithDocX(string data)
+        //{
+        //    try
+        //    {
 
-                string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "PatientReport.docx");
+        //        string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "PatientReport.docx");
 
-                using (var doc = DocX.Create(filePath))
-                {
+        //        using (var doc = DocX.Create(filePath))
+        //        {
 
-                    var header = doc.InsertParagraph("Monufia General Hospital")
-                        .Font("Arial")
-                        .FontSize(16)
-                        .Bold();
-                    header.Alignment = Alignment.center;
-                    doc.InsertParagraph("Patient Medical Report")
-                        .Font("Arial")
-                        .FontSize(16)
-                        .Bold()
-                        .Alignment = Alignment.center;
-                    doc.InsertParagraph($"Date: {DateTime.Now.ToString("yyyy-MM-dd")}")
-                        .Font("Arial")
-                        .FontSize(12)
-                        .Alignment = Alignment.center;
+        //            var header = doc.InsertParagraph("Monufia General Hospital")
+        //                .Font("Arial")
+        //                .FontSize(16)
+        //                .Bold();
+        //            header.Alignment = Alignment.center;
+        //            doc.InsertParagraph("Patient Medical Report")
+        //                .Font("Arial")
+        //                .FontSize(16)
+        //                .Bold()
+        //                .Alignment = Alignment.center;
+        //            doc.InsertParagraph($"Date: {DateTime.Now.ToString("yyyy-MM-dd")}")
+        //                .Font("Arial")
+        //                .FontSize(12)
+        //                .Alignment = Alignment.center;
 
-                    doc.InsertParagraph("---------------------------------------------------")
-                        .Font("Arial")
-                        .FontSize(12)
+        //            doc.InsertParagraph("---------------------------------------------------")
+        //                .Font("Arial")
+        //                .FontSize(12)
 
-                        .Alignment = Alignment.center;
+        //                .Alignment = Alignment.center;
 
-                    string[] lines = data.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (string line in lines)
-                    {
-                        string[] keyValue = line.Split(new[] { ':' }, 2);
-                        if (keyValue.Length == 2)
-                        {
-                            var p = doc.InsertParagraph();
-                            p.Append(keyValue[0].Trim() + ": ").Bold();
-                            p.Append(keyValue[1].Trim());
-                        }
-                    }
+        //            string[] lines = data.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+        //            foreach (string line in lines)
+        //            {
+        //                string[] keyValue = line.Split(new[] { ':' }, 2);
+        //                if (keyValue.Length == 2)
+        //                {
+        //                    var p = doc.InsertParagraph();
+        //                    p.Append(keyValue[0].Trim() + ": ").Bold();
+        //                    p.Append(keyValue[1].Trim());
+        //                }
+        //            }
 
-                    doc.InsertParagraph("---------------------------------------------------")
-                        .Font("Arial")
-                        .FontSize(12)
-                        .Alignment = Alignment.center;
-                    doc.InsertParagraph("Doctor's Signature: ___ ")
-                        .Font("Arial")
-                        .FontSize(12);
-                    doc.Save();
-                }
-                MessageBox.Show($"Report saved successfully: {filePath}");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error exporting to Word: " + ex.Message);
-            }
+        //            doc.InsertParagraph("---------------------------------------------------")
+        //                .Font("Arial")
+        //                .FontSize(12)
+        //                .Alignment = Alignment.center;
+        //            doc.InsertParagraph("Doctor's Signature: ___ ")
+        //                .Font("Arial")
+        //                .FontSize(12);
+        //            doc.Save();
+        //        }
+        //        MessageBox.Show($"Report saved successfully: {filePath}");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("Error exporting to Word: " + ex.Message);
+        //    }
 
-        }
+        //}
 
         private void btn_Qr_Click(object sender, EventArgs e)
         {
@@ -608,34 +615,34 @@ namespace ProjectHospitalSystem.Forms.Doctor
 
             string patientData = pictureBox.Tag.ToString();
 
-            SaveToExcel(patientData);
+            //SaveToExcel(patientData);
 
         }
 
-        public void SaveToExcel(string data)
-        {
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        //public void SaveToExcel(string data)
+        //{
+        //    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            using (var package = new ExcelPackage())
-            {
-                var worksheet = package.Workbook.Worksheets.Add("Patient Data");
+        //    using (var package = new ExcelPackage())
+        //    {
+        //        var worksheet = package.Workbook.Worksheets.Add("Patient Data");
 
-                string[] lines = data.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+        //        string[] lines = data.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
-                for (int i = 0; i < lines.Length; i++)
-                {
-                    string[] keyValue = lines[i].Split(new[] { ':' }, 2);
-                    worksheet.Cells[i + 1, 1].Value = keyValue[0].Trim();
-                    worksheet.Cells[i + 1, 2].Value = keyValue.Length > 1 ? keyValue[1].Trim() : "";
-                }
+        //        for (int i = 0; i < lines.Length; i++)
+        //        {
+        //            string[] keyValue = lines[i].Split(new[] { ':' }, 2);
+        //            worksheet.Cells[i + 1, 1].Value = keyValue[0].Trim();
+        //            worksheet.Cells[i + 1, 2].Value = keyValue.Length > 1 ? keyValue[1].Trim() : "";
+        //        }
 
-                string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "PatientData.xlsx");
-                package.SaveAs(new FileInfo(filePath));
+        //        string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "PatientData.xlsx");
+        //        package.SaveAs(new FileInfo(filePath));
 
-                MessageBox.Show($"Data saved to Excel file: {filePath}");
-            }
+        //        MessageBox.Show($"Data saved to Excel file: {filePath}");
+        //    }
 
-        }
+        //}
 
         private void labelScan_Click(object sender, EventArgs e)
         {
@@ -710,7 +717,7 @@ namespace ProjectHospitalSystem.Forms.Doctor
             M.TreatmentDetails AS TreatmentDetails
         FROM Patients P 
         INNER JOIN MedicalRecords M ON P.PatientId = M.PatientId
-        WHERE P.PatientId = @id", new { id = idOfResarchOfPatient }).ToList();
+        WHERE P.PatientId = @id", new { id = idOfResarchOfPatient}).ToList();
 
                 string patientData = $"Patient Info\n" +
                     $"FirstName: {query.FirstOrDefault().FirstName}\n" +
@@ -727,7 +734,7 @@ namespace ProjectHospitalSystem.Forms.Doctor
                 QRCodeData qRCodeData = qRCodeGenerator.CreateQrCode(patientData, QRCodeGenerator.ECCLevel.Q);
                 QRCode qRCode = new QRCode(qRCodeData);
 
-                Bitmap qrCodeImage = qRCode.GetGraphic(20, Color.Black, Color.White, true);
+                Bitmap qrCodeImage = qRCode.GetGraphic(20, System.Drawing.Color.Black, System.Drawing.Color.White, true);
                 pictureTwo.Image = qrCodeImage;
                 pictureTwo.SizeMode = PictureBoxSizeMode.Zoom;
 
@@ -748,7 +755,7 @@ namespace ProjectHospitalSystem.Forms.Doctor
             }
 
             string patientData = pictureTwo.Tag.ToString();
-            SaveToWordWithDocX(patientData);
+            //SaveToWordWithDocX(patientData);
 
         }
 
@@ -762,7 +769,7 @@ namespace ProjectHospitalSystem.Forms.Doctor
 
             string patientData = pictureTwo.Tag.ToString();
 
-            SaveToExcel(patientData);
+            //SaveToExcel(patientData);
         }
         // End Patient Form
 
@@ -792,7 +799,7 @@ namespace ProjectHospitalSystem.Forms.Doctor
                 "from Appointments A Inner Join Patients P " +
                 "on A.PatientId = P.PatientId " +
                 "where A.DoctorDetailsId = @doctorId",
-                new { doctorId = _loggedUser.DoctorDetailsId }
+                new { doctorId = _loggedUser.doctorDetails.DoctorDetailsId }
             );
 
 
@@ -887,7 +894,7 @@ namespace ProjectHospitalSystem.Forms.Doctor
                 "from Appointments A Inner Join Patients P " +
                 "on A.PatientId = P.PatientId " +
                 "where A.DoctorDetailsId = @doctorId",
-                new { doctorId = _loggedUser.DoctorDetailsId }
+                new { doctorId = _loggedUser.doctorDetails.DoctorDetailsId }
             );
 
 
@@ -898,6 +905,11 @@ namespace ProjectHospitalSystem.Forms.Doctor
 
             dgv_appointment.DataSource = dt;
             dgv_appointment.Columns["AppointmentId"].Visible = false;
+
+        }
+
+        private void panel_appointment_Paint(object sender, PaintEventArgs e)
+        {
 
         }
 

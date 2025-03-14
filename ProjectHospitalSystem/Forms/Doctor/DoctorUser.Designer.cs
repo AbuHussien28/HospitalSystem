@@ -389,7 +389,7 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Image = Properties.Resources.Doctor__2_;
+            pictureBox1.Image = Properties.Resources.IconUserPassword;
             pictureBox1.Location = new Point(925, 6);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(152, 150);
@@ -968,6 +968,7 @@
             panel_appointment.Name = "panel_appointment";
             panel_appointment.Size = new Size(1132, 496);
             panel_appointment.TabIndex = 24;
+            panel_appointment.Paint += panel_appointment_Paint;
             // 
             // label33
             // 

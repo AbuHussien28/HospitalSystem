@@ -2,6 +2,7 @@ using DevExpress.XtraPrinting.Native;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using ProjectHospitalSystem.Forms.Admin;
+using ProjectHospitalSystem.Forms.Doctor;
 using ProjectHospitalSystem.Models;
 
 namespace ProjectHospitalSystem
@@ -97,7 +98,8 @@ namespace ProjectHospitalSystem
                     break;
 
                 case "Doctor":
-                    MessageBox.Show("Welcome, Doctor!");
+                   var doctorDashboard = new DoctorUser(user);
+                    doctorDashboard.Show();
                     break;
 
                 case "Receptionist":
