@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media.Media3D;
+using ProjectHospitalSystem.Reports;
 
 namespace ProjectHospitalSystem.Forms.Admin
 {
@@ -23,6 +24,7 @@ namespace ProjectHospitalSystem.Forms.Admin
         private AdminDepartmentCRUD AdminDepartmentCRUD;
         private AdminPaymentMethod AdminPaymentMethod;
         private Appointment_Form Appointment_Form;
+        private Reports_Logging Reports;
         public AdminUserDashBoardScreen(User user)
         {
             InitializeComponent();
@@ -38,6 +40,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             AdminDepartmentCRUD = new AdminDepartmentCRUD();
             AdminPaymentMethod = new AdminPaymentMethod();
             Appointment_Form = new Appointment_Form();
+            Reports = new Reports_Logging();
 
         }
 
@@ -45,12 +48,10 @@ namespace ProjectHospitalSystem.Forms.Admin
         {
             InitializeDateTime();
         }
-
         private void tabPageHome_Click(object sender, EventArgs e)
         {
 
         }
-
         private void tabPageDoctor_Click(object sender, EventArgs e)
         {
         }
@@ -82,7 +83,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             }
             else if (selectedTab == tabPageReports)
             {
-                //LoadForm(appointmentForm, panelAppointment);
+                LoadForm(Reports, panelReports);
             }
             else if (selectedTab == tabAppoinments)
             {

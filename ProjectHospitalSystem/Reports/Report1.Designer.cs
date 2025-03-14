@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.DataAccess.ConnectionParameters.MsSqlConnectionParameters msSqlConnectionParameters1 = new DevExpress.DataAccess.ConnectionParameters.MsSqlConnectionParameters();
             DevExpress.DataAccess.Sql.CustomSqlQuery customSqlQuery1 = new DevExpress.DataAccess.Sql.CustomSqlQuery();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Report1));
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
@@ -221,13 +220,7 @@
             // 
             // sqlDataSource1
             // 
-            this.sqlDataSource1.ConnectionName = "desktop-52bdank\\mssqlserver1.ProjectHospitalManagementsystem.dbo";
-            msSqlConnectionParameters1.AuthorizationType = DevExpress.DataAccess.ConnectionParameters.MsSqlAuthorizationType.Windows;
-            msSqlConnectionParameters1.DatabaseName = "ProjectHospitalManagementsystem";
-            msSqlConnectionParameters1.Encrypt = DevExpress.Utils.DefaultBoolean.True;
-            msSqlConnectionParameters1.ServerName = "DESKTOP-52BDANK\\MSSQLSERVER1";
-            msSqlConnectionParameters1.TrustServerCertificate = DevExpress.Utils.DefaultBoolean.True;
-            this.sqlDataSource1.ConnectionParameters = msSqlConnectionParameters1;
+            this.sqlDataSource1.ConnectionName = "Hospital";
             this.sqlDataSource1.Name = "sqlDataSource1";
             customSqlQuery1.Name = "Query";
             customSqlQuery1.Sql = resources.GetString("customSqlQuery1.Sql");

@@ -47,6 +47,7 @@
             tabPagePaymentMethod = new TabPage();
             panelPaymentMethod = new Panel();
             tabPageReports = new TabPage();
+            panelReports = new Panel();
             tabAppoinments = new TabPage();
             panelAppoiments = new Panel();
             tabPageLogOut = new TabPage();
@@ -62,6 +63,7 @@
             panelPatient.SuspendLayout();
             tabPageDepartment.SuspendLayout();
             tabPagePaymentMethod.SuspendLayout();
+            tabPageReports.SuspendLayout();
             tabAppoinments.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -247,6 +249,7 @@
             // 
             // tabPageReports
             // 
+            tabPageReports.Controls.Add(panelReports);
             tabPageReports.ImageKey = "IconReport.png";
             tabPageReports.Location = new Point(4, 31);
             tabPageReports.Name = "tabPageReports";
@@ -254,6 +257,13 @@
             tabPageReports.TabIndex = 6;
             tabPageReports.Text = "Reports";
             tabPageReports.UseVisualStyleBackColor = true;
+            // 
+            // panelReports
+            // 
+            panelReports.Location = new Point(3, 3);
+            panelReports.Name = "panelReports";
+            panelReports.Size = new Size(1512, 702);
+            panelReports.TabIndex = 3;
             // 
             // tabAppoinments
             // 
@@ -328,6 +338,7 @@
             panelPatient.PerformLayout();
             tabPageDepartment.ResumeLayout(false);
             tabPagePaymentMethod.ResumeLayout(false);
+            tabPageReports.ResumeLayout(false);
             tabAppoinments.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
@@ -359,5 +370,6 @@
         private Label label3;
         private Panel panel1;
         private Label lblDateTime;
+        private Panel panelReports;
     }
 }
