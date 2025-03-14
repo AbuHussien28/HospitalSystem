@@ -11,6 +11,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace ProjectHospitalSystem.Forms.Admin
@@ -29,9 +30,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             User = user;
             _context = new HospitalSystemContext();
             con = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString);
-            // Wire up the TextChanged event for the search TextBox
             txtBoxDoctorSerachData.TextChanged += txtBoxDoctorSerachData_TextChanged;
-            dgv_AdminDoctors.RowHeaderMouseDoubleClick += dgv_AdminDoctors_RowHeaderMouseDoubleClick;
         }
         #region Event Handlers
         private void btn_AddDoctor_Click(object sender, EventArgs e)
@@ -78,7 +77,8 @@ namespace ProjectHospitalSystem.Forms.Admin
             LoadData();
 
         }
-        private void dgv_AdminDoctors_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+
+        private void dgv_AdminDoctors_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
@@ -100,7 +100,6 @@ namespace ProjectHospitalSystem.Forms.Admin
             {
                 MessageBox.Show(ex.Message);
             }
-
         }
 
         private void btn_Update_Click(object sender, EventArgs e)
@@ -247,7 +246,9 @@ namespace ProjectHospitalSystem.Forms.Admin
             txt_confirmPassword.Visible = isAddMode;
             lb_password.Visible = isAddMode;
             lb_confirmPassword.Visible = isAddMode;
-         }
+            pBoxPassword.Visible = isAddMode;
+            pBoxConfirmPassword.Visible = isAddMode;
+        }
 
 
         public bool ValidateInputs()
@@ -278,9 +279,16 @@ namespace ProjectHospitalSystem.Forms.Admin
             txt_phone.Clear();
             txt_Email.Clear();
             txt_Specialization.Clear();
+            txtBoxDoctorSerachData.Clear();
+        }
+        public void Reload()
+        {
+            ResetForm();
         }
         #endregion
 
-    
+
+
+
     }
 }

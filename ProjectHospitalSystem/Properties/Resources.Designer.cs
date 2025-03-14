@@ -63,6 +63,16 @@ namespace ProjectHospitalSystem.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap IconAddDoctor {
+            get {
+                object obj = ResourceManager.GetObject("IconAddDoctor", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap IconClear {
             get {
                 object obj = ResourceManager.GetObject("IconClear", resourceCulture);
@@ -76,6 +86,46 @@ namespace ProjectHospitalSystem.Properties {
         internal static System.Drawing.Bitmap IconClear16px {
             get {
                 object obj = ResourceManager.GetObject("IconClear16px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconDepartment {
+            get {
+                object obj = ResourceManager.GetObject("IconDepartment", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconDoctorAdminDgv {
+            get {
+                object obj = ResourceManager.GetObject("IconDoctorAdminDgv", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconDoctorData {
+            get {
+                object obj = ResourceManager.GetObject("IconDoctorData", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconEmail {
+            get {
+                object obj = ResourceManager.GetObject("IconEmail", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,6 +163,86 @@ namespace ProjectHospitalSystem.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap IconPassword {
+            get {
+                object obj = ResourceManager.GetObject("IconPassword", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconPhone {
+            get {
+                object obj = ResourceManager.GetObject("IconPhone", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconRecepAddBtn {
+            get {
+                object obj = ResourceManager.GetObject("IconRecepAddBtn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconRecepDgv {
+            get {
+                object obj = ResourceManager.GetObject("IconRecepDgv", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconRecepSearch {
+            get {
+                object obj = ResourceManager.GetObject("IconRecepSearch", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconRemovedOCTOR {
+            get {
+                object obj = ResourceManager.GetObject("IconRemovedOCTOR", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconSerachDoctor {
+            get {
+                object obj = ResourceManager.GetObject("IconSerachDoctor", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconSerachDoctor24 {
+            get {
+                object obj = ResourceManager.GetObject("IconSerachDoctor24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap IconShowPassword {
             get {
                 object obj = ResourceManager.GetObject("IconShowPassword", resourceCulture);
@@ -126,6 +256,16 @@ namespace ProjectHospitalSystem.Properties {
         internal static System.Drawing.Bitmap IconUnShowPassword {
             get {
                 object obj = ResourceManager.GetObject("IconUnShowPassword", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconUpdateAdmin {
+            get {
+                object obj = ResourceManager.GetObject("IconUpdateAdmin", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

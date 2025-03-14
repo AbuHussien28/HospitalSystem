@@ -88,27 +88,7 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         private void dgv_AdminReceptionist_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            try
-            {
-                if (e.RowIndex < 0) return;
-
-                _selectedReceptionistId = Convert.ToInt32(dgv_AdminReceptionist.Rows[e.RowIndex].Cells["UserId"].Value);
-                var user = _context.Users.FirstOrDefault(n => n.UserId == _selectedReceptionistId);
-
-                if (user != null)
-                {
-                    txt_username.Text = user.UserName ?? string.Empty;
-                    txt_Fname.Text = user.FName ?? string.Empty;
-                    txt_Lname.Text = user.LName ?? string.Empty;
-                    txt_Email.Text = user.Email ?? string.Empty;
-                    txt_phone.Text = user.PhoneNumber ?? string.Empty;
-                    SetButtonAndTxtPasswordVisibility(isAddMode: false);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error selecting receptionist: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+           
         }
 
         private void btn_UpdateReceptionist_Click(object sender, EventArgs e)
@@ -179,7 +159,7 @@ namespace ProjectHospitalSystem.Forms.Admin
                 using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString))
                 {
                     await connection.OpenAsync();
-                    var filteredDoctors = await connection.QueryAsync<DoctorInfoDTO>(
+                    var filteredDoctors = await connection.QueryAsync<User>(
                         @"SELECT UserId, UserName, FName, LName, Role, Email,
                  PhoneNumber
                  FROM Users
@@ -187,8 +167,18 @@ namespace ProjectHospitalSystem.Forms.Admin
                        (FName LIKE '%' + @SearchText + '%' OR 
                         LName LIKE '%' + @SearchText + '%')",
                         new { SearchText = searchText });
-
-                    dgv_AdminReceptionist.DataSource = filteredDoctors.ToList();
+                    var result = filteredDoctors.Select(u => new
+                    {
+                        u.UserId,
+                        u.UserName,
+                        u.FName,
+                        u.LName,
+                        u.Role,
+                        u.Email,
+                        u.PhoneNumber
+                    }).ToList();
+                    dgv_AdminReceptionist.DataSource = result;
+                    dgv_AdminReceptionist.Columns["UserId"].Visible = false;
                 }
             }
             catch (Exception ex)
@@ -293,6 +283,8 @@ namespace ProjectHospitalSystem.Forms.Admin
             txt_confirmPassword.Visible = isAddMode;
             lb_password.Visible = isAddMode;
             lb_confirmPassword.Visible = isAddMode;
+            pBoxPassword.Visible = isAddMode;
+            pBoxConfirmPassword.Visible = isAddMode;
         }
         public bool ValidateEmail(string email)
         {
@@ -309,6 +301,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             txt_Fname.Clear();
             txt_Lname.Clear();
             txt_phone.Clear();
+            txt_Email.Clear();
         }
         private bool IsUsernameUnique(string username, int? currentUserId = null)
         {
@@ -322,6 +315,29 @@ namespace ProjectHospitalSystem.Forms.Admin
         private void lbReceptionsitNameSearch_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void dgv_AdminReceptionist_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            try
+            {
+                if (e.RowIndex < 0) return;
+                _selectedReceptionistId = Convert.ToInt32(dgv_AdminReceptionist.Rows[e.RowIndex].Cells["UserId"].Value);
+                var user = _context.Users.FirstOrDefault(n => n.UserId == _selectedReceptionistId);
+                if (user != null)
+                {
+                    txt_username.Text = user.UserName ?? string.Empty;
+                    txt_Fname.Text = user.FName ?? string.Empty;
+                    txt_Lname.Text = user.LName ?? string.Empty;
+                    txt_Email.Text = user.Email ?? string.Empty;
+                    txt_phone.Text = user.PhoneNumber ?? string.Empty;
+                    SetButtonAndTxtPasswordVisibility(isAddMode: false);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error selecting receptionist: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

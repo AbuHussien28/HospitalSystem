@@ -43,7 +43,7 @@ namespace ProjectHospitalSystem.Forms.Admin
 
         private void AdminUserDashBoardScreen_Load(object sender, EventArgs e)
         {
-
+            InitializeDateTime();
         }
 
         private void tabPageHome_Click(object sender, EventArgs e)
@@ -62,6 +62,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             if (selectedTab == tabPageDoctor)
             {
                 LoadForm(doctorForm, panelDoctorData);
+                doctorForm.Reload();
             }
             else if (selectedTab == tabPageReceptionsit)
             {
@@ -73,7 +74,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             }
             else if (selectedTab == tabPageDepartment)
             {
-               LoadForm(AdminDepartmentCRUD, panelDepartment);
+                LoadForm(AdminDepartmentCRUD, panelDepartment);
             }
             else if (selectedTab == tabPagePaymentMethod)
             {
@@ -102,11 +103,17 @@ namespace ProjectHospitalSystem.Forms.Admin
             panel.Controls.Add(form);
             form.Show();
         }
-
-        private void label1_Click(object sender, EventArgs e)
+        private void InitializeDateTime()
         {
-            AdminPatientCRUD adminPatientCRUD = new AdminPatientCRUD(User);
-            adminPatientCRUD.Show();
+            timerDt.Interval = 1000;
+            timerDt.Tick += timerDt_Tick;
+            timerDt.Start();
         }
+
+        private void timerDt_Tick(object sender, EventArgs e)
+        {
+            lblDateTime.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy | hh:mm:ss tt");
+        }
+
     }
 }
