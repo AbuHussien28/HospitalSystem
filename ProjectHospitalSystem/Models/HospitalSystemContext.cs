@@ -18,7 +18,6 @@ namespace ProjectHospitalSystem.Models
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Bill> Bills { get; set; }
         public DbSet<Doctor_Schedule> Doctor_Schedules { get; set; }
-        public DbSet<User_Phone> UserPhones { get; set; }
         public DbSet<Payment> payments { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

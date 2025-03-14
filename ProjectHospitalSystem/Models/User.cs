@@ -21,16 +21,15 @@ namespace ProjectHospitalSystem.Models
         public string LName { get; set; }
         [Required, MaxLength(50)]
         public string Email { get; set; }
+        [Required,StringLength(20)]
+        public string PhoneNumber { get; set; }
         [Required, MaxLength(50)]
         public string Password { get; set; }
         [NotMapped]
         public string ConfirmPassword { get; set; }
         [MaxLength(30)]
         public string Role { get; set; }
-        [ForeignKey("doctorDetails")]
-        public int? DoctorDetailsId { get; set; }
         public virtual DoctorDetails doctorDetails { get; set; }
         public virtual ICollection<Bill> Bills { get; set; } = new List<Bill>();
-        public virtual ICollection<User_Phone> UserPhones { get; set; }=new List<User_Phone>();
     }
 }

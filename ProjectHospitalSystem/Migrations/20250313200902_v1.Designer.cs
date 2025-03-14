@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectHospitalSystem.Models;
 
@@ -11,9 +12,11 @@ using ProjectHospitalSystem.Models;
 namespace ProjectHospitalSystem.Migrations
 {
     [DbContext(typeof(HospitalSystemContext))]
-    partial class HospitalSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20250313200902_v1")]
+    partial class v1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -387,11 +390,6 @@ namespace ProjectHospitalSystem.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
                     b.Property<string>("Role")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
@@ -410,6 +408,20 @@ namespace ProjectHospitalSystem.Migrations
                         {
                             t.HasCheckConstraint("CK_User_Role", "Role IN ('Admin', 'Doctor', 'Receptionist')");
                         });
+                });
+
+            modelBuilder.Entity("ProjectHospitalSystem.Models.User_Phone", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("UserId", "PhoneNumber");
+
+                    b.ToTable("UserPhones");
                 });
 
             modelBuilder.Entity("ProjectHospitalSystem.Models.Appointment", b =>
@@ -547,6 +559,17 @@ namespace ProjectHospitalSystem.Migrations
                     b.Navigation("PaymentMethod");
                 });
 
+            modelBuilder.Entity("ProjectHospitalSystem.Models.User_Phone", b =>
+                {
+                    b.HasOne("ProjectHospitalSystem.Models.User", "User")
+                        .WithMany("UserPhones")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ProjectHospitalSystem.Models.Appointment", b =>
                 {
                     b.Navigation("Bill")
@@ -583,6 +606,8 @@ namespace ProjectHospitalSystem.Migrations
             modelBuilder.Entity("ProjectHospitalSystem.Models.User", b =>
                 {
                     b.Navigation("Bills");
+
+                    b.Navigation("UserPhones");
 
                     b.Navigation("doctorDetails")
                         .IsRequired();
