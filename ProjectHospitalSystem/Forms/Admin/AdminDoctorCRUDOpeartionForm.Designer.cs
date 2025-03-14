@@ -50,12 +50,14 @@
             lb_Fname = new Label();
             txt_username = new TextBox();
             lb_userName = new Label();
+            txtBoxDoctorSerachData = new TextBox();
+            lbDoctorNameSearch = new Label();
             ((System.ComponentModel.ISupportInitialize)dgv_AdminDoctors).BeginInit();
             SuspendLayout();
             // 
             // txt_phone
             // 
-            txt_phone.Location = new Point(195, 152);
+            txt_phone.Location = new Point(778, 443);
             txt_phone.Name = "txt_phone";
             txt_phone.Size = new Size(233, 23);
             txt_phone.TabIndex = 73;
@@ -63,7 +65,7 @@
             // lb_Phone
             // 
             lb_Phone.AutoSize = true;
-            lb_Phone.Location = new Point(62, 155);
+            lb_Phone.Location = new Point(669, 446);
             lb_Phone.Name = "lb_Phone";
             lb_Phone.Size = new Size(44, 15);
             lb_Phone.TabIndex = 88;
@@ -71,7 +73,7 @@
             // 
             // txt_Specialization
             // 
-            txt_Specialization.Location = new Point(195, 230);
+            txt_Specialization.Location = new Point(778, 479);
             txt_Specialization.Name = "txt_Specialization";
             txt_Specialization.Size = new Size(233, 23);
             txt_Specialization.TabIndex = 76;
@@ -79,7 +81,7 @@
             // lb_Specialization
             // 
             lb_Specialization.AutoSize = true;
-            lb_Specialization.Location = new Point(62, 233);
+            lb_Specialization.Location = new Point(669, 487);
             lb_Specialization.Name = "lb_Specialization";
             lb_Specialization.Size = new Size(82, 15);
             lb_Specialization.TabIndex = 87;
@@ -87,7 +89,7 @@
             // 
             // txt_Lname
             // 
-            txt_Lname.Location = new Point(195, 107);
+            txt_Lname.Location = new Point(374, 441);
             txt_Lname.Name = "txt_Lname";
             txt_Lname.Size = new Size(233, 23);
             txt_Lname.TabIndex = 71;
@@ -95,7 +97,7 @@
             // lb_LastNameDoctor
             // 
             lb_LastNameDoctor.AutoSize = true;
-            lb_LastNameDoctor.Location = new Point(62, 115);
+            lb_LastNameDoctor.Location = new Point(272, 444);
             lb_LastNameDoctor.Name = "lb_LastNameDoctor";
             lb_LastNameDoctor.Size = new Size(46, 15);
             lb_LastNameDoctor.TabIndex = 86;
@@ -104,15 +106,15 @@
             // dgv_AdminDoctors
             // 
             dgv_AdminDoctors.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_AdminDoctors.Location = new Point(453, 29);
+            dgv_AdminDoctors.Location = new Point(12, 46);
             dgv_AdminDoctors.Name = "dgv_AdminDoctors";
-            dgv_AdminDoctors.Size = new Size(742, 342);
+            dgv_AdminDoctors.Size = new Size(769, 336);
             dgv_AdminDoctors.TabIndex = 85;
             dgv_AdminDoctors.RowHeaderMouseDoubleClick += dgv_AdminDoctors_RowHeaderMouseDoubleClick;
             // 
             // btn_remove
             // 
-            btn_remove.Location = new Point(240, 474);
+            btn_remove.Location = new Point(12, 482);
             btn_remove.Name = "btn_remove";
             btn_remove.Size = new Size(105, 53);
             btn_remove.TabIndex = 84;
@@ -123,7 +125,7 @@
             // 
             // btn_Update
             // 
-            btn_Update.Location = new Point(313, 404);
+            btn_Update.Location = new Point(12, 551);
             btn_Update.Name = "btn_Update";
             btn_Update.Size = new Size(105, 53);
             btn_Update.TabIndex = 83;
@@ -134,7 +136,7 @@
             // 
             // btn_AddDoctor
             // 
-            btn_AddDoctor.Location = new Point(185, 404);
+            btn_AddDoctor.Location = new Point(12, 413);
             btn_AddDoctor.Name = "btn_AddDoctor";
             btn_AddDoctor.Size = new Size(105, 53);
             btn_AddDoctor.TabIndex = 82;
@@ -145,7 +147,7 @@
             // 
             // txt_Email
             // 
-            txt_Email.Location = new Point(195, 195);
+            txt_Email.Location = new Point(374, 482);
             txt_Email.Name = "txt_Email";
             txt_Email.Size = new Size(233, 23);
             txt_Email.TabIndex = 74;
@@ -153,7 +155,7 @@
             // lb_DoctorEmail
             // 
             lb_DoctorEmail.AutoSize = true;
-            lb_DoctorEmail.Location = new Point(62, 199);
+            lb_DoctorEmail.Location = new Point(272, 485);
             lb_DoctorEmail.Name = "lb_DoctorEmail";
             lb_DoctorEmail.Size = new Size(39, 15);
             lb_DoctorEmail.TabIndex = 81;
@@ -162,7 +164,7 @@
             // cb_DeptName
             // 
             cb_DeptName.FormattingEnabled = true;
-            cb_DeptName.Location = new Point(195, 356);
+            cb_DeptName.Location = new Point(623, 551);
             cb_DeptName.Name = "cb_DeptName";
             cb_DeptName.Size = new Size(233, 23);
             cb_DeptName.TabIndex = 80;
@@ -170,7 +172,7 @@
             // lb_DeptName
             // 
             lb_DeptName.AutoSize = true;
-            lb_DeptName.Location = new Point(62, 356);
+            lb_DeptName.Location = new Point(495, 554);
             lb_DeptName.Name = "lb_DeptName";
             lb_DeptName.Size = new Size(99, 15);
             lb_DeptName.TabIndex = 78;
@@ -178,7 +180,7 @@
             // 
             // txt_confirmPassword
             // 
-            txt_confirmPassword.Location = new Point(195, 308);
+            txt_confirmPassword.Location = new Point(778, 516);
             txt_confirmPassword.Name = "txt_confirmPassword";
             txt_confirmPassword.Size = new Size(233, 23);
             txt_confirmPassword.TabIndex = 79;
@@ -186,7 +188,7 @@
             // lb_confirmPassword
             // 
             lb_confirmPassword.AutoSize = true;
-            lb_confirmPassword.Location = new Point(62, 308);
+            lb_confirmPassword.Location = new Point(669, 519);
             lb_confirmPassword.Name = "lb_confirmPassword";
             lb_confirmPassword.Size = new Size(101, 15);
             lb_confirmPassword.TabIndex = 75;
@@ -194,7 +196,7 @@
             // 
             // txt_Password
             // 
-            txt_Password.Location = new Point(195, 263);
+            txt_Password.Location = new Point(374, 519);
             txt_Password.Name = "txt_Password";
             txt_Password.Size = new Size(233, 23);
             txt_Password.TabIndex = 77;
@@ -202,7 +204,7 @@
             // lb_password
             // 
             lb_password.AutoSize = true;
-            lb_password.Location = new Point(62, 266);
+            lb_password.Location = new Point(272, 519);
             lb_password.Name = "lb_password";
             lb_password.Size = new Size(60, 15);
             lb_password.TabIndex = 72;
@@ -210,7 +212,7 @@
             // 
             // txt_Fname
             // 
-            txt_Fname.Location = new Point(195, 70);
+            txt_Fname.Location = new Point(778, 413);
             txt_Fname.Name = "txt_Fname";
             txt_Fname.Size = new Size(233, 23);
             txt_Fname.TabIndex = 70;
@@ -218,7 +220,7 @@
             // lb_Fname
             // 
             lb_Fname.AutoSize = true;
-            lb_Fname.Location = new Point(62, 73);
+            lb_Fname.Location = new Point(669, 416);
             lb_Fname.Name = "lb_Fname";
             lb_Fname.Size = new Size(46, 15);
             lb_Fname.TabIndex = 69;
@@ -226,7 +228,7 @@
             // 
             // txt_username
             // 
-            txt_username.Location = new Point(195, 25);
+            txt_username.Location = new Point(374, 413);
             txt_username.Name = "txt_username";
             txt_username.Size = new Size(233, 23);
             txt_username.TabIndex = 68;
@@ -234,17 +236,36 @@
             // lb_userName
             // 
             lb_userName.AutoSize = true;
-            lb_userName.Location = new Point(62, 25);
+            lb_userName.Location = new Point(272, 416);
             lb_userName.Name = "lb_userName";
             lb_userName.Size = new Size(65, 15);
             lb_userName.TabIndex = 67;
             lb_userName.Text = "UserName:";
             // 
+            // txtBoxDoctorSerachData
+            // 
+            txtBoxDoctorSerachData.Location = new Point(287, 12);
+            txtBoxDoctorSerachData.Name = "txtBoxDoctorSerachData";
+            txtBoxDoctorSerachData.Size = new Size(233, 23);
+            txtBoxDoctorSerachData.TabIndex = 90;
+            txtBoxDoctorSerachData.TextChanged += txtBoxDoctorSerachData_TextChanged;
+            // 
+            // lbDoctorNameSearch
+            // 
+            lbDoctorNameSearch.AutoSize = true;
+            lbDoctorNameSearch.Location = new Point(178, 15);
+            lbDoctorNameSearch.Name = "lbDoctorNameSearch";
+            lbDoctorNameSearch.Size = new Size(81, 15);
+            lbDoctorNameSearch.TabIndex = 89;
+            lbDoctorNameSearch.Text = "Doctor Name:";
+            // 
             // AdminDoctorCRUDOpeartionForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1256, 553);
+            ClientSize = new Size(1256, 632);
+            Controls.Add(txtBoxDoctorSerachData);
+            Controls.Add(lbDoctorNameSearch);
             Controls.Add(txt_phone);
             Controls.Add(lb_Phone);
             Controls.Add(txt_Specialization);
@@ -299,5 +320,7 @@
         private Label lb_Fname;
         private TextBox txt_username;
         private Label lb_userName;
+        private TextBox txtBoxDoctorSerachData;
+        private Label lbDoctorNameSearch;
     }
 }

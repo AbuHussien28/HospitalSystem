@@ -29,6 +29,9 @@ namespace ProjectHospitalSystem.Forms.Admin
             User = user;
             _context = new HospitalSystemContext();
             con = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString);
+            // Wire up the TextChanged event for the search TextBox
+            txtBoxDoctorSerachData.TextChanged += txtBoxDoctorSerachData_TextChanged;
+            dgv_AdminDoctors.RowHeaderMouseDoubleClick += dgv_AdminDoctors_RowHeaderMouseDoubleClick;
         }
         #region Event Handlers
         private void btn_AddDoctor_Click(object sender, EventArgs e)
@@ -124,8 +127,8 @@ namespace ProjectHospitalSystem.Forms.Admin
         private void btn_remove_Click(object sender, EventArgs e)
         {
             try
-            {  
-                if (MessageBox.Show("are you sure to delete this Doctor", "confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes) 
+            {
+                if (MessageBox.Show("are you sure to delete this Doctor", "confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     DoctorDetails doctor = _context.Doctors.Where(n => n.UserId == DoctorSelectedId).SingleOrDefault();
                     if (doctor != null)
@@ -138,7 +141,8 @@ namespace ProjectHospitalSystem.Forms.Admin
                         SetButtonVisibility(isAddMode: true);
                     }
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -160,34 +164,70 @@ namespace ProjectHospitalSystem.Forms.Admin
         #region Helper Methods
         private async Task LoadData()
         {
-            var doctors = await con.QueryAsync<User, DoctorDetails, DoctorInfoDTO>(
-                @"SELECT u.UserId, u.UserName, u.FName, u.LName, u.Role, u.Email,
-                                u.PhoneNumber,d.Specialization
-                                 FROM Doctors d 
-                                    INNER JOIN Users u ON d.UserId = u.UserId
-                        WHERE u.Role = 'Doctor'", (user, doctor) =>
+    //        var doctors = await con.QueryAsync<User, DoctorDetails, DoctorInfoDTO>(
+    //            @"SELECT u.UserId, u.UserName, u.FName, u.LName, u.Role, u.Email,
+    //                            u.PhoneNumber,d.Specialization
+    //                             FROM Doctors d 
+    //                                INNER JOIN Users u ON d.UserId = u.UserId
+    //                    WHERE u.Role = 'Doctor'", (user, doctor) =>
+    //            {
+    //                return new DoctorInfoDTO
+    //                {
+    //                    UserId = user.UserId,
+    //                    UserName = user.UserName,
+    //                    FName = user.FName,
+    //                    LName = user.LName,
+    //                    Role = user.Role,
+    //                    PhoneNumber = user.PhoneNumber,
+    //                    Email = user?.Email,
+    //                    Specialization = doctor.Specialization
+    //                };
+    //            },
+    //splitOn: "PhoneNumber,Specialization");
+    //        dgv_AdminDoctors.DataSource = doctors.ToList();
+    //        dgv_AdminDoctors.Columns["UserId"].Visible = false;
+            try
+            {
+                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString))
                 {
-                    return new DoctorInfoDTO
-                    {
-                        UserId = user.UserId,
-                        UserName = user.UserName,
-                        FName = user.FName,
-                        LName = user.LName,
-                        Role = user.Role,
-                        PhoneNumber = user.PhoneNumber,
-                        Email = user?.Email,
-                        Specialization = doctor.Specialization
-                    };
-                },
-    splitOn: "PhoneNumber,Specialization");
-            dgv_AdminDoctors.DataSource = doctors.ToList();
-            dgv_AdminDoctors.Columns["UserId"].Visible = false;
-            var DeptName = con.Query("Select DeptId,DeptName from Departments").ToList();
-            cb_DeptName.DisplayMember = "DeptName";
-            cb_DeptName.ValueMember = "DeptId";
-            cb_DeptName.DataSource = DeptName;
-        }
+                    await connection.OpenAsync();
 
+                    var doctors = await connection.QueryAsync<User, DoctorDetails, DoctorInfoDTO>(
+                        @"SELECT u.UserId, u.UserName, u.FName, u.LName, u.Role, u.Email,
+                         u.PhoneNumber, d.Specialization
+                  FROM Doctors d
+                  INNER JOIN Users u ON d.UserId = u.UserId
+                  WHERE u.Role = 'Doctor'",
+                        (user, doctor) =>
+                        {
+                            return new DoctorInfoDTO
+                            {
+                                UserId = user.UserId,
+                                UserName = user.UserName,
+                                FName = user.FName,
+                                LName = user.LName,
+                                Role = user.Role,
+                                PhoneNumber = user.PhoneNumber,
+                                Email = user?.Email,
+                                Specialization = doctor.Specialization
+                            };
+                        },
+                        splitOn: "PhoneNumber,Specialization");
+
+                    dgv_AdminDoctors.DataSource = doctors.ToList();
+                    dgv_AdminDoctors.Columns["UserId"].Visible = false;
+
+                }
+                var DeptName = con.Query("Select DeptId,DeptName from Departments").ToList();
+                cb_DeptName.DisplayMember = "DeptName";
+                cb_DeptName.ValueMember = "DeptId";
+                cb_DeptName.DataSource = DeptName;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading all data: {ex.Message}");
+            }
+        }
         private void SetButtonVisibility(bool isAddMode)
         {
             btn_AddDoctor.Visible = isAddMode;
@@ -227,5 +267,43 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         #endregion
 
+        private async void txtBoxDoctorSerachData_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = txtBoxDoctorSerachData.Text.Trim();
+
+            // If the search text is empty, load all doctors
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                await LoadData();
+                return;
+            }
+
+            try
+            {
+                // Use a separate connection for this query
+                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString))
+                {
+                    await connection.OpenAsync();
+
+                    // Query the database for doctors whose name contains the search text
+                    var filteredDoctors = await connection.QueryAsync<DoctorInfoDTO>(
+                        @"SELECT u.UserId, u.UserName, u.FName, u.LName, u.Role, u.Email,
+                 u.PhoneNumber, d.Specialization
+                 FROM Doctors d
+                 INNER JOIN Users u ON d.UserId = u.UserId
+                 WHERE u.Role = 'Doctor' AND 
+                       (u.FName LIKE '%' + @SearchText + '%' OR 
+                        u.LName LIKE '%' + @SearchText + '%')",
+                        new { SearchText = searchText });
+
+                    // Update the DataGridView with the filtered results
+                    dgv_AdminDoctors.DataSource = filteredDoctors.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading filtered data: {ex.Message}");
+            }
+        }
     }
 }
