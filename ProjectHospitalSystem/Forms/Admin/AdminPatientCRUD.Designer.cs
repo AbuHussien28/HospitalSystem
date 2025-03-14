@@ -87,6 +87,8 @@
             lb_medicalHistory = new Label();
             txt_Fname = new TextBox();
             lb_Fname = new Label();
+            txtBoxPatientSerachData = new TextBox();
+            lbPatienitNameSearch = new Label();
             gb_SurgicalHistory.SuspendLayout();
             gb_InfectiousDiseases.SuspendLayout();
             gb_AllergieGenetic.SuspendLayout();
@@ -500,7 +502,7 @@
             // 
             // dtp_BirthDate
             // 
-            dtp_BirthDate.Location = new Point(171, 176);
+            dtp_BirthDate.Location = new Point(171, 199);
             dtp_BirthDate.Name = "dtp_BirthDate";
             dtp_BirthDate.Size = new Size(231, 23);
             dtp_BirthDate.TabIndex = 72;
@@ -508,7 +510,7 @@
             // lb_DateBirthPaitent
             // 
             lb_DateBirthPaitent.AutoSize = true;
-            lb_DateBirthPaitent.Location = new Point(66, 184);
+            lb_DateBirthPaitent.Location = new Point(66, 207);
             lb_DateBirthPaitent.Name = "lb_DateBirthPaitent";
             lb_DateBirthPaitent.Size = new Size(75, 15);
             lb_DateBirthPaitent.TabIndex = 88;
@@ -517,7 +519,7 @@
             // rb_Female
             // 
             rb_Female.AutoSize = true;
-            rb_Female.Location = new Point(303, 150);
+            rb_Female.Location = new Point(303, 173);
             rb_Female.Name = "rb_Female";
             rb_Female.Size = new Size(63, 19);
             rb_Female.TabIndex = 87;
@@ -528,7 +530,7 @@
             // rb_Male
             // 
             rb_Male.AutoSize = true;
-            rb_Male.Location = new Point(213, 150);
+            rb_Male.Location = new Point(213, 173);
             rb_Male.Name = "rb_Male";
             rb_Male.Size = new Size(51, 19);
             rb_Male.TabIndex = 71;
@@ -539,7 +541,7 @@
             // lb_Gender
             // 
             lb_Gender.AutoSize = true;
-            lb_Gender.Location = new Point(66, 152);
+            lb_Gender.Location = new Point(66, 175);
             lb_Gender.Name = "lb_Gender";
             lb_Gender.Size = new Size(45, 15);
             lb_Gender.TabIndex = 86;
@@ -547,7 +549,7 @@
             // 
             // txt_phone
             // 
-            txt_phone.Location = new Point(169, 112);
+            txt_phone.Location = new Point(169, 135);
             txt_phone.Name = "txt_phone";
             txt_phone.Size = new Size(233, 23);
             txt_phone.TabIndex = 70;
@@ -555,7 +557,7 @@
             // lb_Phone
             // 
             lb_Phone.AutoSize = true;
-            lb_Phone.Location = new Point(66, 115);
+            lb_Phone.Location = new Point(66, 138);
             lb_Phone.Name = "lb_Phone";
             lb_Phone.Size = new Size(44, 15);
             lb_Phone.TabIndex = 85;
@@ -563,7 +565,7 @@
             // 
             // txt_Address
             // 
-            txt_Address.Location = new Point(169, 255);
+            txt_Address.Location = new Point(169, 278);
             txt_Address.Name = "txt_Address";
             txt_Address.Size = new Size(233, 23);
             txt_Address.TabIndex = 74;
@@ -571,7 +573,7 @@
             // lb_Address
             // 
             lb_Address.AutoSize = true;
-            lb_Address.Location = new Point(66, 258);
+            lb_Address.Location = new Point(66, 281);
             lb_Address.Name = "lb_Address";
             lb_Address.Size = new Size(52, 15);
             lb_Address.TabIndex = 84;
@@ -579,7 +581,7 @@
             // 
             // txt_Lname
             // 
-            txt_Lname.Location = new Point(169, 67);
+            txt_Lname.Location = new Point(169, 90);
             txt_Lname.Name = "txt_Lname";
             txt_Lname.Size = new Size(233, 23);
             txt_Lname.TabIndex = 69;
@@ -587,7 +589,7 @@
             // lb_LastNameDoctor
             // 
             lb_LastNameDoctor.AutoSize = true;
-            lb_LastNameDoctor.Location = new Point(66, 75);
+            lb_LastNameDoctor.Location = new Point(66, 98);
             lb_LastNameDoctor.Name = "lb_LastNameDoctor";
             lb_LastNameDoctor.Size = new Size(46, 15);
             lb_LastNameDoctor.TabIndex = 83;
@@ -605,7 +607,7 @@
             // dgv_AdminPaitent
             // 
             dgv_AdminPaitent.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_AdminPaitent.Location = new Point(487, 12);
+            dgv_AdminPaitent.Location = new Point(487, 35);
             dgv_AdminPaitent.Name = "dgv_AdminPaitent";
             dgv_AdminPaitent.Size = new Size(728, 288);
             dgv_AdminPaitent.TabIndex = 81;
@@ -643,7 +645,7 @@
             // 
             // txt_Email
             // 
-            txt_Email.Location = new Point(169, 220);
+            txt_Email.Location = new Point(169, 243);
             txt_Email.Name = "txt_Email";
             txt_Email.Size = new Size(233, 23);
             txt_Email.TabIndex = 73;
@@ -651,7 +653,7 @@
             // lb_DoctorEmail
             // 
             lb_DoctorEmail.AutoSize = true;
-            lb_DoctorEmail.Location = new Point(66, 224);
+            lb_DoctorEmail.Location = new Point(66, 247);
             lb_DoctorEmail.Name = "lb_DoctorEmail";
             lb_DoctorEmail.Size = new Size(39, 15);
             lb_DoctorEmail.TabIndex = 77;
@@ -668,7 +670,7 @@
             // 
             // txt_Fname
             // 
-            txt_Fname.Location = new Point(169, 30);
+            txt_Fname.Location = new Point(169, 53);
             txt_Fname.Name = "txt_Fname";
             txt_Fname.Size = new Size(233, 23);
             txt_Fname.TabIndex = 68;
@@ -676,17 +678,36 @@
             // lb_Fname
             // 
             lb_Fname.AutoSize = true;
-            lb_Fname.Location = new Point(66, 33);
+            lb_Fname.Location = new Point(66, 56);
             lb_Fname.Name = "lb_Fname";
             lb_Fname.Size = new Size(46, 15);
             lb_Fname.TabIndex = 75;
             lb_Fname.Text = "Fname:";
+            // 
+            // txtBoxPatientSerachData
+            // 
+            txtBoxPatientSerachData.Location = new Point(653, 6);
+            txtBoxPatientSerachData.Name = "txtBoxPatientSerachData";
+            txtBoxPatientSerachData.Size = new Size(233, 23);
+            txtBoxPatientSerachData.TabIndex = 95;
+            txtBoxPatientSerachData.TextChanged += txtBoxPatientSerachData_TextChanged;
+            // 
+            // lbPatienitNameSearch
+            // 
+            lbPatienitNameSearch.AutoSize = true;
+            lbPatienitNameSearch.Location = new Point(520, 9);
+            lbPatienitNameSearch.Name = "lbPatienitNameSearch";
+            lbPatienitNameSearch.Size = new Size(82, 15);
+            lbPatienitNameSearch.TabIndex = 94;
+            lbPatienitNameSearch.Text = "Patient Name:";
             // 
             // AdminPatientCRUD
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1439, 775);
+            Controls.Add(txtBoxPatientSerachData);
+            Controls.Add(lbPatienitNameSearch);
             Controls.Add(gb_SurgicalHistory);
             Controls.Add(gb_InfectiousDiseases);
             Controls.Add(gb_AllergieGenetic);
@@ -792,5 +813,7 @@
         private Label lb_medicalHistory;
         private TextBox txt_Fname;
         private Label lb_Fname;
+        private TextBox txtBoxPatientSerachData;
+        private Label lbPatienitNameSearch;
     }
 }

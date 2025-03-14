@@ -200,10 +200,45 @@ namespace ProjectHospitalSystem.Forms.Admin
                 }
             }
         }
+        private async void txtBoxDepartmentSerachData_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = txtBoxDepartmentSerachData.Text.Trim();
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                await LoadDepartmentData();
+                return;
+            }
+
+            try
+            {
+                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString))
+                {
+                    await connection.OpenAsync();
+                    var filteredDoctors = await connection.QueryAsync<DepartmentDTO>(
+                        @"SELECT  d.DeptId,d.DeptName,d.Dept_Desc AS DeptDesc,d.FeeAmount,
+                            COALESCE(u.FName + ' ' + u.LName, 'Not Assigned') AS ManagingDoctor
+                        FROM Departments d
+                        LEFT JOIN Doctors dm 
+                            ON d.DoctorMgnId = dm.DoctorDetailsId
+                        LEFT JOIN Users u 
+                            ON dm.UserId = u.UserId
+	                        where d.DeptName LIKE '%'+ @SearchText+'%'",
+                        new { SearchText = searchText });
+
+                    dgv_Department.DataSource = filteredDoctors.ToList();
+                    dgv_Department.Columns["DeptId"].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading filtered data: {ex.Message}");
+            }
+        }
         #endregion
         #region Data Loading Methods
         private void LoadDoctors()
         {
+
             var doctors = connection.Query(@"
              SELECT d.DoctorDetailsId,  u.FName + ' ' + u.LName AS FullName FROM Doctors d
              INNER JOIN Users u ON d.UserId = u.UserId").ToList();
@@ -217,7 +252,10 @@ namespace ProjectHospitalSystem.Forms.Admin
         {
             try
             {
-                var departments = await connection.QueryAsync<DepartmentDTO>(@"
+                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString))
+                {
+                    await connection.OpenAsync();
+                    var departments = await connection.QueryAsync<DepartmentDTO>(@"
                  SELECT  d.DeptId,d.DeptName,d.Dept_Desc AS DeptDesc,d.FeeAmount,
                     COALESCE(u.FName + ' ' + u.LName, 'Not Assigned') AS ManagingDoctor
                 FROM Departments d
@@ -225,7 +263,9 @@ namespace ProjectHospitalSystem.Forms.Admin
                     ON d.DoctorMgnId = dm.DoctorDetailsId
                 LEFT JOIN Users u 
                     ON dm.UserId = u.UserId");
-                dgv_Department.DataSource = departments.ToList();
+                    dgv_Department.DataSource = departments.ToList();
+                    dgv_Department.Columns["DeptId"].Visible = false;
+                }
             }
             catch (Exception ex)
             {
@@ -260,5 +300,6 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         #endregion
 
+        
     }
 }

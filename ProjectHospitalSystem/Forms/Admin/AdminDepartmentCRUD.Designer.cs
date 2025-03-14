@@ -40,6 +40,8 @@
             txt_DepartmentFeeAmountFee = new NumericUpDown();
             lb_DepartmentDeptName = new Label();
             dgv_Department = new DataGridView();
+            txtBoxDepartmentSerachData = new TextBox();
+            lbDepartmentNameSearch = new Label();
             ((System.ComponentModel.ISupportInitialize)txt_DepartmentFeeAmountFee).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_Department).BeginInit();
             SuspendLayout();
@@ -159,11 +161,30 @@
             dgv_Department.TabIndex = 73;
             dgv_Department.RowHeaderMouseDoubleClick += dgv_Department_RowHeaderMouseDoubleClick;
             // 
+            // txtBoxDepartmentSerachData
+            // 
+            txtBoxDepartmentSerachData.Location = new Point(505, 58);
+            txtBoxDepartmentSerachData.Name = "txtBoxDepartmentSerachData";
+            txtBoxDepartmentSerachData.Size = new Size(233, 23);
+            txtBoxDepartmentSerachData.TabIndex = 97;
+            txtBoxDepartmentSerachData.TextChanged += txtBoxDepartmentSerachData_TextChanged;
+            // 
+            // lbDepartmentNameSearch
+            // 
+            lbDepartmentNameSearch.AutoSize = true;
+            lbDepartmentNameSearch.Location = new Point(395, 61);
+            lbDepartmentNameSearch.Name = "lbDepartmentNameSearch";
+            lbDepartmentNameSearch.Size = new Size(104, 15);
+            lbDepartmentNameSearch.TabIndex = 96;
+            lbDepartmentNameSearch.Text = "Depatment Name:";
+            // 
             // AdminDepartmentCRUD
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(txtBoxDepartmentSerachData);
+            Controls.Add(lbDepartmentNameSearch);
             Controls.Add(lb_DepartmentFDoctorName);
             Controls.Add(cb_DepartmentFDoctorName);
             Controls.Add(txt_DepartmentDeptDesc);
@@ -199,5 +220,7 @@
         private NumericUpDown txt_DepartmentFeeAmountFee;
         private Label lb_DepartmentDeptName;
         private DataGridView dgv_Department;
+        private TextBox txtBoxDepartmentSerachData;
+        private Label lbDepartmentNameSearch;
     }
 }

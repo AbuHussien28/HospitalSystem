@@ -53,7 +53,6 @@ namespace ProjectHospitalSystem.Forms.Admin
 
         private void tabPageDoctor_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("test Doctor");
         }
 
         private void AdminTabContol_SelectedIndexChanged(object sender, EventArgs e)

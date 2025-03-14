@@ -47,6 +47,8 @@
             lb_Fname = new Label();
             txt_username = new TextBox();
             lb_userName = new Label();
+            txtBoxReceptionsitSerachData = new TextBox();
+            lbReceptionsitNameSearch = new Label();
             ((System.ComponentModel.ISupportInitialize)dgv_AdminReceptionist).BeginInit();
             SuspendLayout();
             // 
@@ -217,11 +219,31 @@
             lb_userName.TabIndex = 52;
             lb_userName.Text = "UserName:";
             // 
+            // txtBoxReceptionsitSerachData
+            // 
+            txtBoxReceptionsitSerachData.Location = new Point(651, 12);
+            txtBoxReceptionsitSerachData.Name = "txtBoxReceptionsitSerachData";
+            txtBoxReceptionsitSerachData.Size = new Size(233, 23);
+            txtBoxReceptionsitSerachData.TabIndex = 92;
+            txtBoxReceptionsitSerachData.TextChanged += txtBoxReceptionsitSerachData_TextChanged;
+            // 
+            // lbReceptionsitNameSearch
+            // 
+            lbReceptionsitNameSearch.AutoSize = true;
+            lbReceptionsitNameSearch.Location = new Point(518, 15);
+            lbReceptionsitNameSearch.Name = "lbReceptionsitNameSearch";
+            lbReceptionsitNameSearch.Size = new Size(110, 15);
+            lbReceptionsitNameSearch.TabIndex = 91;
+            lbReceptionsitNameSearch.Text = "Receptionsit Name:";
+            lbReceptionsitNameSearch.Click += lbReceptionsitNameSearch_Click;
+            // 
             // AdminReceptionsitCRUDOpeartion
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1273, 559);
+            Controls.Add(txtBoxReceptionsitSerachData);
+            Controls.Add(lbReceptionsitNameSearch);
             Controls.Add(txt_phone);
             Controls.Add(lb_Phone);
             Controls.Add(txt_Lname);
@@ -270,5 +292,7 @@
         private Label lb_Fname;
         private TextBox txt_username;
         private Label lb_userName;
+        private TextBox txtBoxReceptionsitSerachData;
+        private Label lbReceptionsitNameSearch;
     }
 }

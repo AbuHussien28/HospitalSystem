@@ -94,7 +94,7 @@ namespace ProjectHospitalSystem.Forms.Admin
                     txt_Specialization.Text = doctor?.Specialization;
                     cb_DeptName.SelectedValue = doctor?.DeptId ?? -1;
                 }
-                SetButtonVisibility(isAddMode: false);
+                SetButtonAndTxtPasswordVisibility(isAddMode: false);
             }
             catch (Exception ex)
             {
@@ -119,7 +119,7 @@ namespace ProjectHospitalSystem.Forms.Admin
                 ResetForm();
                 LoadData();
                 MessageBox.Show("Updated Done");
-                SetButtonVisibility(isAddMode: true);
+                SetButtonAndTxtPasswordVisibility(isAddMode: true);
             }
 
         }
@@ -138,7 +138,7 @@ namespace ProjectHospitalSystem.Forms.Admin
                         ResetForm();
                         LoadData();
                         MessageBox.Show("deleted");
-                        SetButtonVisibility(isAddMode: true);
+                        SetButtonAndTxtPasswordVisibility(isAddMode: true);
                     }
                 }
             }
@@ -158,34 +158,44 @@ namespace ProjectHospitalSystem.Forms.Admin
             {
                 MessageBox.Show(ex.Message);
             }
-            SetButtonVisibility(isAddMode: true);
+            SetButtonAndTxtPasswordVisibility(isAddMode: true);
+        }
+        private async void txtBoxDoctorSerachData_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = txtBoxDoctorSerachData.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                await LoadData();
+                return;
+            }
+
+            try
+            {
+                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString))
+                {
+                    await connection.OpenAsync();
+                    var filteredDoctors = await connection.QueryAsync<DoctorInfoDTO>(
+                        @"SELECT u.UserId, u.UserName, u.FName, u.LName, u.Role, u.Email,
+                 u.PhoneNumber, d.Specialization
+                 FROM Doctors d
+                 INNER JOIN Users u ON d.UserId = u.UserId
+                 WHERE u.Role = 'Doctor' AND 
+                       (u.FName LIKE '%' + @SearchText + '%' OR 
+                        u.LName LIKE '%' + @SearchText + '%')",
+                        new { SearchText = searchText });
+                    dgv_AdminDoctors.DataSource = filteredDoctors.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading filtered data: {ex.Message}");
+            }
         }
         #endregion
         #region Helper Methods
         private async Task LoadData()
         {
-    //        var doctors = await con.QueryAsync<User, DoctorDetails, DoctorInfoDTO>(
-    //            @"SELECT u.UserId, u.UserName, u.FName, u.LName, u.Role, u.Email,
-    //                            u.PhoneNumber,d.Specialization
-    //                             FROM Doctors d 
-    //                                INNER JOIN Users u ON d.UserId = u.UserId
-    //                    WHERE u.Role = 'Doctor'", (user, doctor) =>
-    //            {
-    //                return new DoctorInfoDTO
-    //                {
-    //                    UserId = user.UserId,
-    //                    UserName = user.UserName,
-    //                    FName = user.FName,
-    //                    LName = user.LName,
-    //                    Role = user.Role,
-    //                    PhoneNumber = user.PhoneNumber,
-    //                    Email = user?.Email,
-    //                    Specialization = doctor.Specialization
-    //                };
-    //            },
-    //splitOn: "PhoneNumber,Specialization");
-    //        dgv_AdminDoctors.DataSource = doctors.ToList();
-    //        dgv_AdminDoctors.Columns["UserId"].Visible = false;
             try
             {
                 using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString))
@@ -228,12 +238,16 @@ namespace ProjectHospitalSystem.Forms.Admin
                 MessageBox.Show($"Error loading all data: {ex.Message}");
             }
         }
-        private void SetButtonVisibility(bool isAddMode)
+        private void SetButtonAndTxtPasswordVisibility(bool isAddMode)
         {
             btn_AddDoctor.Visible = isAddMode;
             btn_Update.Visible = !isAddMode;
             btn_remove.Visible = !isAddMode;
-        }
+            txt_Password.Visible = isAddMode;
+            txt_confirmPassword.Visible = isAddMode;
+            lb_password.Visible = isAddMode;
+            lb_confirmPassword.Visible = isAddMode;
+         }
 
 
         public bool ValidateInputs()
@@ -267,43 +281,6 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         #endregion
 
-        private async void txtBoxDoctorSerachData_TextChanged(object sender, EventArgs e)
-        {
-            string searchText = txtBoxDoctorSerachData.Text.Trim();
-
-            // If the search text is empty, load all doctors
-            if (string.IsNullOrWhiteSpace(searchText))
-            {
-                await LoadData();
-                return;
-            }
-
-            try
-            {
-                // Use a separate connection for this query
-                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString))
-                {
-                    await connection.OpenAsync();
-
-                    // Query the database for doctors whose name contains the search text
-                    var filteredDoctors = await connection.QueryAsync<DoctorInfoDTO>(
-                        @"SELECT u.UserId, u.UserName, u.FName, u.LName, u.Role, u.Email,
-                 u.PhoneNumber, d.Specialization
-                 FROM Doctors d
-                 INNER JOIN Users u ON d.UserId = u.UserId
-                 WHERE u.Role = 'Doctor' AND 
-                       (u.FName LIKE '%' + @SearchText + '%' OR 
-                        u.LName LIKE '%' + @SearchText + '%')",
-                        new { SearchText = searchText });
-
-                    // Update the DataGridView with the filtered results
-                    dgv_AdminDoctors.DataSource = filteredDoctors.ToList();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading filtered data: {ex.Message}");
-            }
-        }
+    
     }
 }

@@ -45,8 +45,8 @@
             panelPaymentMethod = new Panel();
             tabPageReports = new TabPage();
             tabAppoinments = new TabPage();
-            tabPageLogOut = new TabPage();
             panelAppoiments = new Panel();
+            tabPageLogOut = new TabPage();
             AdminTabContol.SuspendLayout();
             tabPageDoctor.SuspendLayout();
             tabPageReceptionsit.SuspendLayout();
@@ -121,7 +121,7 @@
             // 
             panelDoctorData.Location = new Point(6, 3);
             panelDoctorData.Name = "panelDoctorData";
-            panelDoctorData.Size = new Size(1255, 549);
+            panelDoctorData.Size = new Size(1428, 699);
             panelDoctorData.TabIndex = 1;
             // 
             // tabPageReceptionsit
@@ -216,6 +216,13 @@
             tabAppoinments.Text = "Appoinment";
             tabAppoinments.UseVisualStyleBackColor = true;
             // 
+            // panelAppoiments
+            // 
+            panelAppoiments.Location = new Point(3, 3);
+            panelAppoiments.Name = "panelAppoiments";
+            panelAppoiments.Size = new Size(1512, 702);
+            panelAppoiments.TabIndex = 3;
+            // 
             // tabPageLogOut
             // 
             tabPageLogOut.ImageKey = "IconLogout.png";
@@ -225,13 +232,6 @@
             tabPageLogOut.TabIndex = 7;
             tabPageLogOut.Text = "Log Out";
             tabPageLogOut.UseVisualStyleBackColor = true;
-            // 
-            // panelAppoiments
-            // 
-            panelAppoiments.Location = new Point(3, 3);
-            panelAppoiments.Name = "panelAppoiments";
-            panelAppoiments.Size = new Size(1512, 702);
-            panelAppoiments.TabIndex = 3;
             // 
             // AdminUserDashBoardScreen
             // 

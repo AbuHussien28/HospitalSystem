@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            lb_close = new Label();
             btn_AdminPaymentMethodRemove = new Button();
             btn_AdminPaymentMethodUpdate = new Button();
             btn_AdminPaymentMethodAdd = new Button();
@@ -37,15 +36,6 @@
             dgv_AdminPaymentMethod = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dgv_AdminPaymentMethod).BeginInit();
             SuspendLayout();
-            // 
-            // lb_close
-            // 
-            lb_close.AutoSize = true;
-            lb_close.Location = new Point(386, 150);
-            lb_close.Name = "lb_close";
-            lb_close.Size = new Size(36, 15);
-            lb_close.TabIndex = 47;
-            lb_close.Text = "Close";
             // 
             // btn_AdminPaymentMethodRemove
             // 
@@ -106,8 +96,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(508, 176);
-            Controls.Add(lb_close);
+            ClientSize = new Size(628, 167);
             Controls.Add(btn_AdminPaymentMethodRemove);
             Controls.Add(btn_AdminPaymentMethodUpdate);
             Controls.Add(btn_AdminPaymentMethodAdd);
@@ -123,8 +112,6 @@
         }
 
         #endregion
-
-        private Label lb_close;
         private Button btn_AdminPaymentMethodRemove;
         private Button btn_AdminPaymentMethodUpdate;
         private Button btn_AdminPaymentMethodAdd;

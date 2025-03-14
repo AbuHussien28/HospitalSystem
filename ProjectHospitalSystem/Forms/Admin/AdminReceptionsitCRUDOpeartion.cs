@@ -1,5 +1,7 @@
 ﻿using Dapper;
+using DevExpress.CodeParser;
 using ProjectHospitalSystem.Models;
+using ProjectHospitalSystem.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +19,7 @@ namespace ProjectHospitalSystem.Forms.Admin
 {
     public partial class AdminReceptionsitCRUDOpeartion : Form
     {
+        #region initizle and Load
         User User;
         HospitalSystemContext _context;
         SqlConnection con;
@@ -41,6 +44,7 @@ namespace ProjectHospitalSystem.Forms.Admin
                 MessageBox.Show(ex.Message);
             }
         }
+        #endregion
         #region Event Handlers
         private void btn_AddReceptionist_Click(object sender, EventArgs e)
         {
@@ -138,7 +142,8 @@ namespace ProjectHospitalSystem.Forms.Admin
                     MessageBox.Show("Receptionist updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     SetButtonAndTxtPasswordVisibility(isAddMode: true);
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show($"Error updating receptionist: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -160,25 +165,69 @@ namespace ProjectHospitalSystem.Forms.Admin
                 }
             }
         }
+        private async void txtBoxReceptionsitSerachData_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = txtBoxReceptionsitSerachData.Text.Trim();
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                await LoadData();
+                return;
+            }
+
+            try
+            {
+                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString))
+                {
+                    await connection.OpenAsync();
+                    var filteredDoctors = await connection.QueryAsync<DoctorInfoDTO>(
+                        @"SELECT UserId, UserName, FName, LName, Role, Email,
+                 PhoneNumber
+                 FROM Users
+                 WHERE Role = 'Receptionist' AND
+                       (FName LIKE '%' + @SearchText + '%' OR 
+                        LName LIKE '%' + @SearchText + '%')",
+                        new { SearchText = searchText });
+
+                    dgv_AdminReceptionist.DataSource = filteredDoctors.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading filtered data: {ex.Message}");
+            }
+        }
         #endregion
 
         #region  Helper Methods
-        private void LoadData()
+        private async Task LoadData()
         {
-            var Receptionist = con.Query<User>(@"SELECT  u.UserId, u.UserName, u.FName, u.LName, u.Role,u.Email, u.PhoneNumber from Users u
-                    WHERE u.Role = 'Receptionist'");
-            var result = Receptionist.Select(u => new
+            try
             {
-                u.UserId,
-                u.UserName,
-                u.FName,
-                u.LName,
-                u.Role,
-                u.Email,
-                u.PhoneNumber
-            }).ToList();
-            dgv_AdminReceptionist.DataSource = result;
-            dgv_AdminReceptionist.Columns["UserId"].Visible = false;
+                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString))
+                {
+                    await connection.OpenAsync();
+
+                    var Receptionist = con.Query<User>(@"SELECT  u.UserId, u.UserName, u.FName, u.LName, u.Role,u.Email, u.PhoneNumber from Users u
+                    WHERE u.Role = 'Receptionist'");
+                    var result = Receptionist.Select(u => new
+                    {
+                        u.UserId,
+                        u.UserName,
+                        u.FName,
+                        u.LName,
+                        u.Role,
+                        u.Email,
+                        u.PhoneNumber
+                    }).ToList();
+                    dgv_AdminReceptionist.DataSource = result;
+                    dgv_AdminReceptionist.Columns["UserId"].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading data: {ex.Message}");
+
+            }
         }
         private bool ValidateForm()
         {
@@ -240,7 +289,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             btn_AddReceptionist.Visible = isAddMode;
             btn_UpdateReceptionist.Visible = !isAddMode;
             btn_removeReceptionist.Visible = !isAddMode;
-            txt_Password.Visible=isAddMode;
+            txt_Password.Visible = isAddMode;
             txt_confirmPassword.Visible = isAddMode;
             lb_password.Visible = isAddMode;
             lb_confirmPassword.Visible = isAddMode;
@@ -268,5 +317,11 @@ namespace ProjectHospitalSystem.Forms.Admin
             return !_context.Users.Any(u => u.UserName == username);
         }
         #endregion
+
+
+        private void lbReceptionsitNameSearch_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

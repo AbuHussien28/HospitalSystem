@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using ProjectHospitalSystem.Models;
+using ProjectHospitalSystem.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,27 +29,39 @@ namespace ProjectHospitalSystem.Forms.Admin
             con = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString);
         }
         #region Data Loading and Initialization
-        private void LoadData()
+        private async Task LoadDataAsync()
         {
-            var patients = con.Query<Patient>(@"SELECT p.PatientId, p.FirstName, p.LastName, p.DateOfBirth, p.Gender, p.Email, p.Address, p.MedicalHistory, 
-                               p.PhoneNumber 
-                        FROM Patients p ");
+                try
+                {
+                    using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString))
+                    {
+                        await connection.OpenAsync();
+                    var patients = await connection.QueryAsync<Patient>(@"
+                SELECT p.PatientId, p.FirstName, p.LastName, p.DateOfBirth, p.Gender, p.Email, p.Address, p.MedicalHistory, 
+                       p.PhoneNumber 
+                FROM Patients p");
+                        var result = patients.Select(p => new
+                        {
+                            p.PatientId,
+                            p.FirstName,
+                            p.LastName,
+                            p.DateOfBirth,
+                            p.Gender,
+                            p.Email,
+                            p.PhoneNumber,
+                            p.Address,
+                            p.MedicalHistory,
+                        }).ToList();
 
-            var result = patients.Select(p => new
-            {
-                p.PatientId,
-                p.FirstName,
-                p.LastName,
-                p.DateOfBirth,
-                p.Gender,
-                p.Email,
-                p.PhoneNumber,
-                p.Address,
-                p.MedicalHistory,
-            }).ToList();
-            dgv_AdminPaitent.DataSource = result;
-            dgv_AdminPaitent.Columns["PatientId"].Visible = false;
-        }
+                        dgv_AdminPaitent.DataSource = result;
+                        dgv_AdminPaitent.Columns["PatientId"].Visible = false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading data: {ex.Message}");
+                }
+            }
         #endregion
         #region Form Population and Gender Handling
         private void PopulateFormWithPatientData(Patient patient)
@@ -74,7 +87,7 @@ namespace ProjectHospitalSystem.Forms.Admin
         {
             try
             {
-                LoadData();
+                LoadDataAsync();
                 SetButtonVisibility(isAddMode: true);
             }
             catch (Exception ex)
@@ -104,7 +117,7 @@ namespace ProjectHospitalSystem.Forms.Admin
 
             _context.Patients.Add(patient);
             _context.SaveChanges();
-            LoadData();
+            LoadDataAsync();
             ClearFields();
         }
         private void c_box_otherChronic_CheckedChanged(object sender, EventArgs e)
@@ -133,22 +146,46 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         private void dgv_AdminPaitent_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (e.RowIndex < 0) return;
-
-            ClearFields();
-            _selectedPatientId = Convert.ToInt32(dgv_AdminPaitent.SelectedRows[0].Cells["PatientId"].Value);
-            var patient = _context.Patients.SingleOrDefault(n => n.PatientId == _selectedPatientId);
-
-            if (patient != null)
+            // Ensure the row index is valid
+            if (e.RowIndex < 0 || e.RowIndex >= dgv_AdminPaitent.Rows.Count)
             {
-                PopulateFormWithPatientData(patient);
-                SetButtonVisibility(isAddMode: false);
+                MessageBox.Show("Please select a valid patient from the list.", "Selection Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                // Clear the form fields before populating new data
+                ClearFields();
+
+                // Get the selected patient ID
+                _selectedPatientId = Convert.ToInt32(dgv_AdminPaitent.Rows[e.RowIndex].Cells["PatientId"].Value);
+
+                // Find the patient in the database
+                var patient = _context.Patients.SingleOrDefault(n => n.PatientId == _selectedPatientId);
+
+                if (patient != null)
+                {
+                    // Populate the form with the selected patient's data
+                    PopulateFormWithPatientData(patient);
+
+                    // Update button visibility (show Update and Remove buttons)
+                    SetButtonVisibility(isAddMode: false);
+                }
+                else
+                {
+                    MessageBox.Show("Patient not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error selecting patient: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void btn_Update_Click(object sender, EventArgs e)
         {
             var patient = _context.Patients.SingleOrDefault(n => n.PatientId == _selectedPatientId);
-            if(IsPatientNameExists(txt_Fname.Text, txt_Lname.Text, _selectedPatientId))
+            if (IsPatientNameExists(txt_Fname.Text, txt_Lname.Text, _selectedPatientId))
             {
                 MessageBox.Show("A patient with the same name already exists.", "Duplicate Patient", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -157,7 +194,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             {
                 UpdatePatientData(patient);
                 _context.SaveChanges();
-                LoadData();
+                LoadDataAsync();
                 ClearFields();
                 MessageBox.Show("Updated Done");
                 SetButtonVisibility(isAddMode: true);
@@ -184,7 +221,7 @@ namespace ProjectHospitalSystem.Forms.Admin
                 {
                     _context.Patients.Remove(patient);
                     _context.SaveChanges();
-                    LoadData();
+                    LoadDataAsync();
                     ClearFields();
                     MessageBox.Show("Deleted Done");
                     SetButtonVisibility(isAddMode: true);
@@ -264,7 +301,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             }
         }
         #endregion
-      
+
 
         #region Medical History Categories
         private void SetMedicalHistory(string medicalHistory)
@@ -402,7 +439,7 @@ namespace ProjectHospitalSystem.Forms.Admin
                    ValidateCheckBoxGroup(gb_AllergieGenetic) &&
                    ValidateCheckBoxGroup(gb_OtherFactor);
         }
-        private bool ValidateCheckBoxGroup(GroupBox groupBox)=> groupBox.Controls.OfType<CheckBox>().Any(checkBox => checkBox.Checked);
+        private bool ValidateCheckBoxGroup(GroupBox groupBox) => groupBox.Controls.OfType<CheckBox>().Any(checkBox => checkBox.Checked);
         public bool ValidateEmail(string email) => email.Contains("@") && email.Contains(".");
         private bool IsPatientNameExists(string firstName, string lastName, int? excludePatientId = null)
         {
@@ -470,5 +507,48 @@ namespace ProjectHospitalSystem.Forms.Admin
 
 
 
+        private async void txtBoxPatientSerachData_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = txtBoxPatientSerachData.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                await LoadDataAsync();
+                return;
+            }
+
+            try
+            {
+                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString))
+                {
+                    await connection.OpenAsync();
+                    var filteredPatients =  connection.Query<Patient>(
+                        @"SELECT p.PatientId, p.FirstName, p.LastName, p.DateOfBirth, p.Gender, p.Email, p.Address, p.MedicalHistory, 
+                         p.PhoneNumber 
+                        FROM Patients p
+						where ( p.FirstName LIKE '%'+@SearchText+'%'OR
+						p.LastName LIKE '%' + @SearchText + '%')",
+                        new { SearchText = searchText });
+                    var result = filteredPatients.Select(p => new
+                    {
+                        p.PatientId,
+                        p.FirstName,
+                        p.LastName,
+                        p.DateOfBirth,
+                        p.Gender,
+                        p.Email,
+                        p.PhoneNumber,
+                        p.Address,
+                        p.MedicalHistory,
+                    }).ToList();
+                    dgv_AdminPaitent.DataSource = result;
+                    dgv_AdminPaitent.Columns["PatientId"].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading filtered data: {ex.Message}");
+            }
+        }
     }
 }
