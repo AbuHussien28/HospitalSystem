@@ -73,6 +73,16 @@ namespace ProjectHospitalSystem.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap IconClear16px {
+            get {
+                object obj = ResourceManager.GetObject("IconClear16px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap IconExit {
             get {
                 object obj = ResourceManager.GetObject("IconExit", resourceCulture);
@@ -86,6 +96,16 @@ namespace ProjectHospitalSystem.Properties {
         internal static System.Drawing.Bitmap IconExit128Px {
             get {
                 object obj = ResourceManager.GetObject("IconExit128Px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconHealth32 {
+            get {
+                object obj = ResourceManager.GetObject("IconHealth32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -136,6 +156,26 @@ namespace ProjectHospitalSystem.Properties {
         internal static System.Drawing.Bitmap LoginIconForBtn {
             get {
                 object obj = ResourceManager.GetObject("LoginIconForBtn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap LoginIconForBtn16px {
+            get {
+                object obj = ResourceManager.GetObject("LoginIconForBtn16px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap LoginImageScreen {
+            get {
+                object obj = ResourceManager.GetObject("LoginImageScreen", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

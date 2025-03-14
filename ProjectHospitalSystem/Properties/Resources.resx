@@ -121,6 +121,12 @@
   <data name="IconUserName" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconUserName.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="IconHealth32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconHealth32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LoginIconForBtn16px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LoginIconForBtn16px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="IconUnShowPassword" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconUnShowPassword.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -133,13 +139,19 @@
   <data name="IconExit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconExit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="LoginImageScreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LoginImageScreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconExit128Px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconExit128Px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="IconUserPassword" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconUserPassword.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconShowPassword" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconShowPassword.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IconExit128Px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconExit128Px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="IconClear16px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconClear16px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

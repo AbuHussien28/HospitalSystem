@@ -1,5 +1,3 @@
-using DevExpress.XtraPrinting.Native;
-using MaterialSkin;
 using MaterialSkin.Controls;
 using ProjectHospitalSystem.Forms.Admin;
 using ProjectHospitalSystem.Forms.Doctor;
@@ -20,6 +18,7 @@ namespace ProjectHospitalSystem
         #region Event Handlers
         private void WelcomeScreen_Load(object sender, EventArgs e)
         {
+            InitializeDateTime();
         }
         private void btnLogin_Click(object sender, EventArgs e)
         {
@@ -41,7 +40,35 @@ namespace ProjectHospitalSystem
         private void pBoxShowPassword_Click(object sender, EventArgs e) => TogglePasswordVisibility();
         private void pBoxExit_Click(object sender, EventArgs e) => this.Close();
         private void btn_clear_Click(object sender, EventArgs e) => ClearInputFields();
+        private void timerDt_Tick(object sender, EventArgs e)
+        {
+            lblDateTime.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy | hh:mm:ss tt");
+        }
 
+        private void txtBoxUserName_MouseEnter(object sender, EventArgs e)
+        {
+            txtBoxUserName.BackColor = Color.White;
+            txtBoxUserName.BorderStyle = BorderStyle.Fixed3D;
+        }
+
+        private void txtBoxUserName_MouseLeave(object sender, EventArgs e)
+        {
+            txtBoxUserName.BackColor = Color.WhiteSmoke;
+            txtBoxUserName.BorderStyle = BorderStyle.FixedSingle;
+        }
+        private void txtBoxUserPassword_MouseEnter(object sender, EventArgs e)
+        {
+            txtBoxUserPassword.BackColor = Color.White;
+            txtBoxUserPassword.BorderStyle = BorderStyle.Fixed3D;
+            pBoxShowPassword.BackColor = Color.White;
+        }
+
+        private void txtBoxUserPassword_MouseLeave(object sender, EventArgs e)
+        {
+            txtBoxUserPassword.BackColor = Color.WhiteSmoke;
+            txtBoxUserPassword.BorderStyle = BorderStyle.FixedSingle;
+            pBoxShowPassword.BackColor = Color.WhiteSmoke;
+        }
         #endregion
 
         #region Helper Methods
@@ -99,7 +126,7 @@ namespace ProjectHospitalSystem
                     break;
 
                 case "Doctor":
-                   var doctorDashboard = new DoctorUser(user);
+                    var doctorDashboard = new DoctorUser(user);
                     doctorDashboard.Show();
                     break;
 
@@ -113,14 +140,13 @@ namespace ProjectHospitalSystem
                     break;
             }
         }
-        #endregion
-
-
-
-
-        private void lbUserPassword_Click(object sender, EventArgs e)
+        private void InitializeDateTime()
         {
-   
+
+            timerDt.Interval = 1000;
+            timerDt.Tick += timerDt_Tick;
+            timerDt.Start();
         }
+        #endregion
     }
 }
