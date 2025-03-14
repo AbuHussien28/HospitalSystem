@@ -3,6 +3,7 @@ using MaterialSkin;
 using MaterialSkin.Controls;
 using ProjectHospitalSystem.Forms.Admin;
 using ProjectHospitalSystem.Forms.Doctor;
+using ProjectHospitalSystem.Forms.Receptionist;
 using ProjectHospitalSystem.Models;
 
 namespace ProjectHospitalSystem
@@ -103,7 +104,8 @@ namespace ProjectHospitalSystem
                     break;
 
                 case "Receptionist":
-                    MessageBox.Show("Welcome, Receptionist!");
+                    var receptionistDashboard = new Dashboard1(user.UserId);
+                    receptionistDashboard.Show();
                     break;
 
                 default:
