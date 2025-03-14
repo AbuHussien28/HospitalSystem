@@ -19,6 +19,9 @@ namespace ProjectHospitalSystem.Forms.Admin
         User User;
         private AdminDoctorCRUDOpeartionForm doctorForm;
         private AdminReceptionsitCRUDOpeartion receptionistForm;
+        private AdminPatientCRUD AdminPatientCRUD;
+        private AdminDepartmentCRUD AdminDepartmentCRUD;
+        private AdminPaymentMethod AdminPaymentMethod;
         public AdminUserDashBoardScreen(User user)
         {
             InitializeComponent();
@@ -30,6 +33,9 @@ namespace ProjectHospitalSystem.Forms.Admin
             AdminTabContol.SelectedIndexChanged += AdminTabContol_SelectedIndexChanged;
             doctorForm = new AdminDoctorCRUDOpeartionForm(User);
             receptionistForm = new AdminReceptionsitCRUDOpeartion(User);
+            AdminPatientCRUD = new AdminPatientCRUD(User);
+            AdminDepartmentCRUD = new AdminDepartmentCRUD();
+            AdminPaymentMethod = new AdminPaymentMethod();
 
         }
 
@@ -62,15 +68,15 @@ namespace ProjectHospitalSystem.Forms.Admin
             }
             else if (selectedTab == tabPagePaientent)
             {
-                //LoadForm(patientForm, panelPatient);
+                LoadForm(AdminPatientCRUD, panelPatient);
             }
             else if (selectedTab == tabPageDepartment)
             {
-                //LoadForm(appointmentForm, panelAppointment);
+               LoadForm(AdminDepartmentCRUD, panelDepartment);
             }
             else if (selectedTab == tabPagePaymentMethod)
             {
-                //LoadForm(appointmentForm, panelAppointment);
+                LoadForm(AdminPaymentMethod, panelPaymentMethod);
             }
             else if (selectedTab == tabPageReports)
             {
@@ -92,6 +98,10 @@ namespace ProjectHospitalSystem.Forms.Admin
             form.Show();
         }
 
-
+        private void label1_Click(object sender, EventArgs e)
+        {
+            AdminPatientCRUD adminPatientCRUD = new AdminPatientCRUD(User);
+            adminPatientCRUD.Show();
+        }
     }
 }

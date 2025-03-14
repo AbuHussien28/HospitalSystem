@@ -113,6 +113,10 @@ namespace ProjectHospitalSystem
 
 
 
-      
+
+        private void lbUserPassword_Click(object sender, EventArgs e)
+        {
+   
+        }
     }
 }
