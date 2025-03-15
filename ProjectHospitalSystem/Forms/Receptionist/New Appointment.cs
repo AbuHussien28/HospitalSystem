@@ -18,7 +18,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
         private HospitalSystemContext db;
         private int userid;
         private AutoCompleteStringCollection autoCompleteCollection = new AutoCompleteStringCollection();
-       // private readonly MaterialSkinManager materialSkinManager;
+        // private readonly MaterialSkinManager materialSkinManager;
         public New_Appointment(int uid)
         {
             InitializeComponent();
@@ -60,7 +60,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
              FullName = d.User.FName + " " + d.User.LName,
              d.Specialization,
              DeptName = d.Dept.DeptName,
-             Appointments = d.doctorSchedule.Select(s => s.ScheduleDay).FirstOrDefault(),
+             Appointments = d.doctorSchedule.Any() ? d.doctorSchedule.FirstOrDefault().ScheduleDay.ToString("yyyy-MM-dd HH:mm") : "No Schedule"
 
          });
 
@@ -165,11 +165,6 @@ namespace ProjectHospitalSystem.Forms.Receptionist
            
         }
 
-        private void dgv_doctors_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void btn_bookApp_Click(object sender, EventArgs e)
         {
 
@@ -211,7 +206,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
             int doctorUserId = doctor.UserId ?? 1;
             string specializationOrDept = doctor.Dept?.DeptName ?? doctor.Specialization ?? "Not Available";
 
-
+         
             if (comboBox_date.SelectedItem == null || comboBox_date.SelectedItem.ToString() == "No Schedule")
             {
                 MessageBox.Show("Please select a valid appointment time.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -221,7 +216,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
 
             string selectedSchedule = comboBox_date.SelectedItem.ToString();
             DateTime finalAppointmentDateTime;
-            if (!DateTime.TryParse(selectedSchedule, out finalAppointmentDateTime))
+            if (!DateTime.TryParseExact(comboBox_date.SelectedItem.ToString(), "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out finalAppointmentDateTime))
             {
                 MessageBox.Show("Invalid appointment format!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -296,7 +291,6 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                     comboBox_date.SelectedIndex = 0;
                     return;
                 }
-
                 foreach (var schedule in doctor.doctorSchedule)
                 {
                     comboBox_date.Properties.Items.Add(schedule.ScheduleDay.ToString("yyyy-MM-dd HH:mm"));

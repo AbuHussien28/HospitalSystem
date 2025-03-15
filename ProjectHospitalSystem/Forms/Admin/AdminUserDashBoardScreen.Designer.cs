@@ -81,6 +81,7 @@
             imageList1.Images.SetKeyName(5, "IconReport.png");
             imageList1.Images.SetKeyName(6, "IconHome.png");
             imageList1.Images.SetKeyName(7, "IconLogout.png");
+            imageList1.Images.SetKeyName(8, "IconAppoimnet.png");
             // 
             // AdminTabContol
             // 
@@ -268,6 +269,7 @@
             // tabAppoinments
             // 
             tabAppoinments.Controls.Add(panelAppoiments);
+            tabAppoinments.ImageIndex = 8;
             tabAppoinments.Location = new Point(4, 31);
             tabAppoinments.Name = "tabAppoinments";
             tabAppoinments.Size = new Size(1518, 708);

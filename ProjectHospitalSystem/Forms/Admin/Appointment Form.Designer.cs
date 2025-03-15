@@ -82,10 +82,13 @@
             // 
             // dateTimePicker1
             // 
+            dateTimePicker1.CustomFormat = "yyyy-MM-dd HH:mm";
+            dateTimePicker1.Format = DateTimePickerFormat.Custom;
             dateTimePicker1.Location = new Point(134, 324);
             dateTimePicker1.Name = "dateTimePicker1";
             dateTimePicker1.Size = new Size(200, 23);
             dateTimePicker1.TabIndex = 4;
+            dateTimePicker1.Value = new DateTime(2025, 3, 15, 0, 0, 0, 0);
             // 
             // label4
             // 

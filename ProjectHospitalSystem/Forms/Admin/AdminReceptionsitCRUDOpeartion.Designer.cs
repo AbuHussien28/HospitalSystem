@@ -28,10 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             dgv_AdminReceptionist = new DataGridView();
+            icon = new DataGridViewImageColumn();
             pictureBox1 = new PictureBox();
             txtBoxReceptionsitSerachData = new TextBox();
             lbReceptionsitNameSearch = new Label();
@@ -57,7 +58,6 @@
             lb_Fname = new Label();
             txt_username = new TextBox();
             lb_userName = new Label();
-            icon = new DataGridViewImageColumn();
             btn_removeReceptionist = new Button();
             btn_UpdateReceptionist = new Button();
             btn_AddReceptionist = new Button();
@@ -75,31 +75,31 @@
             // 
             // dgv_AdminReceptionist
             // 
-            dataGridViewCellStyle7.BackColor = SystemColors.ButtonFace;
-            dgv_AdminReceptionist.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.BackColor = SystemColors.ButtonFace;
+            dgv_AdminReceptionist.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgv_AdminReceptionist.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgv_AdminReceptionist.BackgroundColor = Color.White;
             dgv_AdminReceptionist.BorderStyle = BorderStyle.None;
             dgv_AdminReceptionist.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dgv_AdminReceptionist.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = Color.FromArgb(44, 62, 80);
-            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle8.ForeColor = Color.White;
-            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
-            dgv_AdminReceptionist.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(44, 62, 80);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgv_AdminReceptionist.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgv_AdminReceptionist.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgv_AdminReceptionist.Columns.AddRange(new DataGridViewColumn[] { icon });
-            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = Color.White;
-            dataGridViewCellStyle9.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle9.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle9.SelectionBackColor = Color.LightGray;
-            dataGridViewCellStyle9.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.False;
-            dgv_AdminReceptionist.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.White;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = Color.LightGray;
+            dataGridViewCellStyle3.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
+            dgv_AdminReceptionist.DefaultCellStyle = dataGridViewCellStyle3;
             dgv_AdminReceptionist.EnableHeadersVisualStyles = false;
             dgv_AdminReceptionist.Location = new Point(9, 49);
             dgv_AdminReceptionist.Name = "dgv_AdminReceptionist";
@@ -108,6 +108,12 @@
             dgv_AdminReceptionist.Size = new Size(962, 307);
             dgv_AdminReceptionist.TabIndex = 93;
             dgv_AdminReceptionist.CellMouseDoubleClick += dgv_AdminReceptionist_CellMouseDoubleClick;
+            // 
+            // icon
+            // 
+            icon.HeaderText = "Icon ";
+            icon.Image = Properties.Resources.IconRecepDgv;
+            icon.Name = "icon";
             // 
             // pictureBox1
             // 
@@ -412,12 +418,6 @@
             lb_userName.Text = "UserName:";
             lb_userName.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // icon
-            // 
-            icon.HeaderText = "Icon ";
-            icon.Image = Properties.Resources.IconRecepDgv;
-            icon.Name = "icon";
-            // 
             // btn_removeReceptionist
             // 
             btn_removeReceptionist.BackColor = Color.Crimson;
@@ -489,6 +489,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(254, 251, 244);
             ClientSize = new Size(1040, 647);
             Controls.Add(btn_removeReceptionist);
             Controls.Add(btn_UpdateReceptionist);

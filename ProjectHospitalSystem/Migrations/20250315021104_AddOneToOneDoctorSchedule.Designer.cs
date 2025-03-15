@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectHospitalSystem.Models;
 
@@ -11,9 +12,11 @@ using ProjectHospitalSystem.Models;
 namespace ProjectHospitalSystem.Migrations
 {
     [DbContext(typeof(HospitalSystemContext))]
-    partial class HospitalSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20250315021104_AddOneToOneDoctorSchedule")]
+    partial class AddOneToOneDoctorSchedule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -182,7 +182,6 @@
             dgv_doctors.Name = "dgv_doctors";
             dgv_doctors.Size = new Size(753, 217);
             dgv_doctors.TabIndex = 63;
-            dgv_doctors.CellDoubleClick += dgv_doctors_CellDoubleClick;
             dgv_doctors.RowHeaderMouseDoubleClick += dgv_doctors_RowHeaderMouseDoubleClick;
             // 
             // lab_dept

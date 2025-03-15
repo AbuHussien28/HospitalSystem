@@ -43,22 +43,6 @@ namespace ProjectHospitalSystem.Forms.Admin
                 MessageBox.Show(ex.Message);
             }
         }
-        private void dgv_Department_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                deptSelectedId = Convert.ToInt32(dgv_Department.Rows[e.RowIndex].Cells["DeptId"].Value);
-                Department department = _context.Departments.SingleOrDefault(d => d.DeptId == deptSelectedId);
-                if (department != null)
-                {
-                    txt_DepartmentDeptName.Text = department.DeptName;
-                    txt_DepartmentDeptDesc.Text = department.Dept_Desc;
-                    txt_DepartmentFeeAmountFee.Value = department.FeeAmount;
-                    cb_DepartmentFDoctorName.SelectedValue = department.DoctorMgnId ?? -1;
-                }
-                SetButtonVisibility(isAddMode: false);
-            }
-        }
         private void btn_DepartmentFeeAdd_Click(object sender, EventArgs e)
         {
             if (!IsDoctorSelected())
@@ -234,6 +218,23 @@ namespace ProjectHospitalSystem.Forms.Admin
                 MessageBox.Show($"Error loading filtered data: {ex.Message}");
             }
         }
+        private void dgv_Department_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                deptSelectedId = Convert.ToInt32(dgv_Department.Rows[e.RowIndex].Cells["DeptId"].Value);
+                Department department = _context.Departments.SingleOrDefault(d => d.DeptId == deptSelectedId);
+                if (department != null)
+                {
+                    txt_DepartmentDeptName.Text = department.DeptName;
+                    txt_DepartmentDeptDesc.Text = department.Dept_Desc;
+                    txt_DepartmentFeeAmountFee.Value = department.FeeAmount;
+                    cb_DepartmentFDoctorName.SelectedValue = department.DoctorMgnId ?? -1;
+                }
+                SetButtonVisibility(isAddMode: false);
+            }
+        }
+
         #endregion
         #region Data Loading Methods
         private void LoadDoctors()
@@ -300,6 +301,7 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         #endregion
 
-        
-    }
+
+
+    } 
 }
