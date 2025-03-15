@@ -58,6 +58,9 @@ namespace ProjectHospitalSystem.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("medicalRecordId")
+                        .HasColumnType("int");
+
                     b.HasKey("AppointmentId");
 
                     b.HasIndex("DoctorDetailsId");
@@ -65,6 +68,10 @@ namespace ProjectHospitalSystem.Migrations
                     b.HasIndex("PatientId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("medicalRecordId")
+                        .IsUnique()
+                        .HasFilter("[medicalRecordId] IS NOT NULL");
 
                     b.ToTable("Appointments");
                 });
@@ -176,6 +183,10 @@ namespace ProjectHospitalSystem.Migrations
 
                     b.HasIndex("DeptId");
 
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
+
                     b.ToTable("Doctors");
                 });
 
@@ -210,16 +221,10 @@ namespace ProjectHospitalSystem.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int?>("DoctorDetailsId")
-                        .HasColumnType("int");
-
                     b.Property<string>("LabResult")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
-
-                    b.Property<int?>("PatientId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Prescription")
                         .IsRequired()
@@ -232,10 +237,6 @@ namespace ProjectHospitalSystem.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.HasKey("MedicalId");
-
-                    b.HasIndex("DoctorDetailsId");
-
-                    b.HasIndex("PatientId");
 
                     b.ToTable("MedicalRecords");
                 });
@@ -363,9 +364,6 @@ namespace ProjectHospitalSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
-                    b.Property<int?>("DoctorDetailsId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -386,6 +384,11 @@ namespace ProjectHospitalSystem.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.Property<string>("Role")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
@@ -400,47 +403,33 @@ namespace ProjectHospitalSystem.Migrations
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("DoctorDetailsId");
-
                     b.ToTable("Users", t =>
                         {
                             t.HasCheckConstraint("CK_User_Role", "Role IN ('Admin', 'Doctor', 'Receptionist')");
                         });
                 });
 
-            modelBuilder.Entity("ProjectHospitalSystem.Models.User_Phone", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("UserId", "PhoneNumber");
-
-                    b.ToTable("UserPhones");
-                });
-
             modelBuilder.Entity("ProjectHospitalSystem.Models.Appointment", b =>
                 {
                     b.HasOne("ProjectHospitalSystem.Models.DoctorDetails", "Doctor")
-                        .WithMany()
+                        .WithMany("Appointments")
                         .HasForeignKey("DoctorDetailsId");
 
                     b.HasOne("ProjectHospitalSystem.Models.Patient", "Patient")
                         .WithMany("Appointment")
                         .HasForeignKey("PatientId");
 
-                    b.HasOne("ProjectHospitalSystem.Models.DoctorDetails", null)
-                        .WithMany("Appointments")
-                        .HasForeignKey("UserId");
-
                     b.HasOne("ProjectHospitalSystem.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
+                    b.HasOne("ProjectHospitalSystem.Models.MedicalRecord", "MedicalRecord")
+                        .WithOne("Appointments")
+                        .HasForeignKey("ProjectHospitalSystem.Models.Appointment", "medicalRecordId");
+
                     b.Navigation("Doctor");
+
+                    b.Navigation("MedicalRecord");
 
                     b.Navigation("Patient");
 
@@ -496,7 +485,13 @@ namespace ProjectHospitalSystem.Migrations
                         .WithMany("Doctors")
                         .HasForeignKey("DeptId");
 
+                    b.HasOne("ProjectHospitalSystem.Models.User", "User")
+                        .WithOne("doctorDetails")
+                        .HasForeignKey("ProjectHospitalSystem.Models.DoctorDetails", "UserId");
+
                     b.Navigation("Dept");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ProjectHospitalSystem.Models.Doctor_Schedule", b =>
@@ -508,21 +503,6 @@ namespace ProjectHospitalSystem.Migrations
                         .IsRequired();
 
                     b.Navigation("Doctor");
-                });
-
-            modelBuilder.Entity("ProjectHospitalSystem.Models.MedicalRecord", b =>
-                {
-                    b.HasOne("ProjectHospitalSystem.Models.DoctorDetails", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorDetailsId");
-
-                    b.HasOne("ProjectHospitalSystem.Models.Patient", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId");
-
-                    b.Navigation("Doctor");
-
-                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("ProjectHospitalSystem.Models.Patient", b =>
@@ -555,26 +535,6 @@ namespace ProjectHospitalSystem.Migrations
                     b.Navigation("PaymentMethod");
                 });
 
-            modelBuilder.Entity("ProjectHospitalSystem.Models.User", b =>
-                {
-                    b.HasOne("ProjectHospitalSystem.Models.DoctorDetails", "doctorDetails")
-                        .WithMany()
-                        .HasForeignKey("DoctorDetailsId");
-
-                    b.Navigation("doctorDetails");
-                });
-
-            modelBuilder.Entity("ProjectHospitalSystem.Models.User_Phone", b =>
-                {
-                    b.HasOne("ProjectHospitalSystem.Models.User", "User")
-                        .WithMany("UserPhones")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ProjectHospitalSystem.Models.Appointment", b =>
                 {
                     b.Navigation("Bill")
@@ -598,6 +558,12 @@ namespace ProjectHospitalSystem.Migrations
                     b.Navigation("doctorSchedule");
                 });
 
+            modelBuilder.Entity("ProjectHospitalSystem.Models.MedicalRecord", b =>
+                {
+                    b.Navigation("Appointments")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ProjectHospitalSystem.Models.Patient", b =>
                 {
                     b.Navigation("Appointment");
@@ -612,7 +578,8 @@ namespace ProjectHospitalSystem.Migrations
                 {
                     b.Navigation("Bills");
 
-                    b.Navigation("UserPhones");
+                    b.Navigation("doctorDetails")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

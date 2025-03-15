@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Forms\Admin\" />
     <Folder Include="Forms\Doctor\" />
     <Folder Include="Forms\Receptionist\" />
   </ItemGroup>
@@ -20,6 +19,7 @@
     <PackageReference Include="DevExpress.Win.Design" Version="24.2.5" />
     <PackageReference Include="DevExpress.Win.Reporting" Version="24.2.5" />
     <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
+    <PackageReference Include="DocX" Version="4.0.25105.5786" />
     <PackageReference Include="MaterialSkin.2" Version="2.3.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.2" />
@@ -29,6 +29,21 @@
     </PackageReference>
     <PackageReference Include="OLT.EPPlus" Version="8.2.0" />
     <PackageReference Include="QRCoder" Version="1.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

@@ -19,8 +19,9 @@ namespace ProjectHospitalSystem.Models
         public int? DeptId { get; set; }
         [ForeignKey("DeptId")]
         public virtual Department Dept { get; set; }
-        public int? UserId { get; set; }
         [ForeignKey("UserId")]
+        public int? UserId { get; set; }
+        public virtual User User { get; set; }
         public virtual List<Appointment> Appointments { get; set; }
         public virtual List<Doctor_Schedule> doctorSchedule { get; set; }
     }
