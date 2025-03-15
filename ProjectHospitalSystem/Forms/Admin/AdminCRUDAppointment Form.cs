@@ -76,9 +76,9 @@ namespace ProjectHospitalSystem.Forms.Admin
                     .FirstOrDefault(ds => ds.DoctorDetailsId == doctorDetailsId && ds.ScheduleDay.Date == selectedDateTime.Date);
                 if (!ValidateAppointmentDateTime())
                     return;
-                if (!IsScheduleUnique(selectedDateTime, doctorDetailsId))
+                if (existingSchedule != null)
                 {
-                    MessageBox.Show("An appointment already exists for this doctor on the selected date and time.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("An appointment already exists for this doctor at the selected date and time.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 if (existingSchedule == null)
@@ -149,6 +149,11 @@ namespace ProjectHospitalSystem.Forms.Admin
                 if (appointment == null)
                 {
                     MessageBox.Show("Appointment not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (appointment.AppointmentDateTime == selectedDateTime)
+                {
+                    MessageBox.Show("No changes detected. Please modify the appointment before updating.", "No Changes", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 appointment.AppointmentDateTime = selectedDateTime;

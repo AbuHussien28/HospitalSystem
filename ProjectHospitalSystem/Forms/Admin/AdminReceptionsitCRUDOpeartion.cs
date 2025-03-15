@@ -88,7 +88,7 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         private void dgv_AdminReceptionist_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-           
+
         }
 
         private void btn_UpdateReceptionist_Click(object sender, EventArgs e)
@@ -103,6 +103,15 @@ namespace ProjectHospitalSystem.Forms.Admin
 
                 if (user != null)
                 {
+                    if (user.UserName == username ||
+                         user.FName == txt_Fname.Text.Trim() ||
+                         user.LName == txt_Lname.Text.Trim() ||
+                         user.Email == txt_Email.Text.Trim() ||
+                        user.PhoneNumber == txt_phone.Text.Trim())
+                    {
+                        MessageBox.Show("not Updated Data", "note", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
                     if (!IsUsernameUnique(username, _selectedReceptionistId))
                     {
                         MessageBox.Show("This username already exists! Please choose a different username.",
@@ -110,6 +119,7 @@ namespace ProjectHospitalSystem.Forms.Admin
                         txt_username.Focus();
                         return;
                     }
+
 
                     user.UserName = username;
                     user.FName = txt_Fname.Text.Trim();
@@ -144,6 +154,29 @@ namespace ProjectHospitalSystem.Forms.Admin
                     SetButtonAndTxtPasswordVisibility(isAddMode: true);
                 }
             }
+        }
+        private void dgv_AdminReceptionist_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            try
+            {
+                if (e.RowIndex < 0) return;
+                _selectedReceptionistId = Convert.ToInt32(dgv_AdminReceptionist.Rows[e.RowIndex].Cells["UserId"].Value);
+                var user = _context.Users.FirstOrDefault(n => n.UserId == _selectedReceptionistId);
+                if (user != null)
+                {
+                    txt_username.Text = user.UserName ?? string.Empty;
+                    txt_Fname.Text = user.FName ?? string.Empty;
+                    txt_Lname.Text = user.LName ?? string.Empty;
+                    txt_Email.Text = user.Email ?? string.Empty;
+                    txt_phone.Text = user.PhoneNumber ?? string.Empty;
+                    SetButtonAndTxtPasswordVisibility(isAddMode: false);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error selecting receptionist: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
         private async void txtBoxReceptionsitSerachData_TextChanged(object sender, EventArgs e)
         {
@@ -186,6 +219,9 @@ namespace ProjectHospitalSystem.Forms.Admin
                 MessageBox.Show($"Error loading filtered data: {ex.Message}");
             }
         }
+        private void pBoxShowPassword_Click(object sender, EventArgs e) => TogglePasswordVisibility();
+
+        private void pBoxShowConfrimPassword_Click(object sender, EventArgs e) => ToggleConfrimPasswordVisibility();
         #endregion
 
         #region  Helper Methods
@@ -246,6 +282,7 @@ namespace ProjectHospitalSystem.Forms.Admin
 
         private bool ValidateInputsForUpdate()
         {
+
             if (string.IsNullOrWhiteSpace(txt_Fname.Text) ||
                 string.IsNullOrWhiteSpace(txt_Lname.Text) ||
                 string.IsNullOrWhiteSpace(txt_username.Text) ||
@@ -285,6 +322,8 @@ namespace ProjectHospitalSystem.Forms.Admin
             lb_confirmPassword.Visible = isAddMode;
             pBoxPassword.Visible = isAddMode;
             pBoxConfirmPassword.Visible = isAddMode;
+            pBoxShowPassword.Visible = isAddMode;
+            pBoxShowConfrimPassword.Visible = isAddMode;
         }
         public bool ValidateEmail(string email)
         {
@@ -309,40 +348,40 @@ namespace ProjectHospitalSystem.Forms.Admin
                 return !_context.Users.Any(u => u.UserName == username && u.UserId != currentUserId.Value);
             return !_context.Users.Any(u => u.UserName == username);
         }
-        #endregion
-
-
-        private void lbReceptionsitNameSearch_Click(object sender, EventArgs e)
+        private void TogglePasswordVisibility()
         {
-
+            if (txt_Password.UseSystemPasswordChar)
+            {
+                pBoxShowPassword.Image = Properties.Resources.IconUnShowPassword;
+                txt_Password.UseSystemPasswordChar = false;
+            }
+            else
+            {
+                pBoxShowPassword.Image = Properties.Resources.IconShowPassword;
+                txt_Password.UseSystemPasswordChar = true;
+            }
         }
-
-        private void dgv_AdminReceptionist_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void ToggleConfrimPasswordVisibility()
         {
-            try
+            if (txt_confirmPassword.UseSystemPasswordChar)
             {
-                if (e.RowIndex < 0) return;
-                _selectedReceptionistId = Convert.ToInt32(dgv_AdminReceptionist.Rows[e.RowIndex].Cells["UserId"].Value);
-                var user = _context.Users.FirstOrDefault(n => n.UserId == _selectedReceptionistId);
-                if (user != null)
-                {
-                    txt_username.Text = user.UserName ?? string.Empty;
-                    txt_Fname.Text = user.FName ?? string.Empty;
-                    txt_Lname.Text = user.LName ?? string.Empty;
-                    txt_Email.Text = user.Email ?? string.Empty;
-                    txt_phone.Text = user.PhoneNumber ?? string.Empty;
-                    SetButtonAndTxtPasswordVisibility(isAddMode: false);
-                }
+                pBoxShowConfrimPassword.Image = Properties.Resources.IconUnShowPassword;
+                txt_confirmPassword.UseSystemPasswordChar = false;
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Error selecting receptionist: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                pBoxShowConfrimPassword.Image = Properties.Resources.IconShowPassword;
+                txt_confirmPassword.UseSystemPasswordChar = true;
             }
-
         }
         public void Reload()
         {
             ResetForm();
         }
+
+        #endregion
+
+    
+      
     }
 }

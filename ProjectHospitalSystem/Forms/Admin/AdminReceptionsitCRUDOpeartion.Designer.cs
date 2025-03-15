@@ -61,6 +61,8 @@
             pictureBox9 = new PictureBox();
             pBoxConfirmPassword = new PictureBox();
             pnlReceDetails = new Panel();
+            pBoxShowConfrimPassword = new PictureBox();
+            pBoxShowPassword = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dgv_AdminReceptionist).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -71,6 +73,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox9).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pBoxConfirmPassword).BeginInit();
             pnlReceDetails.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pBoxShowConfrimPassword).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pBoxShowPassword).BeginInit();
             SuspendLayout();
             // 
             // dgv_AdminReceptionist
@@ -161,7 +165,7 @@
             btn_removeReceptionist.ForeColor = Color.White;
             btn_removeReceptionist.Image = Properties.Resources.IconRemovedOCTOR;
             btn_removeReceptionist.ImageAlign = ContentAlignment.MiddleLeft;
-            btn_removeReceptionist.Location = new Point(867, 532);
+            btn_removeReceptionist.Location = new Point(867, 517);
             btn_removeReceptionist.Name = "btn_removeReceptionist";
             btn_removeReceptionist.Size = new Size(104, 53);
             btn_removeReceptionist.TabIndex = 100;
@@ -183,7 +187,7 @@
             btn_UpdateReceptionist.ForeColor = Color.White;
             btn_UpdateReceptionist.Image = Properties.Resources.IconUpdateAdmin;
             btn_UpdateReceptionist.ImageAlign = ContentAlignment.MiddleLeft;
-            btn_UpdateReceptionist.Location = new Point(867, 471);
+            btn_UpdateReceptionist.Location = new Point(867, 446);
             btn_UpdateReceptionist.Name = "btn_UpdateReceptionist";
             btn_UpdateReceptionist.Size = new Size(104, 53);
             btn_UpdateReceptionist.TabIndex = 99;
@@ -205,7 +209,7 @@
             btn_AddReceptionist.ForeColor = Color.White;
             btn_AddReceptionist.Image = Properties.Resources.IconRecepAddBtn;
             btn_AddReceptionist.ImageAlign = ContentAlignment.MiddleLeft;
-            btn_AddReceptionist.Location = new Point(867, 396);
+            btn_AddReceptionist.Location = new Point(867, 373);
             btn_AddReceptionist.Name = "btn_AddReceptionist";
             btn_AddReceptionist.Size = new Size(104, 53);
             btn_AddReceptionist.TabIndex = 98;
@@ -287,6 +291,7 @@
             txt_Password.Name = "txt_Password";
             txt_Password.Size = new Size(233, 29);
             txt_Password.TabIndex = 6;
+            txt_Password.UseSystemPasswordChar = true;
             // 
             // lb_confirmPassword
             // 
@@ -311,6 +316,7 @@
             txt_confirmPassword.Name = "txt_confirmPassword";
             txt_confirmPassword.Size = new Size(233, 29);
             txt_confirmPassword.TabIndex = 7;
+            txt_confirmPassword.UseSystemPasswordChar = true;
             // 
             // lb_RecEmail
             // 
@@ -459,6 +465,8 @@
             // pnlReceDetails
             // 
             pnlReceDetails.BackColor = Color.WhiteSmoke;
+            pnlReceDetails.Controls.Add(pBoxShowConfrimPassword);
+            pnlReceDetails.Controls.Add(pBoxShowPassword);
             pnlReceDetails.Controls.Add(pBoxConfirmPassword);
             pnlReceDetails.Controls.Add(pictureBox9);
             pnlReceDetails.Controls.Add(pBoxPassword);
@@ -484,6 +492,30 @@
             pnlReceDetails.Name = "pnlReceDetails";
             pnlReceDetails.Size = new Size(830, 200);
             pnlReceDetails.TabIndex = 97;
+            // 
+            // pBoxShowConfrimPassword
+            // 
+            pBoxShowConfrimPassword.BackColor = Color.White;
+            pBoxShowConfrimPassword.Image = Properties.Resources.IconShowPassword;
+            pBoxShowConfrimPassword.Location = new Point(592, 158);
+            pBoxShowConfrimPassword.Name = "pBoxShowConfrimPassword";
+            pBoxShowConfrimPassword.Size = new Size(24, 24);
+            pBoxShowConfrimPassword.SizeMode = PictureBoxSizeMode.AutoSize;
+            pBoxShowConfrimPassword.TabIndex = 115;
+            pBoxShowConfrimPassword.TabStop = false;
+            pBoxShowConfrimPassword.Click += pBoxShowConfrimPassword_Click;
+            // 
+            // pBoxShowPassword
+            // 
+            pBoxShowPassword.BackColor = Color.White;
+            pBoxShowPassword.Image = Properties.Resources.IconShowPassword;
+            pBoxShowPassword.Location = new Point(792, 110);
+            pBoxShowPassword.Name = "pBoxShowPassword";
+            pBoxShowPassword.Size = new Size(24, 24);
+            pBoxShowPassword.SizeMode = PictureBoxSizeMode.AutoSize;
+            pBoxShowPassword.TabIndex = 114;
+            pBoxShowPassword.TabStop = false;
+            pBoxShowPassword.Click += pBoxShowPassword_Click;
             // 
             // AdminReceptionsitCRUDOpeartion
             // 
@@ -513,6 +545,8 @@
             ((System.ComponentModel.ISupportInitialize)pBoxConfirmPassword).EndInit();
             pnlReceDetails.ResumeLayout(false);
             pnlReceDetails.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pBoxShowConfrimPassword).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pBoxShowPassword).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -556,5 +590,7 @@
         private PictureBox pictureBox9;
         private PictureBox pBoxConfirmPassword;
         private Panel pnlReceDetails;
+        private PictureBox pBoxShowConfrimPassword;
+        private PictureBox pBoxShowPassword;
     }
 }
