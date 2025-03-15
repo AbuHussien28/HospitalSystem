@@ -48,6 +48,13 @@ namespace ProjectHospitalSystem.Forms.Admin
             btn_AdminPaymentMethodUpdate.Visible = !isAddMode;
             btn_AdminPaymentMethodRemove.Visible = !isAddMode;
         }
+        public void Reload()
+        {
+            txt_AdminPaymentMethod.Text = "";
+            LoadPaymentMethods();
+            SetButtonVisibility(true);
+        }
+
         #endregion
         #region Event Handler
         private void btn_AdminPaymentMethodAdd_Click(object sender, EventArgs e)
@@ -84,7 +91,6 @@ namespace ProjectHospitalSystem.Forms.Admin
             }
             if (updatedSelectedPaymentMethod != null)
             {
-
                 updatedSelectedPaymentMethod.paymentMethodName = txt_AdminPaymentMethod.Text;
                 _context.SaveChanges();
                 LoadPaymentMethods();
@@ -107,8 +113,7 @@ namespace ProjectHospitalSystem.Forms.Admin
                 SetButtonVisibility(true);
             }
         }
-
-        private void dgv_AdminPaymentMethod_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void dgv_AdminPaymentMethod_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             selectedPaymentMethodId = Convert.ToInt32(dgv_AdminPaymentMethod.Rows[e.RowIndex].Cells["paymentMethodId"].Value);
             PaymentMethod selectedPayment = _context.PaymentMethods.Where(n => n.paymentMethodId == selectedPaymentMethodId).FirstOrDefault();
@@ -120,6 +125,5 @@ namespace ProjectHospitalSystem.Forms.Admin
         #region Validation
         private bool paymentMethodNameExists(string paymentMethodName) => _context.PaymentMethods.Any(p => p.paymentMethodName.ToLower() == paymentMethodName.ToLower());
         #endregion
-
     }
 }

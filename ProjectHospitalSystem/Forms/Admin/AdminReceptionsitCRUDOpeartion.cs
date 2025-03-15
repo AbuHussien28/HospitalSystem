@@ -338,6 +338,11 @@ namespace ProjectHospitalSystem.Forms.Admin
             {
                 MessageBox.Show($"Error selecting receptionist: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+        }
+        public void Reload()
+        {
+            ResetForm();
         }
     }
 }

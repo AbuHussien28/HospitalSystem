@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media.Media3D;
 using ProjectHospitalSystem.Reports;
+using DevExpress.XtraReports.UI;
+using DevExpress.XtraReports.UserDesigner;
 
 namespace ProjectHospitalSystem.Forms.Admin
 {
@@ -20,7 +22,7 @@ namespace ProjectHospitalSystem.Forms.Admin
         User User;
         private AdminDoctorCRUDOpeartionForm doctorForm;
         private AdminReceptionsitCRUDOpeartion receptionistForm;
-        private AdminPatientCRUD AdminPatientCRUD;
+        private PaitenitCRUD AdminPatientCRUD;
         private AdminDepartmentCRUD AdminDepartmentCRUD;
         private AdminPaymentMethod AdminPaymentMethod;
         private Appointment_Form Appointment_Form;
@@ -36,7 +38,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             AdminTabContol.SelectedIndexChanged += AdminTabContol_SelectedIndexChanged;
             doctorForm = new AdminDoctorCRUDOpeartionForm(User);
             receptionistForm = new AdminReceptionsitCRUDOpeartion(User);
-            AdminPatientCRUD = new AdminPatientCRUD(User);
+            AdminPatientCRUD = new PaitenitCRUD(User);
             AdminDepartmentCRUD = new AdminDepartmentCRUD();
             AdminPaymentMethod = new AdminPaymentMethod();
             Appointment_Form = new Appointment_Form();
@@ -59,7 +61,6 @@ namespace ProjectHospitalSystem.Forms.Admin
         private void AdminTabContol_SelectedIndexChanged(object sender, EventArgs e)
         {
             var selectedTab = AdminTabContol.SelectedTab;
-
             if (selectedTab == tabPageDoctor)
             {
                 LoadForm(doctorForm, panelDoctorData);
@@ -68,18 +69,23 @@ namespace ProjectHospitalSystem.Forms.Admin
             else if (selectedTab == tabPageReceptionsit)
             {
                 LoadForm(receptionistForm, panelReceptionsit);
+                receptionistForm.Reload();
             }
             else if (selectedTab == tabPagePaientent)
             {
                 LoadForm(AdminPatientCRUD, panelPatient);
+                AdminPatientCRUD.Reload();
             }
             else if (selectedTab == tabPageDepartment)
             {
                 LoadForm(AdminDepartmentCRUD, panelDepartment);
+                AdminDepartmentCRUD.Reload();
+
             }
             else if (selectedTab == tabPagePaymentMethod)
             {
                 LoadForm(AdminPaymentMethod, panelPaymentMethod);
+                AdminPaymentMethod.Reload();
             }
             else if (selectedTab == tabPageReports)
             {
@@ -88,6 +94,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             else if (selectedTab == tabAppoinments)
             {
                 LoadForm(Appointment_Form, panelAppoiments);
+                Appointment_Form.Reload();
             }
             else if (selectedTab == tabPageLogOut)
             {
@@ -95,9 +102,11 @@ namespace ProjectHospitalSystem.Forms.Admin
                 Form welcomeScreen = Application.OpenForms["WelcomeScreen"];
                 welcomeScreen.Show();
             }
+           
         }
         private void LoadForm(Form form, Panel panel)
         {
+            panel.Controls.Clear();
             form.TopLevel = false;
             form.FormBorderStyle = FormBorderStyle.None;
             form.Dock = DockStyle.Fill;
@@ -115,6 +124,5 @@ namespace ProjectHospitalSystem.Forms.Admin
         {
             lblDateTime.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy | hh:mm:ss tt");
         }
-
     }
 }

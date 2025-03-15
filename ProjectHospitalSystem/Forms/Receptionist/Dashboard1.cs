@@ -11,12 +11,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ProjectHospitalSystem.Models;
 using Microsoft.EntityFrameworkCore;
+using ProjectHospitalSystem.Forms.Admin;
 
 namespace ProjectHospitalSystem.Forms.Receptionist
 {
     public partial class Dashboard1 : Form
     {
         int userid; HospitalSystemContext db;
+        User user;
        // private readonly MaterialSkinManager materialSkinManager;
         private AutoCompleteStringCollection autoCompleteCollection = new AutoCompleteStringCollection();
         public Dashboard1(int uid)
@@ -25,13 +27,14 @@ namespace ProjectHospitalSystem.Forms.Receptionist
             InitializeComponent();
             ConfigureAutoComplete();
             userid = uid;
+            user = db.Users.Find(userid);
             //materialSkinManager = MaterialSkinManager.Instance;
             //materialSkinManager.AddFormToManage(this);
             //materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             //materialSkinManager.ColorScheme = new ColorScheme(
             //    Primary.Blue800, Primary.Blue800, Primary.Blue800,
             //    Accent.LightBlue700, TextShade.WHITE
-           // );
+            // );
         }
         private async void ConfigureAutoComplete()
         {
@@ -121,8 +124,8 @@ namespace ProjectHospitalSystem.Forms.Receptionist
 
         private void btn_paybill_Click(object sender, EventArgs e)
         {
-            New_Patient _Patient = new New_Patient();
-            _Patient.Show();
+            PaitenitCRUD paitenitCRUD = new PaitenitCRUD(user);
+            paitenitCRUD.Show();
         }
         private void LoadTodayAppointments()
         {

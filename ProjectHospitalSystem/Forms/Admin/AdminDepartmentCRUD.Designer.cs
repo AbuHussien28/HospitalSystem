@@ -31,53 +31,36 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            txt_DepartmentFeeAmountFee = new NumericUpDown();
             pictureBox1 = new PictureBox();
             txtBoxDepartmentSerachData = new TextBox();
             lbDepartmentNameSearch = new Label();
-            pnlDoctorDetails = new Panel();
-            pictureBox10 = new PictureBox();
-            cb_DepartmentFDoctorName = new ComboBox();
-            lb_DepartmentFDoctorName = new Label();
-            pictureBox6 = new PictureBox();
-            pictureBox4 = new PictureBox();
-            pictureBox2 = new PictureBox();
-            txt_DepartmentDeptDesc = new TextBox();
-            lb_DepartmentDeptDescrp = new Label();
-            lb_DepartmentFeeAmountFee = new Label();
-            txt_DepartmentDeptName = new TextBox();
-            lb_DepartmentDeptName = new Label();
             dgv_Department = new DataGridView();
             icon = new DataGridViewImageColumn();
             btn_DepartmentFeeRemove = new Button();
             btn_DepartmentFeeUpdate = new Button();
             btn_DepartmentFeeAdd = new Button();
-            ((System.ComponentModel.ISupportInitialize)txt_DepartmentFeeAmountFee).BeginInit();
+            lb_DepartmentDeptName = new Label();
+            txt_DepartmentDeptName = new TextBox();
+            lb_DepartmentDeptDescrp = new Label();
+            txt_DepartmentDeptDesc = new TextBox();
+            pictureBox2 = new PictureBox();
+            pictureBox4 = new PictureBox();
+            pictureBox6 = new PictureBox();
+            lb_DepartmentFDoctorName = new Label();
+            cb_DepartmentFDoctorName = new ComboBox();
+            pictureBox10 = new PictureBox();
+            pnlReceDetails = new Panel();
+            nuValueDeptFee = new NumericUpDown();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            pnlDoctorDetails.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox10).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_Department).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox10).BeginInit();
+            pnlReceDetails.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nuValueDeptFee).BeginInit();
             SuspendLayout();
-            // 
-            // txt_DepartmentFeeAmountFee
-            // 
-            txt_DepartmentFeeAmountFee.BackColor = Color.White;
-            txt_DepartmentFeeAmountFee.BorderStyle = BorderStyle.FixedSingle;
-            txt_DepartmentFeeAmountFee.DecimalPlaces = 2;
-            txt_DepartmentFeeAmountFee.Font = new Font("Segoe UI", 12F);
-            txt_DepartmentFeeAmountFee.ForeColor = Color.Black;
-            txt_DepartmentFeeAmountFee.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
-            txt_DepartmentFeeAmountFee.Location = new Point(202, 108);
-            txt_DepartmentFeeAmountFee.Margin = new Padding(5);
-            txt_DepartmentFeeAmountFee.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
-            txt_DepartmentFeeAmountFee.Minimum = new decimal(new int[] { 1, 0, 0, 131072 });
-            txt_DepartmentFeeAmountFee.Name = "txt_DepartmentFeeAmountFee";
-            txt_DepartmentFeeAmountFee.Size = new Size(232, 29);
-            txt_DepartmentFeeAmountFee.TabIndex = 71;
-            txt_DepartmentFeeAmountFee.Value = new decimal(new int[] { 1, 0, 0, 131072 });
             // 
             // pictureBox1
             // 
@@ -113,149 +96,6 @@
             lbDepartmentNameSearch.Text = "Depatment Name:";
             lbDepartmentNameSearch.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // pnlDoctorDetails
-            // 
-            pnlDoctorDetails.BackColor = Color.WhiteSmoke;
-            pnlDoctorDetails.Controls.Add(pictureBox10);
-            pnlDoctorDetails.Controls.Add(cb_DepartmentFDoctorName);
-            pnlDoctorDetails.Controls.Add(lb_DepartmentFDoctorName);
-            pnlDoctorDetails.Controls.Add(pictureBox6);
-            pnlDoctorDetails.Controls.Add(pictureBox4);
-            pnlDoctorDetails.Controls.Add(pictureBox2);
-            pnlDoctorDetails.Controls.Add(txt_DepartmentDeptDesc);
-            pnlDoctorDetails.Controls.Add(lb_DepartmentDeptDescrp);
-            pnlDoctorDetails.Controls.Add(lb_DepartmentFeeAmountFee);
-            pnlDoctorDetails.Controls.Add(txt_DepartmentDeptName);
-            pnlDoctorDetails.Controls.Add(lb_DepartmentDeptName);
-            pnlDoctorDetails.Controls.Add(txt_DepartmentFeeAmountFee);
-            pnlDoctorDetails.Location = new Point(430, 68);
-            pnlDoctorDetails.Name = "pnlDoctorDetails";
-            pnlDoctorDetails.Size = new Size(467, 215);
-            pnlDoctorDetails.TabIndex = 101;
-            // 
-            // pictureBox10
-            // 
-            pictureBox10.Image = Properties.Resources.IconMangerName;
-            pictureBox10.Location = new Point(11, 145);
-            pictureBox10.Name = "pictureBox10";
-            pictureBox10.Size = new Size(24, 24);
-            pictureBox10.SizeMode = PictureBoxSizeMode.AutoSize;
-            pictureBox10.TabIndex = 117;
-            pictureBox10.TabStop = false;
-            // 
-            // cb_DepartmentFDoctorName
-            // 
-            cb_DepartmentFDoctorName.BackColor = Color.White;
-            cb_DepartmentFDoctorName.Font = new Font("Segoe UI", 12F);
-            cb_DepartmentFDoctorName.ForeColor = Color.Black;
-            cb_DepartmentFDoctorName.FormattingEnabled = true;
-            cb_DepartmentFDoctorName.Location = new Point(201, 145);
-            cb_DepartmentFDoctorName.Name = "cb_DepartmentFDoctorName";
-            cb_DepartmentFDoctorName.Size = new Size(233, 29);
-            cb_DepartmentFDoctorName.TabIndex = 116;
-            // 
-            // lb_DepartmentFDoctorName
-            // 
-            lb_DepartmentFDoctorName.AutoSize = true;
-            lb_DepartmentFDoctorName.BackColor = Color.Transparent;
-            lb_DepartmentFDoctorName.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lb_DepartmentFDoctorName.Location = new Point(41, 148);
-            lb_DepartmentFDoctorName.Name = "lb_DepartmentFDoctorName";
-            lb_DepartmentFDoctorName.Size = new Size(144, 21);
-            lb_DepartmentFDoctorName.TabIndex = 115;
-            lb_DepartmentFDoctorName.Text = "Managing Doctor";
-            lb_DepartmentFDoctorName.TextAlign = ContentAlignment.MiddleRight;
-            // 
-            // pictureBox6
-            // 
-            pictureBox6.Image = Properties.Resources.IconFeeAmount;
-            pictureBox6.Location = new Point(11, 110);
-            pictureBox6.Name = "pictureBox6";
-            pictureBox6.Size = new Size(24, 24);
-            pictureBox6.SizeMode = PictureBoxSizeMode.AutoSize;
-            pictureBox6.TabIndex = 109;
-            pictureBox6.TabStop = false;
-            // 
-            // pictureBox4
-            // 
-            pictureBox4.Image = Properties.Resources.IconDeptName1;
-            pictureBox4.Location = new Point(11, 66);
-            pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(24, 24);
-            pictureBox4.SizeMode = PictureBoxSizeMode.AutoSize;
-            pictureBox4.TabIndex = 108;
-            pictureBox4.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            pictureBox2.Image = Properties.Resources.IconDeptName;
-            pictureBox2.Location = new Point(11, 29);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(24, 24);
-            pictureBox2.SizeMode = PictureBoxSizeMode.AutoSize;
-            pictureBox2.TabIndex = 93;
-            pictureBox2.TabStop = false;
-            // 
-            // txt_DepartmentDeptDesc
-            // 
-            txt_DepartmentDeptDesc.BackColor = Color.White;
-            txt_DepartmentDeptDesc.BorderStyle = BorderStyle.FixedSingle;
-            txt_DepartmentDeptDesc.Font = new Font("Segoe UI", 12F);
-            txt_DepartmentDeptDesc.ForeColor = Color.Black;
-            txt_DepartmentDeptDesc.Location = new Point(201, 68);
-            txt_DepartmentDeptDesc.Margin = new Padding(5);
-            txt_DepartmentDeptDesc.Name = "txt_DepartmentDeptDesc";
-            txt_DepartmentDeptDesc.Size = new Size(233, 29);
-            txt_DepartmentDeptDesc.TabIndex = 3;
-            // 
-            // lb_DepartmentDeptDescrp
-            // 
-            lb_DepartmentDeptDescrp.AutoSize = true;
-            lb_DepartmentDeptDescrp.BackColor = Color.Transparent;
-            lb_DepartmentDeptDescrp.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lb_DepartmentDeptDescrp.Location = new Point(41, 74);
-            lb_DepartmentDeptDescrp.Name = "lb_DepartmentDeptDescrp";
-            lb_DepartmentDeptDescrp.Size = new Size(102, 21);
-            lb_DepartmentDeptDescrp.TabIndex = 104;
-            lb_DepartmentDeptDescrp.Text = "Description:";
-            lb_DepartmentDeptDescrp.TextAlign = ContentAlignment.MiddleRight;
-            // 
-            // lb_DepartmentFeeAmountFee
-            // 
-            lb_DepartmentFeeAmountFee.AutoSize = true;
-            lb_DepartmentFeeAmountFee.BackColor = Color.Transparent;
-            lb_DepartmentFeeAmountFee.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lb_DepartmentFeeAmountFee.Location = new Point(41, 110);
-            lb_DepartmentFeeAmountFee.Name = "lb_DepartmentFeeAmountFee";
-            lb_DepartmentFeeAmountFee.Size = new Size(152, 21);
-            lb_DepartmentFeeAmountFee.TabIndex = 103;
-            lb_DepartmentFeeAmountFee.Text = "Fee Amount (EGP):";
-            lb_DepartmentFeeAmountFee.TextAlign = ContentAlignment.MiddleRight;
-            // 
-            // txt_DepartmentDeptName
-            // 
-            txt_DepartmentDeptName.BackColor = Color.White;
-            txt_DepartmentDeptName.BorderStyle = BorderStyle.FixedSingle;
-            txt_DepartmentDeptName.Font = new Font("Segoe UI", 12F);
-            txt_DepartmentDeptName.ForeColor = Color.Black;
-            txt_DepartmentDeptName.Location = new Point(202, 29);
-            txt_DepartmentDeptName.Margin = new Padding(5);
-            txt_DepartmentDeptName.Name = "txt_DepartmentDeptName";
-            txt_DepartmentDeptName.Size = new Size(233, 29);
-            txt_DepartmentDeptName.TabIndex = 1;
-            // 
-            // lb_DepartmentDeptName
-            // 
-            lb_DepartmentDeptName.AutoSize = true;
-            lb_DepartmentDeptName.BackColor = Color.Transparent;
-            lb_DepartmentDeptName.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lb_DepartmentDeptName.Location = new Point(41, 32);
-            lb_DepartmentDeptName.Name = "lb_DepartmentDeptName";
-            lb_DepartmentDeptName.Size = new Size(97, 21);
-            lb_DepartmentDeptName.TabIndex = 89;
-            lb_DepartmentDeptName.Text = "DeptName:";
-            lb_DepartmentDeptName.TextAlign = ContentAlignment.MiddleRight;
-            // 
             // dgv_Department
             // 
             dataGridViewCellStyle1.BackColor = SystemColors.ButtonFace;
@@ -288,15 +128,17 @@
             dgv_Department.Name = "dgv_Department";
             dgv_Department.RowHeadersVisible = false;
             dgv_Department.RowTemplate.Height = 40;
-            dgv_Department.Size = new Size(398, 218);
+            dgv_Department.Size = new Size(390, 218);
             dgv_Department.TabIndex = 102;
             dgv_Department.CellContentClick += dgv_Department_CellContentClick;
             // 
             // icon
             // 
+            icon.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             icon.HeaderText = "Icon ";
-            icon.Image = Properties.Resources.IconRecepDgv;
+            icon.Image = Properties.Resources.IconDeptDgv;
             icon.Name = "icon";
+            icon.Width = 37;
             // 
             // btn_DepartmentFeeRemove
             // 
@@ -310,7 +152,7 @@
             btn_DepartmentFeeRemove.ForeColor = Color.White;
             btn_DepartmentFeeRemove.Image = Properties.Resources.IconRemovedOCTOR;
             btn_DepartmentFeeRemove.ImageAlign = ContentAlignment.MiddleLeft;
-            btn_DepartmentFeeRemove.Location = new Point(916, 224);
+            btn_DepartmentFeeRemove.Location = new Point(919, 213);
             btn_DepartmentFeeRemove.Name = "btn_DepartmentFeeRemove";
             btn_DepartmentFeeRemove.Size = new Size(104, 53);
             btn_DepartmentFeeRemove.TabIndex = 105;
@@ -332,7 +174,7 @@
             btn_DepartmentFeeUpdate.ForeColor = Color.White;
             btn_DepartmentFeeUpdate.Image = Properties.Resources.IconUpdateAdmin;
             btn_DepartmentFeeUpdate.ImageAlign = ContentAlignment.MiddleLeft;
-            btn_DepartmentFeeUpdate.Location = new Point(916, 152);
+            btn_DepartmentFeeUpdate.Location = new Point(919, 144);
             btn_DepartmentFeeUpdate.Name = "btn_DepartmentFeeUpdate";
             btn_DepartmentFeeUpdate.Size = new Size(104, 53);
             btn_DepartmentFeeUpdate.TabIndex = 104;
@@ -354,7 +196,7 @@
             btn_DepartmentFeeAdd.ForeColor = Color.White;
             btn_DepartmentFeeAdd.Image = Properties.Resources.IconAddBtn;
             btn_DepartmentFeeAdd.ImageAlign = ContentAlignment.MiddleLeft;
-            btn_DepartmentFeeAdd.Location = new Point(916, 73);
+            btn_DepartmentFeeAdd.Location = new Point(919, 75);
             btn_DepartmentFeeAdd.Name = "btn_DepartmentFeeAdd";
             btn_DepartmentFeeAdd.Size = new Size(104, 53);
             btn_DepartmentFeeAdd.TabIndex = 103;
@@ -365,64 +207,212 @@
             btn_DepartmentFeeAdd.Visible = false;
             btn_DepartmentFeeAdd.Click += btn_DepartmentFeeAdd_Click;
             // 
+            // lb_DepartmentDeptName
+            // 
+            lb_DepartmentDeptName.AutoSize = true;
+            lb_DepartmentDeptName.BackColor = Color.Transparent;
+            lb_DepartmentDeptName.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lb_DepartmentDeptName.Location = new Point(45, 24);
+            lb_DepartmentDeptName.Name = "lb_DepartmentDeptName";
+            lb_DepartmentDeptName.Size = new Size(97, 21);
+            lb_DepartmentDeptName.TabIndex = 133;
+            lb_DepartmentDeptName.Text = "DeptName:";
+            lb_DepartmentDeptName.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // txt_DepartmentDeptName
+            // 
+            txt_DepartmentDeptName.BackColor = Color.White;
+            txt_DepartmentDeptName.BorderStyle = BorderStyle.FixedSingle;
+            txt_DepartmentDeptName.Font = new Font("Segoe UI", 12F);
+            txt_DepartmentDeptName.ForeColor = Color.Black;
+            txt_DepartmentDeptName.Location = new Point(243, 16);
+            txt_DepartmentDeptName.Margin = new Padding(5);
+            txt_DepartmentDeptName.Name = "txt_DepartmentDeptName";
+            txt_DepartmentDeptName.Size = new Size(233, 29);
+            txt_DepartmentDeptName.TabIndex = 131;
+            // 
+            // lb_DepartmentDeptDescrp
+            // 
+            lb_DepartmentDeptDescrp.AutoSize = true;
+            lb_DepartmentDeptDescrp.BackColor = Color.Transparent;
+            lb_DepartmentDeptDescrp.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lb_DepartmentDeptDescrp.Location = new Point(45, 114);
+            lb_DepartmentDeptDescrp.Name = "lb_DepartmentDeptDescrp";
+            lb_DepartmentDeptDescrp.Size = new Size(102, 21);
+            lb_DepartmentDeptDescrp.TabIndex = 136;
+            lb_DepartmentDeptDescrp.Text = "Description:";
+            lb_DepartmentDeptDescrp.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // txt_DepartmentDeptDesc
+            // 
+            txt_DepartmentDeptDesc.BackColor = Color.White;
+            txt_DepartmentDeptDesc.BorderStyle = BorderStyle.FixedSingle;
+            txt_DepartmentDeptDesc.Font = new Font("Segoe UI", 12F);
+            txt_DepartmentDeptDesc.ForeColor = Color.Black;
+            txt_DepartmentDeptDesc.Location = new Point(243, 112);
+            txt_DepartmentDeptDesc.Margin = new Padding(5);
+            txt_DepartmentDeptDesc.Name = "txt_DepartmentDeptDesc";
+            txt_DepartmentDeptDesc.Size = new Size(233, 29);
+            txt_DepartmentDeptDesc.TabIndex = 132;
+            // 
+            // pictureBox2
+            // 
+            pictureBox2.Image = Properties.Resources.IconDeptName;
+            pictureBox2.Location = new Point(15, 21);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(24, 24);
+            pictureBox2.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox2.TabIndex = 134;
+            pictureBox2.TabStop = false;
+            // 
+            // pictureBox4
+            // 
+            pictureBox4.Image = Properties.Resources.IconDeptName1;
+            pictureBox4.Location = new Point(15, 114);
+            pictureBox4.Name = "pictureBox4";
+            pictureBox4.Size = new Size(24, 24);
+            pictureBox4.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox4.TabIndex = 137;
+            pictureBox4.TabStop = false;
+            // 
+            // pictureBox6
+            // 
+            pictureBox6.Image = Properties.Resources.IconFeeAmount;
+            pictureBox6.Location = new Point(15, 69);
+            pictureBox6.Name = "pictureBox6";
+            pictureBox6.Size = new Size(24, 24);
+            pictureBox6.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox6.TabIndex = 138;
+            pictureBox6.TabStop = false;
+            // 
+            // lb_DepartmentFDoctorName
+            // 
+            lb_DepartmentFDoctorName.AutoSize = true;
+            lb_DepartmentFDoctorName.BackColor = Color.Transparent;
+            lb_DepartmentFDoctorName.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lb_DepartmentFDoctorName.Location = new Point(45, 151);
+            lb_DepartmentFDoctorName.Name = "lb_DepartmentFDoctorName";
+            lb_DepartmentFDoctorName.Size = new Size(144, 21);
+            lb_DepartmentFDoctorName.TabIndex = 139;
+            lb_DepartmentFDoctorName.Text = "Managing Doctor";
+            lb_DepartmentFDoctorName.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // cb_DepartmentFDoctorName
+            // 
+            cb_DepartmentFDoctorName.BackColor = Color.White;
+            cb_DepartmentFDoctorName.Font = new Font("Segoe UI", 12F);
+            cb_DepartmentFDoctorName.ForeColor = Color.Black;
+            cb_DepartmentFDoctorName.FormattingEnabled = true;
+            cb_DepartmentFDoctorName.Location = new Point(243, 151);
+            cb_DepartmentFDoctorName.Name = "cb_DepartmentFDoctorName";
+            cb_DepartmentFDoctorName.Size = new Size(233, 29);
+            cb_DepartmentFDoctorName.TabIndex = 140;
+            // 
+            // pictureBox10
+            // 
+            pictureBox10.Image = Properties.Resources.IconMangerName;
+            pictureBox10.Location = new Point(15, 148);
+            pictureBox10.Name = "pictureBox10";
+            pictureBox10.Size = new Size(24, 24);
+            pictureBox10.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox10.TabIndex = 141;
+            pictureBox10.TabStop = false;
+            // 
+            // pnlReceDetails
+            // 
+            pnlReceDetails.BackColor = Color.WhiteSmoke;
+            pnlReceDetails.Controls.Add(nuValueDeptFee);
+            pnlReceDetails.Controls.Add(label1);
+            pnlReceDetails.Controls.Add(lb_DepartmentDeptName);
+            pnlReceDetails.Controls.Add(pictureBox10);
+            pnlReceDetails.Controls.Add(cb_DepartmentFDoctorName);
+            pnlReceDetails.Controls.Add(lb_DepartmentFDoctorName);
+            pnlReceDetails.Controls.Add(txt_DepartmentDeptName);
+            pnlReceDetails.Controls.Add(pictureBox2);
+            pnlReceDetails.Controls.Add(txt_DepartmentDeptDesc);
+            pnlReceDetails.Controls.Add(pictureBox6);
+            pnlReceDetails.Controls.Add(lb_DepartmentDeptDescrp);
+            pnlReceDetails.Controls.Add(pictureBox4);
+            pnlReceDetails.Location = new Point(419, 75);
+            pnlReceDetails.Name = "pnlReceDetails";
+            pnlReceDetails.Size = new Size(494, 198);
+            pnlReceDetails.TabIndex = 143;
+            // 
+            // nuValueDeptFee
+            // 
+            nuValueDeptFee.DecimalPlaces = 2;
+            nuValueDeptFee.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
+            nuValueDeptFee.Location = new Point(243, 69);
+            nuValueDeptFee.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            nuValueDeptFee.Name = "nuValueDeptFee";
+            nuValueDeptFee.Size = new Size(233, 23);
+            nuValueDeptFee.TabIndex = 146;
+            nuValueDeptFee.ThousandsSeparator = true;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.BackColor = Color.Transparent;
+            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label1.Location = new Point(45, 69);
+            label1.Name = "label1";
+            label1.Size = new Size(152, 21);
+            label1.TabIndex = 145;
+            label1.Text = "Fee Amount (EGP):";
+            label1.TextAlign = ContentAlignment.MiddleRight;
+            // 
             // AdminDepartmentCRUD
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(254, 251, 244);
-            ClientSize = new Size(1064, 323);
+            ClientSize = new Size(1053, 389);
+            Controls.Add(pnlReceDetails);
             Controls.Add(btn_DepartmentFeeRemove);
             Controls.Add(btn_DepartmentFeeUpdate);
             Controls.Add(btn_DepartmentFeeAdd);
             Controls.Add(dgv_Department);
-            Controls.Add(pnlDoctorDetails);
             Controls.Add(pictureBox1);
             Controls.Add(txtBoxDepartmentSerachData);
             Controls.Add(lbDepartmentNameSearch);
             Name = "AdminDepartmentCRUD";
             Text = "AdminDepartmentCRUD";
             Load += AdminDepartmentCRUD_Load;
-            ((System.ComponentModel.ISupportInitialize)txt_DepartmentFeeAmountFee).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            pnlDoctorDetails.ResumeLayout(false);
-            pnlDoctorDetails.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox10).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgv_Department).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox10).EndInit();
+            pnlReceDetails.ResumeLayout(false);
+            pnlReceDetails.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)nuValueDeptFee).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private TextBox txt_DepartmentDeptDesc;
-        private Label lb_DepartmentDeptDescrp;
-        private TextBox txt_DepartmentDeptName;
         private Button btn_DepartmentFeeRemove;
-        private Label lb_DepartmentFeeAmountFee;
-        private NumericUpDown txt_DepartmentFeeAmountFee;
-        private Label lb_DepartmentDeptName;
         private PictureBox pictureBox1;
         private TextBox txtBoxDepartmentSerachData;
         private Label lbDepartmentNameSearch;
-        private Panel pnlDoctorDetails;
-        private PictureBox pictureBox6;
-        private PictureBox pictureBox4;
-        private PictureBox pictureBox2;
-        private TextBox txt_Lname;
-        private Label lb_LastNameRece;
-        private Label lb_RecEmail;
-        private TextBox txt_username;
-        private Label lb_userName;
-        private PictureBox pictureBox10;
-        private ComboBox cb_DepartmentFDoctorName;
-        private Label lb_DepartmentFDoctorName;
         private DataGridView dgv_Department;
-        private DataGridViewImageColumn icon;
         private Button btn_remove;
         private Button btn_DepartmentFeeUpdate;
         private Button btn_DepartmentFeeAdd;
+        private DataGridViewImageColumn icon;
+        private Label lb_DepartmentDeptName;
+        private TextBox txt_DepartmentDeptName;
+        private Label lb_DepartmentDeptDescrp;
+        private TextBox txt_DepartmentDeptDesc;
+        private PictureBox pictureBox2;
+        private PictureBox pictureBox4;
+        private PictureBox pictureBox6;
+        private Label lb_DepartmentFDoctorName;
+        private ComboBox cb_DepartmentFDoctorName;
+        private PictureBox pictureBox10;
+        private Panel pnlReceDetails;
+        private Label label1;
+        private NumericUpDown nuValueDeptFee;
     }
 }

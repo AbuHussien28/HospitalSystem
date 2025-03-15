@@ -293,6 +293,7 @@
             Controls.Add(paneLogoHospital);
             FormBorderStyle = FormBorderStyle.None;
             Name = "WelcomeScreen";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             Load += WelcomeScreen_Load;
             paneLogoHospital.ResumeLayout(false);

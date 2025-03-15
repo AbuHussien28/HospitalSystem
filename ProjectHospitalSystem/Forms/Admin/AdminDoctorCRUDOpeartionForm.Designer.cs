@@ -244,7 +244,7 @@
             pnlDoctorDetails.Controls.Add(lb_Fname);
             pnlDoctorDetails.Controls.Add(txt_username);
             pnlDoctorDetails.Controls.Add(lb_userName);
-            pnlDoctorDetails.Location = new Point(12, 402);
+            pnlDoctorDetails.Location = new Point(12, 388);
             pnlDoctorDetails.Name = "pnlDoctorDetails";
             pnlDoctorDetails.Size = new Size(830, 225);
             pnlDoctorDetails.TabIndex = 91;
@@ -572,7 +572,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             BackColor = Color.FromArgb(254, 251, 244);
-            ClientSize = new Size(1095, 686);
+            ClientSize = new Size(999, 629);
             Controls.Add(pictureBox1);
             Controls.Add(pnlDoctorDetails);
             Controls.Add(txtBoxDoctorSerachData);

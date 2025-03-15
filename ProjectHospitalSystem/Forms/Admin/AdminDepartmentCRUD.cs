@@ -86,7 +86,7 @@ namespace ProjectHospitalSystem.Forms.Admin
                     DeptName = txt_DepartmentDeptName.Text,
                     Dept_Desc = txt_DepartmentDeptDesc.Text,
                     DoctorMgnId = selectedDoctorId,
-                    FeeAmount = (decimal)txt_DepartmentFeeAmountFee.Value
+                    FeeAmount =(decimal)nuValueDeptFee.Value
                 };
 
                 _context.Departments.Add(newDept);
@@ -150,7 +150,7 @@ namespace ProjectHospitalSystem.Forms.Admin
                     department.DeptName = txt_DepartmentDeptName.Text;
                     department.Dept_Desc = txt_DepartmentDeptDesc.Text;
                     department.DoctorMgnId = selectedDoctorId;
-                    department.FeeAmount = (decimal)txt_DepartmentFeeAmountFee.Value;
+                    department.FeeAmount =(decimal) nuValueDeptFee.Value;
 
                     _context.SaveChanges();
                     LoadDepartmentData();
@@ -228,7 +228,7 @@ namespace ProjectHospitalSystem.Forms.Admin
                 {
                     txt_DepartmentDeptName.Text = department.DeptName;
                     txt_DepartmentDeptDesc.Text = department.Dept_Desc;
-                    txt_DepartmentFeeAmountFee.Value = department.FeeAmount;
+                    nuValueDeptFee.Value =department.FeeAmount;
                     cb_DepartmentFDoctorName.SelectedValue = department.DoctorMgnId ?? -1;
                 }
                 SetButtonVisibility(isAddMode: false);
@@ -239,7 +239,6 @@ namespace ProjectHospitalSystem.Forms.Admin
         #region Data Loading Methods
         private void LoadDoctors()
         {
-
             var doctors = connection.Query(@"
              SELECT d.DoctorDetailsId,  u.FName + ' ' + u.LName AS FullName FROM Doctors d
              INNER JOIN Users u ON d.UserId = u.UserId").ToList();
@@ -278,7 +277,7 @@ namespace ProjectHospitalSystem.Forms.Admin
         public bool ValidateInputs() => !string.IsNullOrWhiteSpace(txt_DepartmentDeptName.Text) &&
                !string.IsNullOrWhiteSpace(txt_DepartmentDeptDesc.Text);
 
-        private bool IsFeeValid() => txt_DepartmentFeeAmountFee.Value > 0.01m;
+        private bool IsFeeValid() => nuValueDeptFee.Value > 0.01m;
         private bool IsDoctorSelected()
         {
             return cb_DepartmentFDoctorName.SelectedIndex != -1 && cb_DepartmentFDoctorName.SelectedValue != null;
@@ -288,8 +287,8 @@ namespace ProjectHospitalSystem.Forms.Admin
         #region Helper Methods
         private void ClearFrom()
         {
-            txt_DepartmentDeptName.Text = txt_DepartmentDeptDesc.Text = string.Empty;
-            txt_DepartmentFeeAmountFee.Value = 0.01m;
+            txt_DepartmentDeptName.Text = txt_DepartmentDeptDesc.Text = txtBoxDepartmentSerachData.Text = string.Empty;
+            nuValueDeptFee.Value = 0.01m;
             cb_DepartmentFDoctorName.SelectedIndex = -1;
             cb_DepartmentFDoctorName.Text = "Choose Doctor Manager";
         }
@@ -298,6 +297,11 @@ namespace ProjectHospitalSystem.Forms.Admin
             btn_DepartmentFeeAdd.Visible = isAddMode;
             btn_DepartmentFeeUpdate.Visible = !isAddMode;
             btn_DepartmentFeeRemove.Visible = !isAddMode;
+        }
+        public void Reload()
+        {
+            ClearFrom();
+            LoadDepartmentData();
         }
         #endregion
 

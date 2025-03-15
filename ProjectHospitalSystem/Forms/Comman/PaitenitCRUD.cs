@@ -15,13 +15,13 @@ using System.Windows.Forms;
 
 namespace ProjectHospitalSystem.Forms.Admin
 {
-    public partial class AdminPatientCRUD : Form
+    public partial class PaitenitCRUD : Form
     {
         User _user;
         HospitalSystemContext _context;
         SqlConnection con;
         private int _selectedPatientId;
-        public AdminPatientCRUD(User user)
+        public PaitenitCRUD(User user)
         {
             InitializeComponent();
             _user = user;
@@ -31,37 +31,37 @@ namespace ProjectHospitalSystem.Forms.Admin
         #region Data Loading and Initialization
         private async Task LoadDataAsync()
         {
-                try
+            try
+            {
+                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString))
                 {
-                    using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString))
-                    {
-                        await connection.OpenAsync();
+                    await connection.OpenAsync();
                     var patients = await connection.QueryAsync<Patient>(@"
                 SELECT p.PatientId, p.FirstName, p.LastName, p.DateOfBirth, p.Gender, p.Email, p.Address, p.MedicalHistory, 
                        p.PhoneNumber 
                 FROM Patients p");
-                        var result = patients.Select(p => new
-                        {
-                            p.PatientId,
-                            p.FirstName,
-                            p.LastName,
-                            p.DateOfBirth,
-                            p.Gender,
-                            p.Email,
-                            p.PhoneNumber,
-                            p.Address,
-                            p.MedicalHistory,
-                        }).ToList();
+                    var result = patients.Select(p => new
+                    {
+                        p.PatientId,
+                        p.FirstName,
+                        p.LastName,
+                        p.DateOfBirth,
+                        p.Gender,
+                        p.Email,
+                        p.PhoneNumber,
+                        p.Address,
+                        p.MedicalHistory,
+                    }).ToList();
 
-                        dgv_AdminPaitent.DataSource = result;
-                        dgv_AdminPaitent.Columns["PatientId"].Visible = false;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error loading data: {ex.Message}");
+                    dgv_AdminPaitent.DataSource = result;
+                    dgv_AdminPaitent.Columns["PatientId"].Visible = false;
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading data: {ex.Message}");
+            }
+        }
         #endregion
         #region Form Population and Gender Handling
         private void PopulateFormWithPatientData(Patient patient)
@@ -88,7 +88,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             try
             {
                 LoadDataAsync();
-                SetButtonVisibility(isAddMode: true);
+                SetButtonVisibility(isAddMode: true, _user);
             }
             catch (Exception ex)
             {
@@ -97,56 +97,44 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         private void btn_AddDoctor_Click(object sender, EventArgs e)
         {
-            if (!ValidateInputs()) return;
-            if (IsPatientNameExists(txt_Fname.Text, txt_Lname.Text))
+            try
             {
-                MessageBox.Show("A patient with the same name already exists.", "Duplicate Patient", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                if (!ValidateInputs()) return;
+                if (IsPatientNameExists(txt_Fname.Text, txt_Lname.Text))
+                {
+                    MessageBox.Show("A patient with the same name already exists.", "Duplicate Patient", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var patient = new Patient
+                {
+                    FirstName = txt_Fname.Text,
+                    LastName = txt_Lname.Text,
+                    DateOfBirth = dtp_BirthDate.Value,
+                    MedicalHistory = GetMedicalHistory(),
+                    Gender = rb_Male.Checked ? "Male" : rb_Female.Checked ? "Female" : "Other",
+                    Email = txt_Email.Text,
+                    PhoneNumber = txt_phone.Text,
+                    Address = txt_Address.Text,
+                };
+
+                _context.Patients.Add(patient);
+                _context.SaveChanges();
+                LoadDataAsync();
+                ClearFields();
             }
-            var patient = new Patient
+            catch (Exception ex)
             {
-                FirstName = txt_Fname.Text,
-                LastName = txt_Lname.Text,
-                DateOfBirth = dtp_BirthDate.Value,
-                MedicalHistory = GetMedicalHistory(),
-                Gender = rb_Male.Checked ? "Male" : rb_Female.Checked ? "Female" : "Other",
-                Email = txt_Email.Text,
-                PhoneNumber = txt_phone.Text,
-                Address = txt_Address.Text,
-            };
-
-            _context.Patients.Add(patient);
-            _context.SaveChanges();
-            LoadDataAsync();
-            ClearFields();
+                MessageBox.Show($"Error adding patient: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
-        private void c_box_otherChronic_CheckedChanged(object sender, EventArgs e)
+        private void c_box_otherChronic_CheckedChanged(object sender, EventArgs e) => txt_otherChronic.Visible = c_box_otherChronic.Checked;
+        private void c_box_otherSurgical_CheckedChanged(object sender, EventArgs e) => txt_otherSurgical.Visible = c_box_otherSurgical.Checked;
+        private void c_box_otherInfectious_CheckedChanged(object sender, EventArgs e) => txt_otherInfectious.Visible = c_box_otherInfectious.Checked;
+        private void c_box_otherAllergies_CheckedChanged(object sender, EventArgs e) => txt_otherAllergies.Visible = c_box_otherAllergies.Checked;
+        private void c_box_otherFactors_CheckedChanged(object sender, EventArgs e) => txt_otherFactor.Visible = c_box_otherFactors.Checked;
+        private void dgv_AdminPaitent_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            txt_otherChronic.Visible = c_box_otherChronic.Checked;
-        }
-
-        private void c_box_otherSurgical_CheckedChanged(object sender, EventArgs e)
-        {
-            txt_otherSurgical.Visible = c_box_otherSurgical.Checked;
-        }
-
-        private void c_box_otherInfectious_CheckedChanged(object sender, EventArgs e)
-        {
-            txt_otherInfectious.Visible = c_box_otherInfectious.Checked;
-        }
-
-        private void c_box_otherAllergies_CheckedChanged(object sender, EventArgs e)
-        {
-            txt_otherAllergies.Visible = c_box_otherAllergies.Checked;
-        }
-
-        private void c_box_otherFactors_CheckedChanged(object sender, EventArgs e)
-        {
-            txt_otherFactor.Visible = c_box_otherFactors.Checked;
-        }
-        private void dgv_AdminPaitent_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            // Ensure the row index is valid
             if (e.RowIndex < 0 || e.RowIndex >= dgv_AdminPaitent.Rows.Count)
             {
                 MessageBox.Show("Please select a valid patient from the list.", "Selection Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -155,22 +143,24 @@ namespace ProjectHospitalSystem.Forms.Admin
 
             try
             {
-                // Clear the form fields before populating new data
                 ClearFields();
 
-                // Get the selected patient ID
-                _selectedPatientId = Convert.ToInt32(dgv_AdminPaitent.Rows[e.RowIndex].Cells["PatientId"].Value);
+                var selectedRow = dgv_AdminPaitent.Rows[e.RowIndex];
+                var patientIdCell = selectedRow.Cells["PatientId"];
 
-                // Find the patient in the database
+                if (patientIdCell == null || patientIdCell.Value == null)
+                {
+                    MessageBox.Show("Patient ID not found in the selected row.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                _selectedPatientId = Convert.ToInt32(patientIdCell.Value);
                 var patient = _context.Patients.SingleOrDefault(n => n.PatientId == _selectedPatientId);
 
                 if (patient != null)
                 {
-                    // Populate the form with the selected patient's data
                     PopulateFormWithPatientData(patient);
-
-                    // Update button visibility (show Update and Remove buttons)
-                    SetButtonVisibility(isAddMode: false);
+                    SetButtonVisibility(isAddMode: false, _user);
                 }
                 else
                 {
@@ -194,11 +184,11 @@ namespace ProjectHospitalSystem.Forms.Admin
             {
                 UpdatePatientData(patient);
                 _context.SaveChanges();
-                LoadDataAsync();
-                ClearFields();
                 MessageBox.Show("Updated Done");
-                SetButtonVisibility(isAddMode: true);
+                SetButtonVisibility(isAddMode: true, _user);
             }
+            LoadDataAsync();
+            ClearFields();
         }
         private void UpdatePatientData(Patient patient)
         {
@@ -224,13 +214,56 @@ namespace ProjectHospitalSystem.Forms.Admin
                     LoadDataAsync();
                     ClearFields();
                     MessageBox.Show("Deleted Done");
-                    SetButtonVisibility(isAddMode: true);
+                    SetButtonVisibility(isAddMode: true, _user);
                 }
                 else
                 {
                     MessageBox.Show("Patient not found.");
                 }
 
+            }
+        }
+        private async void txtBoxPatientSerachData_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = txtBoxPatientSerachData.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                await LoadDataAsync();
+                return;
+            }
+
+            try
+            {
+                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString))
+                {
+                    await connection.OpenAsync();
+                    var filteredPatients = connection.Query<Patient>(
+                        @"SELECT p.PatientId, p.FirstName, p.LastName, p.DateOfBirth, p.Gender, p.Email, p.Address, p.MedicalHistory, 
+                         p.PhoneNumber 
+                        FROM Patients p
+						where ( p.FirstName LIKE '%'+@SearchText+'%'OR
+						p.LastName LIKE '%' + @SearchText + '%')",
+                        new { SearchText = searchText });
+                    var result = filteredPatients.Select(p => new
+                    {
+                        p.PatientId,
+                        p.FirstName,
+                        p.LastName,
+                        p.DateOfBirth,
+                        p.Gender,
+                        p.Email,
+                        p.PhoneNumber,
+                        p.Address,
+                        p.MedicalHistory,
+                    }).ToList();
+                    dgv_AdminPaitent.DataSource = result;
+                    dgv_AdminPaitent.Columns["PatientId"].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading filtered data: {ex.Message}");
             }
         }
         #endregion
@@ -270,7 +303,6 @@ namespace ProjectHospitalSystem.Forms.Admin
                 { c_boxDust, "Dust or Animal Allergies" },
                 { cbox_Smoking, "Smoking" },
                 { cb_Alcoho, "Alcohol Addiction" },
-                { c_boxChronicMedicatio, "Chronic Medication Use" }
             };
 
             foreach (var condition in predefinedConditions)
@@ -301,8 +333,6 @@ namespace ProjectHospitalSystem.Forms.Admin
             }
         }
         #endregion
-
-
         #region Medical History Categories
         private void SetMedicalHistory(string medicalHistory)
         {
@@ -397,7 +427,6 @@ namespace ProjectHospitalSystem.Forms.Admin
             }
         }
         #endregion
-
         #region  Validate
         private bool ValidateInputs()
         {
@@ -428,7 +457,6 @@ namespace ProjectHospitalSystem.Forms.Admin
                 MessageBox.Show("Please select at least one option from each medical history category.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
-
             return true;
         }
         private bool ValidateCheckBoxGroups()
@@ -455,100 +483,63 @@ namespace ProjectHospitalSystem.Forms.Admin
             return query.Any();
         }
         #endregion
-        #region Clear Fields
+        #region Clear Fields Reload Forms
         private void ClearFields()
         {
-            foreach (var control in this.Controls)
-            {
-                if (control is TextBox textBox)
-                {
-                    textBox.Clear();
-                }
-                else if (control is CheckBox checkBox)
-                {
-                    checkBox.Checked = false;
-                }
-                else if (control is GroupBox groupBox)
-                {
-                    foreach (var childControl in groupBox.Controls)
-                    {
-                        if (childControl is TextBox childTextBox)
-                        {
-                            childTextBox.Clear();
-                        }
-                        else if (childControl is CheckBox childCheckBox)
-                        {
-                            childCheckBox.Checked = false;
-                        }
-                    }
-                }
-            }
+            ClearControls(this);
 
             dtp_BirthDate.Value = DateTime.Today;
             rb_Male.Checked = false;
             rb_Female.Checked = false;
+            ClearTextBox();
         }
+        private void ClearControls(Control control)
+        {
+            if (control is TextBox textBox)
+            {
+                textBox.Clear();
+            }
+            else if (control is CheckBox checkBox)
+            {
+                checkBox.Checked = false;
+            }
+            foreach (Control childControl in control.Controls)
+            {
+                ClearControls(childControl);
+            }
+        }
+        private void ClearTextBox() 
+        {
+            txt_Fname.Clear();
+            txt_Lname.Clear();
+            txt_phone.Clear();
+            txt_Address.Clear();
+            txt_Email.Clear();
+            txt_otherChronic.Clear();
+            txt_otherSurgical.Clear();
+            txt_otherInfectious.Clear();
+            txt_otherAllergies.Clear();
+            txt_otherFactor.Clear();
+        }
+       
+        public void Reload()
+        {
+            ClearFields();
+            LoadDataAsync();
+        }
+
         #endregion
         #region vistbilty
-        private void SetButtonVisibility(bool isAddMode)
+        private void SetButtonVisibility(bool isAddMode,User user)
         {
-            btn_AddDoctor.Visible = isAddMode;
+            btn_AddPaitenit.Visible = isAddMode;
             btn_Update.Visible = !isAddMode;
             btn_remove.Visible = !isAddMode;
-        }
-        #endregion
-
-
-
-
-
-
-
-
-
-
-        private async void txtBoxPatientSerachData_TextChanged(object sender, EventArgs e)
-        {
-            string searchText = txtBoxPatientSerachData.Text.Trim();
-
-            if (string.IsNullOrWhiteSpace(searchText))
+            if(user.Role == "Receptionist")
             {
-                await LoadDataAsync();
-                return;
-            }
-
-            try
-            {
-                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Hospital"].ConnectionString))
-                {
-                    await connection.OpenAsync();
-                    var filteredPatients =  connection.Query<Patient>(
-                        @"SELECT p.PatientId, p.FirstName, p.LastName, p.DateOfBirth, p.Gender, p.Email, p.Address, p.MedicalHistory, 
-                         p.PhoneNumber 
-                        FROM Patients p
-						where ( p.FirstName LIKE '%'+@SearchText+'%'OR
-						p.LastName LIKE '%' + @SearchText + '%')",
-                        new { SearchText = searchText });
-                    var result = filteredPatients.Select(p => new
-                    {
-                        p.PatientId,
-                        p.FirstName,
-                        p.LastName,
-                        p.DateOfBirth,
-                        p.Gender,
-                        p.Email,
-                        p.PhoneNumber,
-                        p.Address,
-                        p.MedicalHistory,
-                    }).ToList();
-                    dgv_AdminPaitent.DataSource = result;
-                    dgv_AdminPaitent.Columns["PatientId"].Visible = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading filtered data: {ex.Message}");
+                btn_remove.Visible = false;
             }
         }
+#endregion
     }
 }
