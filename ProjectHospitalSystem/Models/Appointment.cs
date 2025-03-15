@@ -22,10 +22,14 @@ namespace ProjectHospitalSystem.Models
         public virtual Patient Patient { get; set; }
         [ForeignKey("User")]
         public int? UserId { get; set; }
+        [ForeignKey("MedicalRecord")]
+        public int? medicalRecordId { get; set; }
         public virtual User User { get; set; }
         [ForeignKey("Doctor")]
         public int? DoctorDetailsId { get; set; }
         public virtual DoctorDetails Doctor { get; set; }
         public virtual Bill Bill { get; set; }
+        public virtual MedicalRecord MedicalRecord { get; set; }
+
     }
 }
