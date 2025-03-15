@@ -63,6 +63,11 @@ namespace ProjectHospitalSystem.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+
+        internal static System.Drawing.Bitmap Doctor__2_ {
+            get {
+                object obj = ResourceManager.GetObject("Doctor (2)", resourceCulture);
+
         internal static System.Drawing.Bitmap Icon_Filter {
             get {
                 object obj = ResourceManager.GetObject("Icon Filter", resourceCulture);

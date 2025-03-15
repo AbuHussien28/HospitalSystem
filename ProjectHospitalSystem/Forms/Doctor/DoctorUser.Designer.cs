@@ -111,6 +111,7 @@
             dgv_patientlist = new DataGridView();
             label18 = new Label();
             panel_appointment = new Panel();
+            btn_EditMedicalRecord = new Button();
             label33 = new Label();
             btn_editstatus = new Button();
             txt_editStatus = new TextBox();
@@ -166,7 +167,6 @@
             btn_medicalrecord.TabIndex = 2;
             btn_medicalrecord.Text = "Medical Record";
             btn_medicalrecord.UseVisualStyleBackColor = true;
-            btn_medicalrecord.Click += btn_medicalrecord_Click;
             // 
             // btn_profile
             // 
@@ -446,7 +446,6 @@
             btn_delete.TabIndex = 14;
             btn_delete.Text = "Delete";
             btn_delete.UseVisualStyleBackColor = true;
-            btn_delete.Click += btn_delete_Click;
             // 
             // btn_update
             // 
@@ -456,7 +455,6 @@
             btn_update.TabIndex = 13;
             btn_update.Text = "Update";
             btn_update.UseVisualStyleBackColor = true;
-            btn_update.Click += btn_update_Click;
             // 
             // label7
             // 
@@ -554,7 +552,6 @@
             btn_add.TabIndex = 1;
             btn_add.Text = "Add";
             btn_add.UseVisualStyleBackColor = true;
-            btn_add.Click += btn_add_Click;
             // 
             // label2
             // 
@@ -582,7 +579,6 @@
             dgv_medicalrecord.Name = "dgv_medicalrecord";
             dgv_medicalrecord.Size = new Size(1056, 150);
             dgv_medicalrecord.TabIndex = 1;
-            dgv_medicalrecord.RowHeaderMouseDoubleClick += dgv_medicalrecord_RowHeaderMouseDoubleClick_1;
             // 
             // label1
             // 
@@ -959,6 +955,7 @@
             // 
             // panel_appointment
             // 
+            panel_appointment.Controls.Add(btn_EditMedicalRecord);
             panel_appointment.Controls.Add(label33);
             panel_appointment.Controls.Add(btn_editstatus);
             panel_appointment.Controls.Add(txt_editStatus);
@@ -969,6 +966,16 @@
             panel_appointment.Size = new Size(1132, 496);
             panel_appointment.TabIndex = 24;
             panel_appointment.Paint += panel_appointment_Paint;
+            // 
+            // btn_EditMedicalRecord
+            // 
+            btn_EditMedicalRecord.Location = new Point(476, 274);
+            btn_EditMedicalRecord.Name = "btn_EditMedicalRecord";
+            btn_EditMedicalRecord.Size = new Size(175, 32);
+            btn_EditMedicalRecord.TabIndex = 11;
+            btn_EditMedicalRecord.Text = "Edit Medical Record";
+            btn_EditMedicalRecord.UseVisualStyleBackColor = true;
+            btn_EditMedicalRecord.Click += btn_EditMedicalRecord_Click;
             // 
             // label33
             // 
@@ -982,7 +989,7 @@
             // 
             // btn_editstatus
             // 
-            btn_editstatus.Location = new Point(391, 274);
+            btn_editstatus.Location = new Point(272, 272);
             btn_editstatus.Name = "btn_editstatus";
             btn_editstatus.Size = new Size(97, 32);
             btn_editstatus.TabIndex = 9;
@@ -1150,5 +1157,6 @@
         private TextBox txt_editStatus;
         private DataGridView dgv_appointment;
         private Label label32;
+        private Button btn_EditMedicalRecord;
     }
 }

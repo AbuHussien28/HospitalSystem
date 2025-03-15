@@ -64,6 +64,22 @@ namespace ProjectHospitalSystem.Forms.Doctor
 
 
             var results = con.Query(
+
+                  @"SELECT A.AppointmentId, A.AppointmentDateTime, A.Status, A.Note, P.FirstName, P.LastName 
+          FROM Appointments A 
+          INNER JOIN Patients P ON A.PatientId = P.PatientId 
+          WHERE A.DoctorDetailsId = @doctorId 
+            AND CAST(A.AppointmentDateTime AS DATE) = CAST(GETDATE() AS DATE) -- Filter for today's date
+            AND A.Status = @status
+          ORDER BY A.AppointmentDateTime ASC",
+
+                  new
+                  {
+                      doctorId = _loggedUser.DoctorDetailsId,
+                      status = 0
+                  }
+              );
+
                 @"SELECT A.AppointmentId, A.AppointmentDateTime,  
                 CASE  WHEN A.Status = 0 THEN 'Upcoming'
                         WHEN A.Status = 1 THEN 'Cancel'         
@@ -84,9 +100,11 @@ namespace ProjectHospitalSystem.Forms.Doctor
             );
 
 
+
             foreach (var row in results)
             {
-                dt.Rows.Add(row.AppointmentId, row.AppointmentDateTime, row.Status, row.Note, row.FirstName, row.LastName);
+                string statusName = Enum.GetName(typeof(AppointmentStatus), row.Status) ?? "Unknown";
+                dt.Rows.Add(row.AppointmentId, row.AppointmentDateTime, statusName, row.Note, row.FirstName, row.LastName);
             }
 
 
@@ -215,6 +233,77 @@ namespace ProjectHospitalSystem.Forms.Doctor
         // End Profile Form
 
         // Start Medical Record
+
+        //private void btn_medicalrecord_Click(object sender, EventArgs e)
+        //{
+        //    panel_HomePage.Hide();
+        //    panel_profile.Hide();
+        //    panel_medicalrecord.Show();
+        //    panel_patient.Hide();
+        //    panel_appointment.Hide();
+
+        //    try
+        //    {
+        //        getData();
+        //        btn_update.Hide();
+        //        btn_delete.Hide();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Error during form load: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+
+        //}
+
+
+        //public void getData()
+        //{
+        //    try
+        //    {
+        //        dgv_medicalrecord.DataSource = db.MedicalRecords
+        //            .Where(n => n.DoctorDetailsId == _loggedUser.DoctorDetailsId)
+        //            .Select(n => new { n.MedicalId, n.DateOfVist, n.Diaqnois, n.Prescription, n.LabResult, n.TreatmentDetails, n.PatientId, n.DoctorDetailsId })
+        //            .ToList();
+
+        //        cb_patient.DataSource = db.Patients.Select(n => n).ToList();
+        //        cb_patient.ValueMember = "PatientId";
+        //        cb_patient.DisplayMember = "FirstName";
+
+        //        txt_dateOfVisit.Text = txt_diaqnois.Text = txt_labResult.Text = txt_prescription.Text = txt_treatment.Text = "";
+        //        cb_patient.SelectedIndex = 0;
+        //        dgv_medicalrecord.Columns["MedicalId"].Visible = false;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Error loading data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
+
+        //private void btn_add_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        MedicalRecord m = new MedicalRecord
+        //        {
+        //            DateOfVist = DateTime.Parse(txt_dateOfVisit.Text),
+        //            Diaqnois = txt_diaqnois.Text,
+        //            Prescription = txt_prescription.Text,
+        //            LabResult = txt_labResult.Text,
+        //            TreatmentDetails = txt_treatment.Text,
+        //            PatientId = (int)cb_patient.SelectedValue,
+        //            DoctorDetailsId = (int)_loggedUser.DoctorDetailsId
+        //        };
+
+        //        db.MedicalRecords.Add(m);
+        //        db.SaveChanges();
+        //        getData();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Error adding medical record: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
+
         private void btn_medicalrecord_Click(object sender, EventArgs e)
         {
             panel_HomePage.Hide();
@@ -285,93 +374,94 @@ namespace ProjectHospitalSystem.Forms.Doctor
             }
         }
 
+
         int id;
 
-        private void dgv_medicalrecord_RowHeaderMouseDoubleClick_1(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            try
-            {
-                id = (int)dgv_medicalrecord.SelectedRows[0].Cells[0].Value;
+        //private void dgv_medicalrecord_RowHeaderMouseDoubleClick_1(object sender, DataGridViewCellMouseEventArgs e)
+        //{
+        //    try
+        //    {
+        //        id = (int)dgv_medicalrecord.SelectedRows[0].Cells[0].Value;
 
-                var m = db.MedicalRecords.FirstOrDefault(n => n.MedicalId == id);
-                if (m != null)
-                {
-                    txt_treatment.Text = m.TreatmentDetails;
-                    txt_prescription.Text = m.Prescription;
-                    txt_labResult.Text = m.LabResult;
-                    txt_diaqnois.Text = m.Diaqnois;
-                    txt_dateOfVisit.Text = m.DateOfVist.ToString("yyyy-MM-dd HH:mm");
-                    cb_patient.SelectedValue = m.PatientId;
+        //        var m = db.MedicalRecords.FirstOrDefault(n => n.MedicalId == id);
+        //        if (m != null)
+        //        {
+        //            txt_treatment.Text = m.TreatmentDetails;
+        //            txt_prescription.Text = m.Prescription;
+        //            txt_labResult.Text = m.LabResult;
+        //            txt_diaqnois.Text = m.Diaqnois;
+        //            txt_dateOfVisit.Text = m.DateOfVist.ToString("yyyy-MM-dd HH:mm");
+        //            //cb_patient.SelectedValue = m.PatientId;
 
-                    btn_update.Show();
-                    btn_delete.Show();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading medical record details: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        //            btn_update.Show();
+        //            btn_delete.Show();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Error loading medical record details: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
 
-        private void btn_update_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var m = db.MedicalRecords.FirstOrDefault(n => n.MedicalId == id);
-                if (m != null)
-                {
-                    m.TreatmentDetails = txt_treatment.Text;
-                    m.Prescription = txt_prescription.Text;
-                    m.LabResult = txt_labResult.Text;
-                    m.Diaqnois = txt_diaqnois.Text;
+        //private void btn_update_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        var m = db.MedicalRecords.FirstOrDefault(n => n.MedicalId == id);
+        //        if (m != null)
+        //        {
+        //            m.TreatmentDetails = txt_treatment.Text;
+        //            m.Prescription = txt_prescription.Text;
+        //            m.LabResult = txt_labResult.Text;
+        //            m.Diaqnois = txt_diaqnois.Text;
 
-                    if (DateTime.TryParse(txt_dateOfVisit.Text, out DateTime visitDate))
-                    {
-                        m.DateOfVist = visitDate;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid date format!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
+        //            if (DateTime.TryParse(txt_dateOfVisit.Text, out DateTime visitDate))
+        //            {
+        //                m.DateOfVist = visitDate;
+        //            }
+        //            else
+        //            {
+        //                MessageBox.Show("Invalid date format!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //                return;
+        //            }
 
-                    m.PatientId = (int)cb_patient.SelectedValue;
+        //            m.PatientId = (int)cb_patient.SelectedValue;
 
-                    db.SaveChanges();
-                    MessageBox.Show("Data has been successfully updated!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //            db.SaveChanges();
+        //            MessageBox.Show("Data has been successfully updated!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    getData();
+        //            getData();
 
-                    btn_update.Hide();
-                    btn_delete.Hide();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error updating medical record: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        //            btn_update.Hide();
+        //            btn_delete.Hide();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Error updating medical record: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
 
-        private void btn_delete_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var m = db.MedicalRecords.FirstOrDefault(n => n.MedicalId == id);
-                if (m != null && MessageBox.Show("Are you sure you want to delete this record?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    db.MedicalRecords.Remove(m);
-                    db.SaveChanges();
-                    getData();
+        //private void btn_delete_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        var m = db.MedicalRecords.FirstOrDefault(n => n.MedicalId == id);
+        //        if (m != null && MessageBox.Show("Are you sure you want to delete this record?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
+        //        {
+        //            db.MedicalRecords.Remove(m);
+        //            db.SaveChanges();
+        //            getData();
 
-                    btn_delete.Hide();
-                    btn_update.Hide();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error deleting medical record: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        //            btn_delete.Hide();
+        //            btn_update.Hide();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Error deleting medical record: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
         // End Medical Record
         /*---------------------------------------------------------------------------*/
         // Start Patient Form
@@ -383,9 +473,20 @@ namespace ProjectHospitalSystem.Forms.Doctor
             panel_patient.Show();
             panel_appointment.Hide();
 
+            dgv_patientlist.DataSource = db.Patients.Join(db.Appointments, patient => patient.PatientId, appointment => appointment.PatientId, (patient, appointment) => new { patient, appointment })
+                .Join(db.MedicalRecords, pa => pa.appointment.medicalRecordId, medicalRecord => medicalRecord.MedicalId, (pa, medicalRecord) => new { pa.patient, medicalRecord })
+                .Where(result => result.patient.DoctorDetailsId == _loggedUser.DoctorDetailsId)
+                .Select(result => new { result.patient.DoctorDetailsId, result.patient.PatientId, FullName = result.patient.FirstName + " " + result.patient.LastName })
+                .Distinct()
+                .ToList();
+
+
+            dgv_patientlist.Columns["DoctorDetailsId"].Visible = false;
 
             dgv_patientlist.DataSource = db.Patients.Where(n => n.DoctorDetailsId == _loggedUser.doctorDetails.DoctorDetailsId).Select(n => new { n.PatientId, FullName = n.FirstName + " " + n.LastName }).ToList();
+
             dgv_patientlist.Columns["PatientId"].Visible = false;
+
             btn_updatemedicalhistory.Hide();
             cb_searchitem.Items.AddRange(new string[] { "Full Name", "Email", "Phone Number" });
             cb_searchitem.SelectedIndex = 0;
@@ -393,31 +494,34 @@ namespace ProjectHospitalSystem.Forms.Doctor
 
         }
 
+        int idOfDoctor;
         int idOfPatient;
         private void dgv_patientlist_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            idOfPatient = (int)dgv_patientlist.SelectedRows[0].Cells[0].Value;
+            if (pictureBox.Image != null)
+            {
+                pictureBox.Image.Dispose();
+                pictureBox.Image = null;
+            }
+
+            idOfDoctor = (int)dgv_patientlist.SelectedRows[0].Cells[0].Value;
+            idOfPatient = (int)dgv_patientlist.SelectedRows[0].Cells[1].Value;
 
 
-            var query = con.Query(@"
-        SELECT 
-            P.DateOfBirth AS DateOfBirth, 
-            P.Gender AS Gender, 
-            P.MedicalHistory AS MedicalHistory,  
-            M.Diaqnois AS Diagnosis, 
-            M.Prescription AS Prescription, 
-            M.LabResult AS LabResult, 
-            M.TreatmentDetails AS TreatmentDetails
-        FROM Patients P 
-        INNER JOIN MedicalRecords M ON P.PatientId = M.PatientId
-        WHERE P.PatientId = @id", new { id = idOfPatient }).ToList();
+            var query = con.Query(@"       select P.FirstName , P.LastName, P.DateOfBirth , P.Gender , P.MedicalHistory , M.Diaqnois , M.LabResult , M.Prescription , M.TreatmentDetails
+from Appointments A Inner Join Patients P
+on A.PatientId = P.PatientId
+Inner Join MedicalRecords M
+on A.medicalRecordId = M.MedicalId
+Where P.DoctorDetailsId = @DoctorId And P.PatientId = @patientId", new { DoctorId = idOfDoctor, patientId = idOfPatient }).ToList();
+
 
             if (query != null && query.Any())
             {
                 txtDateOfBirth.Text = query.FirstOrDefault()?.DateOfBirth?.ToString("yyyy-MM-dd");
-                txtGender.Text = query.FirstOrDefault()?.Gender;
+                txtGender.Text = query.FirstOrDefault().Gender;
                 txtMerdicalHistory.Text = query.FirstOrDefault()?.MedicalHistory;
-                txtDiaqnois.Text = query.FirstOrDefault()?.Diagnosis;
+                txtDiaqnois.Text = query.FirstOrDefault()?.Diaqnois;
                 txtPrescription.Text = query.FirstOrDefault()?.Prescription;
                 txtLabResult.Text = query.FirstOrDefault()?.LabResult;
                 txtTreatmentDetails.Text = query.FirstOrDefault()?.TreatmentDetails;
@@ -441,20 +545,13 @@ namespace ProjectHospitalSystem.Forms.Doctor
 
             try
             {
-                var query = con.Query(@"
-        SELECT 
-            P.FirstName As FirstName,
-            P.LastName As LastName,
-            P.DateOfBirth AS DateOfBirth, 
-            P.Gender AS Gender, 
-            P.MedicalHistory AS MedicalHistory,  
-            M.Diaqnois AS Diagnosis, 
-            M.Prescription AS Prescription, 
-            M.LabResult AS LabResult, 
-            M.TreatmentDetails AS TreatmentDetails
-        FROM Patients P 
-        INNER JOIN MedicalRecords M ON P.PatientId = M.PatientId
-        WHERE P.PatientId = @id", new { id = idOfPatient }).ToList();
+                var query = con.Query(@"select P.FirstName , P.LastName, P.DateOfBirth , P.Gender , P.MedicalHistory , M.Diaqnois , M.LabResult , M.Prescription , M.TreatmentDetails
+from Appointments A Inner Join Patients P
+on A.PatientId = P.PatientId
+Inner Join MedicalRecords M
+on A.medicalRecordId = M.MedicalId
+Where P.DoctorDetailsId = @DoctorId And P.PatientId = @patientId", new { DoctorId = idOfDoctor, patientId = idOfPatient }).ToList();
+
 
                 string patientData = $"Patient Info\n" +
                     $"FirstName: {query.FirstOrDefault().FirstName}\n" +
@@ -462,7 +559,7 @@ namespace ProjectHospitalSystem.Forms.Doctor
                     $"DateOfBirth: {query.FirstOrDefault()?.DateOfBirth?.ToString("yyyy-MM-dd")}\n" +
                     $"Gender: {query.FirstOrDefault()?.Gender}\n" +
                     $"MedicalHistory: {query.FirstOrDefault()?.MedicalHistory}\n" +
-                    $"Diagnosis: {query.FirstOrDefault()?.Diagnosis}\n" +
+                    $"Diagnosis: {query.FirstOrDefault()?.Diaqnois}\n" +
                     $"Prescription: {query.FirstOrDefault()?.Prescription}\n" +
                     $"LabResult: {query.FirstOrDefault()?.LabResult}\n" +
                     $"TreatmentDetails: {query.FirstOrDefault()?.TreatmentDetails}\n";
@@ -490,11 +587,11 @@ namespace ProjectHospitalSystem.Forms.Doctor
             {
                 try
                 {
+                    idOfDoctor = (int)dgv_patientlist.SelectedRows[0].Cells[0].Value;
+                    idOfPatient = (int)dgv_patientlist.SelectedRows[0].Cells[1].Value;
 
-                    idOfPatient = (int)dgv_patientlist.SelectedRows[0].Cells[0].Value;
 
-
-                    var patient = db.Patients.FirstOrDefault(n => n.PatientId == idOfPatient);
+                    var patient = db.Patients.FirstOrDefault(n => n.PatientId == idOfPatient && n.DoctorDetailsId == idOfDoctor);
 
                     if (patient != null)
                     {
@@ -662,24 +759,55 @@ namespace ProjectHospitalSystem.Forms.Doctor
                 dgv_resultofsearch.DataSource = null;
                 return;
             }
+
             try
             {
+
+                var baseQuery = db.Patients
+                    .Join(db.Appointments,
+                        patient => patient.PatientId,
+                        appointment => appointment.PatientId,
+                        (patient, appointment) => new { patient, appointment })
+                    .Join(db.MedicalRecords,
+                        pa => pa.appointment.medicalRecordId,
+                        medicalRecord => medicalRecord.MedicalId,
+                        (pa, medicalRecord) => new { pa.patient, medicalRecord })
+                    .Where(result => result.patient.DoctorDetailsId == _loggedUser.DoctorDetailsId);
+
                 IQueryable<Patient> query = db.Patients.AsQueryable().Where(n => n.DoctorDetailsId == _loggedUser.doctorDetails.DoctorDetailsId); ;
+
 
                 switch (searchCriteria)
                 {
                     case "Full Name":
-                        query = query.Where(n => (n.FirstName + "" + n.LastName).Contains(searchItem));
+                        baseQuery = baseQuery.Where(result =>
+                            (result.patient.FirstName + " " + result.patient.LastName).Contains(searchItem));
                         break;
                     case "Email":
-                        query = query.Where(n => (n.Email).Contains(searchItem));
+                        baseQuery = baseQuery.Where(result =>
+                            result.patient.Email.Contains(searchItem));
                         break;
                     case "Phone Number":
-                        query = query.Where(p => (p.PhoneNumber).Contains(searchItem));
+                        baseQuery = baseQuery.Where(result =>
+                            result.patient.PhoneNumber.Contains(searchItem));
                         break;
                 }
 
-                var result = query.Select(n => new { n.PatientId, FullName = n.FirstName + " " + n.LastName, n.Email, n.PhoneNumber, n.DateOfBirth, n.Gender, n.Address, n.MedicalHistory }).ToList();
+
+                var result = baseQuery
+                    .Select(result => new
+                    {
+                        result.patient.PatientId,
+                        FullName = result.patient.FirstName + " " + result.patient.LastName,
+                        result.patient.Email,
+                        result.patient.PhoneNumber,
+                        result.patient.DateOfBirth,
+                        result.patient.Gender,
+                        result.patient.Address,
+                        result.patient.MedicalHistory
+                    })
+                    .Distinct()
+                    .ToList();
 
                 dgv_resultofsearch.DataSource = result;
                 dgv_resultofsearch.Columns["PatientId"].Visible = false;
@@ -689,21 +817,49 @@ namespace ProjectHospitalSystem.Forms.Doctor
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        int idOfResarchOfDoctorId;
         int idOfResarchOfPatient;
 
         private void dgv_resultofsearch_RowHeaderMouseDoubleClick_1(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (dgv_resultofsearch.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Please Selecet a Patient");
+                MessageBox.Show("Please Select a Patient");
                 return;
             }
-            idOfResarchOfPatient = (int)dgv_resultofsearch.SelectedRows[0].Cells[0].Value;
+
+            if (pictureBox1.Image != null)
+            {
+                pictureBox1.Image.Dispose();
+                pictureBox1.Image = null;
+            }
+
+            int idOfResearchOfPatient = (int)dgv_resultofsearch.SelectedRows[0].Cells["PatientId"].Value;
 
             try
             {
                 var query = con.Query(@"
+
+SELECT CONCAT(P.FirstName, ' ', P.LastName) AS FullName, 
+       P.DateOfBirth, 
+       P.Gender, 
+       P.MedicalHistory, 
+       M.Diaqnois, 
+       M.LabResult, 
+       M.Prescription, 
+       M.TreatmentDetails 
+FROM Patients P
+INNER JOIN Appointments A ON P.PatientId = A.PatientId
+INNER JOIN MedicalRecords M ON A.medicalRecordId = M.MedicalId
+WHERE P.DoctorDetailsId = @DoctorId AND P.PatientId = @PatientId",
+                    new { DoctorId = _loggedUser.DoctorDetailsId, PatientId = idOfResearchOfPatient }).ToList();
+
+                if (query == null || !query.Any())
+                {
+                    MessageBox.Show("No patient data found.");
+                    return;
+                }
+
         SELECT 
             
             P.FirstName As FirstName,
@@ -719,33 +875,42 @@ namespace ProjectHospitalSystem.Forms.Doctor
         INNER JOIN MedicalRecords M ON P.PatientId = M.PatientId
         WHERE P.PatientId = @id", new { id = idOfResarchOfPatient}).ToList();
 
+                var patient = query.FirstOrDefault();
                 string patientData = $"Patient Info\n" +
-                    $"FirstName: {query.FirstOrDefault().FirstName}\n" +
-                    $"LastName: {query.FirstOrDefault().LastName}\n" +
-                    $"DateOfBirth: {query.FirstOrDefault()?.DateOfBirth?.ToString("yyyy-MM-dd")}\n" +
-                    $"Gender: {query.FirstOrDefault()?.Gender}\n" +
-                    $"MedicalHistory: {query.FirstOrDefault()?.MedicalHistory}\n" +
-                    $"Diagnosis: {query.FirstOrDefault()?.Diagnosis}\n" +
-                    $"Prescription: {query.FirstOrDefault()?.Prescription}\n" +
-                    $"LabResult: {query.FirstOrDefault()?.LabResult}\n" +
-                    $"TreatmentDetails: {query.FirstOrDefault()?.TreatmentDetails}\n";
+                    $"Full Name: {patient.FullName}\n" +
+                    $"DateOfBirth: {patient.DateOfBirth?.ToString("yyyy-MM-dd")}\n" +
+                    $"Gender: {patient.Gender}\n" +
+                    $"MedicalHistory: {patient.MedicalHistory}\n" +
+                    $"Diagnosis: {patient.Diaqnois}\n" +
+                    $"Prescription: {patient.Prescription}\n" +
+                    $"LabResult: {patient.LabResult}\n" +
+                    $"TreatmentDetails: {patient.TreatmentDetails}\n";
 
-                QRCodeGenerator qRCodeGenerator = new QRCodeGenerator();
-                QRCodeData qRCodeData = qRCodeGenerator.CreateQrCode(patientData, QRCodeGenerator.ECCLevel.Q);
-                QRCode qRCode = new QRCode(qRCodeData);
-
-                Bitmap qrCodeImage = qRCode.GetGraphic(20, System.Drawing.Color.Black, System.Drawing.Color.White, true);
-                pictureTwo.Image = qrCodeImage;
-                pictureTwo.SizeMode = PictureBoxSizeMode.Zoom;
-
-                pictureTwo.Tag = patientData;
+                GenerateAndDisplayQRCode(patientData);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
         }
+        private void GenerateAndDisplayQRCode(string data)
+        {
+            try
+            {
+                QRCodeGenerator qRCodeGenerator = new QRCodeGenerator();
+                QRCodeData qRCodeData = qRCodeGenerator.CreateQrCode(data, QRCodeGenerator.ECCLevel.Q);
+                QRCode qRCode = new QRCode(qRCodeData);
 
+                Bitmap qrCodeImage = qRCode.GetGraphic(20, System.Drawing.Color.Black, System.Drawing.Color.White, true);
+                pictureTwo.Image = qrCodeImage;
+                pictureTwo.SizeMode = PictureBoxSizeMode.Zoom;
+                pictureTwo.Tag = data;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error generating QR code: {ex.Message}");
+            }
+        }
         private void btn_ExportWord_Click(object sender, EventArgs e)
         {
             if (pictureTwo.Tag == null)
@@ -776,25 +941,34 @@ namespace ProjectHospitalSystem.Forms.Doctor
         /*---------------------------------------------------------------------------*/
 
         // Start Appointment Form
-        private void btn_appointment_Click(object sender, EventArgs e)
-        {
-            panel_HomePage.Hide();
-            panel_profile.Hide();
-            panel_medicalrecord.Hide();
-            panel_patient.Hide();
-            panel_appointment.Show();
 
+        public void getAppointmetData()
+        {
             var dt = new System.Data.DataTable();
             dt.Columns.Add("AppointmentId", typeof(int));
+            dt.Columns.Add("PatientId", typeof(int));
             dt.Columns.Add("Appointment Time", typeof(DateTime));
             dt.Columns.Add("Status", typeof(string));
             dt.Columns.Add("Note", typeof(string));
             dt.Columns.Add("First Name", typeof(string));
             dt.Columns.Add("Last Name", typeof(string));
+            dt.Columns.Add("MedicalId", typeof(int));
 
 
 
             var results = con.Query(
+
+    @"SELECT A.AppointmentId, P.PatientId, A.AppointmentDateTime, A.Status, A.Note, 
+             P.FirstName, P.LastName, M.MedicalId
+      FROM Appointments A 
+      INNER JOIN Patients P ON A.PatientId = P.PatientId 
+      LEFT JOIN MedicalRecords M ON A.medicalRecordId = M.MedicalId 
+      WHERE A.DoctorDetailsId = @doctorId 
+        AND CAST(A.AppointmentDateTime AS DATE) = CAST(GETDATE() AS DATE)
+      ORDER BY A.AppointmentDateTime ASC",
+    new { doctorId = _loggedUser.DoctorDetailsId }
+);
+
                 "select A.AppointmentId , A.AppointmentDateTime, A.Status, A.Note, P.FirstName, P.LastName " +
                 "from Appointments A Inner Join Patients P " +
                 "on A.PatientId = P.PatientId " +
@@ -804,32 +978,57 @@ namespace ProjectHospitalSystem.Forms.Doctor
 
 
 
+
             foreach (var row in results)
             {
-                string statusString = Enum.GetName(typeof(AppointmentStatus), row.Status);
-                dt.Rows.Add(row.AppointmentId, row.AppointmentDateTime, statusString, row.Note, row.FirstName, row.LastName);
+                string statusName = Enum.GetName(typeof(AppointmentStatus), row.Status) ?? "Unknown";
+                dt.Rows.Add(row.AppointmentId, row.PatientId, row.AppointmentDateTime, statusName, row.Note, row.FirstName, row.LastName, row.MedicalId);
             }
-
-
             dgv_appointment.DataSource = dt;
             dgv_appointment.Columns["AppointmentId"].Visible = false;
+            dgv_appointment.Columns["PatientId"].Visible = false;
+
+        }
+        private void btn_appointment_Click(object sender, EventArgs e)
+        {
+            panel_HomePage.Hide();
+            panel_profile.Hide();
+            panel_medicalrecord.Hide();
+            panel_patient.Hide();
+            panel_appointment.Show();
+            btn_EditMedicalRecord.Hide();
+            getAppointmetData();
         }
 
         int appointmentId;
+        int patientId;
         private void dgv_appointment_RowHeaderMouseDoubleClick_1(object sender, DataGridViewCellMouseEventArgs e)
         {
             btn_editstatus.Show();
             label33.Show();
             txt_editStatus.Show();
+            btn_EditMedicalRecord.Show();
 
             appointmentId = (int)dgv_appointment.SelectedRows[0].Cells[0].Value;
+
+            if (dgv_appointment.SelectedRows[0].Cells[1].Value != DBNull.Value)
+            {
+                patientId = Convert.ToInt32(dgv_appointment.SelectedRows[0].Cells[1].Value);
+            }
+            else
+            {
+                MessageBox.Show("PatientId is null!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             var appointmentStatusAndNote = db.Appointments.FirstOrDefault(n => n.AppointmentId == appointmentId);
 
             txt_editStatus.Text = appointmentStatusAndNote.Status.ToString();
 
-        }
 
+            bool hasMedicalRecord = appointmentStatusAndNote.medicalRecordId != null && appointmentStatusAndNote.medicalRecordId > 0;
+            UpdateButtonVisibility(appointmentStatusAndNote.Status, hasMedicalRecord);
+        }
         private void btn_editstatus_Click(object sender, EventArgs e)
         {
             try
@@ -849,45 +1048,76 @@ namespace ProjectHospitalSystem.Forms.Doctor
                     return;
                 }
 
-                if (newStatus == appointmentStatusAndNote.Status)
+                appointmentStatusAndNote.Status = newStatus;
+
+                if (newStatus == AppointmentStatus.Cancel)
                 {
-                    MessageBox.Show("You should edit the status to update.");
+                    appointmentStatusAndNote.Note = "Cancel With Doctor";
+                }
+                else if (newStatus == AppointmentStatus.Done && appointmentStatusAndNote.medicalRecordId == null)
+                {
+                    appointmentStatusAndNote.Note = "Appointment Completed";
+
+                    db.SaveChanges();
+
+                    getAppointmetData();
+
+
+                    OpenAddMedicalRecordForm(appointmentStatusAndNote.AppointmentId, appointmentStatusAndNote?.PatientId);
+                    MessageBox.Show("Status updated. Please add medical record details.");
+
+
+                    UpdateButtonVisibility(newStatus, hasMedicalRecord: false);
                     return;
+                }
+                else
+                {
+                    appointmentStatusAndNote.Note = "No Thing";
                 }
 
 
-                appointmentStatusAndNote.Status = newStatus;
-                appointmentStatusAndNote.Note = (newStatus == AppointmentStatus.Cancel) ? "Cancel With Doctor" : "No Thing";
-
                 db.SaveChanges();
 
-                RefreshAppointmentsGrid();
+
+                getAppointmetData();
+
+                MessageBox.Show("Status updated successfully.");
+
+
+                bool hasMedicalRecord = appointmentStatusAndNote.medicalRecordId != null && appointmentStatusAndNote.medicalRecordId > 0;
+                UpdateButtonVisibility(newStatus, hasMedicalRecord);
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
             finally
             {
-
-                btn_editstatus.Hide();
-                label33.Hide();
-                txt_editStatus.Hide();
+                getAppointmetData();
             }
         }
-
-        public void RefreshAppointmentsGrid()
+        public void OpenAddMedicalRecordForm(int appointmentId, int? patientId)
         {
-            var dt = new System.Data.DataTable();
-            dt.Columns.Add("AppointmentId", typeof(int));
-            dt.Columns.Add("Appointment Time", typeof(DateTime));
-            dt.Columns.Add("Status", typeof(string));
-            dt.Columns.Add("Note", typeof(string));
-            dt.Columns.Add("First Name", typeof(string));
-            dt.Columns.Add("Last Name", typeof(string));
+            Add_Medical_Record add_medical_Record = new Add_Medical_Record(appointmentId, patientId);
+            add_medical_Record.FormClosed += (s, arg) => getAppointmetData();
+            add_medical_Record.Show();
+            btn_add.Hide();
+            btn_update.Show();
+        }
+        public void OpenEditMedicalRecordForm(int medicalRecordId, int? patientId, int appointmentId)
+        {
+            Edit_Medical_Record edit_Medical_Record = new Edit_Medical_Record(medicalRecordId, patientId, appointmentId);
+            edit_Medical_Record.FormClosed += (s, args) => getAppointmetData();
+            edit_Medical_Record.Show();
+
+        }
 
 
+        private void btn_EditMedicalRecord_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var appointmentStatusAndNote = db.Appointments.FirstOrDefault(n => n.AppointmentId == appointmentId);
 
             var results = con.Query(
                 "select A.AppointmentId , A.AppointmentDateTime, A.Status, A.Note, P.FirstName, P.LastName " +
@@ -897,16 +1127,54 @@ namespace ProjectHospitalSystem.Forms.Doctor
                 new { doctorId = _loggedUser.doctorDetails.DoctorDetailsId }
             );
 
+                if (appointmentStatusAndNote != null)
+                {
+                    if (appointmentStatusAndNote.Status == AppointmentStatus.Done)
+                    {
+                        bool hasMedicalRecord = appointmentStatusAndNote.medicalRecordId != null &&
+                        appointmentStatusAndNote.medicalRecordId > 0;
 
-            foreach (var row in results)
-            {
-                dt.Rows.Add(row.AppointmentId, row.AppointmentDateTime, row.Status, row.Note, row.FirstName, row.LastName);
+                        if (hasMedicalRecord)
+                        {
+                            OpenEditMedicalRecordForm(appointmentStatusAndNote.medicalRecordId.Value, appointmentStatusAndNote?.PatientId, appointmentStatusAndNote.AppointmentId);
+                            MessageBox.Show("Status updated. This appointment already has a medical record.");
+                        }
+                    }
+                }
             }
-
-            dgv_appointment.DataSource = dt;
-            dgv_appointment.Columns["AppointmentId"].Visible = false;
-
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
+
+
+        private void UpdateButtonVisibility(AppointmentStatus status, bool hasMedicalRecord)
+        {
+            if (status == AppointmentStatus.Done && !hasMedicalRecord)
+            {
+                btn_EditMedicalRecord.Hide();
+                btn_editstatus.Show();
+                label33.Show();
+                txt_editStatus.Hide();
+            }
+            else if (status == AppointmentStatus.Done && hasMedicalRecord)
+            {
+                btn_EditMedicalRecord.Show();
+                btn_editstatus.Hide();
+                label33.Hide();
+                txt_editStatus.Hide();
+            }
+            else
+            {
+                btn_EditMedicalRecord.Show();
+                btn_editstatus.Show();
+                label33.Show();
+                txt_editStatus.Show();
+            }
+        }
+
+
 
         private void panel_appointment_Paint(object sender, PaintEventArgs e)
         {
