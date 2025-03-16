@@ -23,7 +23,7 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         private void New_Admin_Load(object sender, EventArgs e)
         {
-            dgv_admin.DataSource = db.Users.Where(n => n.Role == "Admin").Select(n => new { n.UserId, n.UserName, n.FName, n.LName, n.Email, n.Password, n.Role }).ToList();
+            dgv_admin.DataSource = db.Users.Where(n => n.Role == "Admin").Select(n => new { n.UserId, n.UserName, n.FName, n.LName, n.Email, n.Role }).ToList();
             dgv_admin.Columns["UserId"].Visible = false;
             btn_delete.Hide();
             btn_update.Hide();
@@ -40,13 +40,10 @@ namespace ProjectHospitalSystem.Forms.Admin
                 Password = txt_password.Text,
                 UserName = txt_UserName.Text
             };
-
             db.Users.Add(newAdmin);
             db.SaveChanges();
             getData();
-
             MessageBox.Show("New Admin Is Added");
-
         }
         int id;
         private void dgv_admin_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -58,11 +55,12 @@ namespace ProjectHospitalSystem.Forms.Admin
             txt_firstName.Text = query?.FName;
             txt_lastName.Text = query?.LName;
             txt_email.Text = query?.Email;
-            txt_password.Text = query?.Password;
             txt_UserName.Text = query?.UserName;
 
             btn_update.Show();
             btn_delete.Show();
+            txt_password.Hide();
+            lb_Pasword.Hide();
         }
 
         private void btn_update_Click(object sender, EventArgs e)
@@ -91,6 +89,8 @@ namespace ProjectHospitalSystem.Forms.Admin
 
                     btn_update.Hide();
                     btn_delete.Hide();
+                    txt_password.Show();
+                    lb_Pasword.Show();
                 }
                 db.SaveChanges();
                 getData();
@@ -124,6 +124,18 @@ namespace ProjectHospitalSystem.Forms.Admin
             {
                 MessageBox.Show("User not found.");
             }
+        }
+        public void ClearFileds() 
+        {
+            txt_firstName.Clear();
+            txt_UserName.Clear();
+            txt_password.Clear();
+            txt_email.Clear();
+            txt_lastName.Clear();
+            btn_update.Hide();
+            btn_delete.Hide();
+            txt_password.Show();
+            lb_Pasword.Show();
         }
     }
 }

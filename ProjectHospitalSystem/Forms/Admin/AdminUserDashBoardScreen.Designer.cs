@@ -33,6 +33,9 @@
             imageList1 = new ImageList(components);
             AdminTabContol = new MaterialSkin.Controls.MaterialTabControl();
             tabPageHome = new TabPage();
+            tabPageAdminRole = new TabPage();
+            panelAdmin = new Panel();
+            label4 = new Label();
             tabPageDoctor = new TabPage();
             panelDoctorData = new Panel();
             label1 = new Label();
@@ -55,6 +58,8 @@
             lblDateTime = new Label();
             panel1 = new Panel();
             AdminTabContol.SuspendLayout();
+            tabPageAdminRole.SuspendLayout();
+            panelAdmin.SuspendLayout();
             tabPageDoctor.SuspendLayout();
             panelDoctorData.SuspendLayout();
             tabPageReceptionsit.SuspendLayout();
@@ -86,6 +91,7 @@
             // AdminTabContol
             // 
             AdminTabContol.Controls.Add(tabPageHome);
+            AdminTabContol.Controls.Add(tabPageAdminRole);
             AdminTabContol.Controls.Add(tabPageDoctor);
             AdminTabContol.Controls.Add(tabPageReceptionsit);
             AdminTabContol.Controls.Add(tabPagePaientent);
@@ -116,6 +122,38 @@
             tabPageHome.Size = new Size(1603, 771);
             tabPageHome.TabIndex = 0;
             tabPageHome.Text = "Home";
+            // 
+            // tabPageAdminRole
+            // 
+            tabPageAdminRole.Controls.Add(panelAdmin);
+            tabPageAdminRole.Location = new Point(4, 31);
+            tabPageAdminRole.Name = "tabPageAdminRole";
+            tabPageAdminRole.Padding = new Padding(3);
+            tabPageAdminRole.Size = new Size(1603, 771);
+            tabPageAdminRole.TabIndex = 9;
+            tabPageAdminRole.Text = "Admin";
+            tabPageAdminRole.UseVisualStyleBackColor = true;
+            // 
+            // panelAdmin
+            // 
+            panelAdmin.BackColor = Color.FromArgb(254, 251, 244);
+            panelAdmin.Controls.Add(label4);
+            panelAdmin.Location = new Point(6, 6);
+            panelAdmin.Name = "panelAdmin";
+            panelAdmin.Size = new Size(1513, 946);
+            panelAdmin.TabIndex = 2;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Dock = DockStyle.Bottom;
+            label4.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label4.ForeColor = Color.White;
+            label4.Location = new Point(0, 929);
+            label4.Name = "label4";
+            label4.Size = new Size(0, 17);
+            label4.TabIndex = 42;
+            label4.TextAlign = ContentAlignment.MiddleRight;
             // 
             // tabPageDoctor
             // 
@@ -334,6 +372,9 @@
             WindowState = FormWindowState.Maximized;
             Load += AdminUserDashBoardScreen_Load;
             AdminTabContol.ResumeLayout(false);
+            tabPageAdminRole.ResumeLayout(false);
+            panelAdmin.ResumeLayout(false);
+            panelAdmin.PerformLayout();
             tabPageDoctor.ResumeLayout(false);
             panelDoctorData.ResumeLayout(false);
             panelDoctorData.PerformLayout();
@@ -379,5 +420,8 @@
         private Panel panelReports;
         private Label lblDateTime;
         private Panel panel1;
+        private TabPage tabPageAdminRole;
+        private Panel panelAdmin;
+        private Label label4;
     }
 }

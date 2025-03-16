@@ -40,7 +40,7 @@
             txt_email = new TextBox();
             label4 = new Label();
             txt_password = new TextBox();
-            label5 = new Label();
+            lb_Pasword = new Label();
             txt_UserName = new TextBox();
             label6 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgv_admin).BeginInit();
@@ -150,14 +150,14 @@
             txt_password.Size = new Size(100, 23);
             txt_password.TabIndex = 12;
             // 
-            // label5
+            // lb_Pasword
             // 
-            label5.AutoSize = true;
-            label5.Location = new Point(314, 307);
-            label5.Name = "label5";
-            label5.Size = new Size(57, 15);
-            label5.TabIndex = 11;
-            label5.Text = "Password";
+            lb_Pasword.AutoSize = true;
+            lb_Pasword.Location = new Point(314, 307);
+            lb_Pasword.Name = "lb_Pasword";
+            lb_Pasword.Size = new Size(57, 15);
+            lb_Pasword.TabIndex = 11;
+            lb_Pasword.Text = "Password";
             // 
             // txt_UserName
             // 
@@ -183,7 +183,7 @@
             Controls.Add(txt_UserName);
             Controls.Add(label6);
             Controls.Add(txt_password);
-            Controls.Add(label5);
+            Controls.Add(lb_Pasword);
             Controls.Add(txt_email);
             Controls.Add(label4);
             Controls.Add(txt_lastName);
@@ -217,7 +217,7 @@
         private TextBox txt_email;
         private Label label4;
         private TextBox txt_password;
-        private Label label5;
+        private Label lb_Pasword;
         private TextBox txt_UserName;
         private Label label6;
     }

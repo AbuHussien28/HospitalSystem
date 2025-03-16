@@ -32,9 +32,6 @@ namespace ProjectHospitalSystem.Models
         public int? UserId { get; set; }
         public virtual User User { get; set; }
         public virtual List<Appointment> Appointment { get; set; }
-        [ForeignKey("Doctor")]
-        public int? DoctorDetailsId { get; set; }
-        public virtual DoctorDetails DoctorDetails { get; set; }
         [NotMapped]
         public string FullName => $"{FirstName} {LastName}";
     }

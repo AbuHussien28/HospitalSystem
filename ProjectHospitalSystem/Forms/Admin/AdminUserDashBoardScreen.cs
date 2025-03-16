@@ -27,6 +27,7 @@ namespace ProjectHospitalSystem.Forms.Admin
         private AdminPaymentMethod AdminPaymentMethod;
         private Appointment_Form Appointment_Form;
         private Reports_Logging Reports;
+        private New_Admin newAdmin;
         public AdminUserDashBoardScreen(User user)
         {
             InitializeComponent();
@@ -43,6 +44,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             AdminPaymentMethod = new AdminPaymentMethod();
             Appointment_Form = new Appointment_Form();
             Reports = new Reports_Logging();
+            newAdmin =new  New_Admin();
 
         }
 
@@ -65,6 +67,13 @@ namespace ProjectHospitalSystem.Forms.Admin
             {
                 LoadForm(doctorForm, panelDoctorData);
                 doctorForm.Reload();
+            }
+            else if (selectedTab == tabPageAdminRole) 
+            {
+                LoadForm(newAdmin, panelAdmin);
+                newAdmin.getData();
+                newAdmin.ClearFileds();
+
             }
             else if (selectedTab == tabPageReceptionsit)
             {

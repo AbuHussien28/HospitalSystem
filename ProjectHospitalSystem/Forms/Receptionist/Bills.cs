@@ -246,7 +246,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                 }
 
                 Payment paymentForm = new Payment(billId);
-                paymentForm.PaymentCompleted += () => LoadBillsData(); // تحديث البيانات عند إغلاق فورم الدفع
+                paymentForm.PaymentCompleted += () => LoadBillsData(); 
                 paymentForm.ShowDialog();
             }
             else

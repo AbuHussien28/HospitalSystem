@@ -98,9 +98,10 @@ namespace ProjectHospitalSystem.Forms.Receptionist
         {
             try
             {
-
-                string senderEmail = "ayaelzoghby651@gmail.com";
-                string senderPassword = "fwvu ubds dssr aurw";
+                // put the yourEmail Here 
+                string senderEmail = "";
+                // put the your Pasword Here 
+                string senderPassword = "";
 
                 MailMessage mail = new MailMessage();
                 mail.From = new MailAddress(senderEmail);
@@ -233,9 +234,21 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                 PatientId = pid,
                 AppointmentDateTime = finalAppointmentDateTime
             };
-
             db.Appointments.Add(newAppointment);
-            db.SaveChanges();
+            var existApp = db.Appointments
+ .Any(a => a.PatientId == pid && a.AppointmentDateTime == finalAppointmentDateTime);
+
+            if (existApp)
+            {
+                MessageBox.Show("This patient already has an appointment at the selected time.", "Duplicate Appointment", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            else
+            {
+                db.SaveChanges();
+                MessageBox.Show("Appointment booked successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClearFields();
+            }
 
             MessageBox.Show("Appointment booked successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             ClearFields();
@@ -245,6 +258,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
             {
                 SendConfirmationEmail(patient.Email, patientFullName, doctorFullName, specializationOrDept, finalAppointmentDateTime);
             }
+
         }
         private void ClearFields()
         {

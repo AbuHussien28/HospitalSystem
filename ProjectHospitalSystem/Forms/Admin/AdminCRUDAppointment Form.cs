@@ -76,7 +76,7 @@ namespace ProjectHospitalSystem.Forms.Admin
                     .FirstOrDefault(ds => ds.DoctorDetailsId == doctorDetailsId && ds.ScheduleDay.Date == selectedDateTime.Date);
                 if (!ValidateAppointmentDateTime())
                     return;
-                if (existingSchedule != null)
+                if (IsScheduleUnique(selectedDateTime, doctorDetailsId))
                 {
                     MessageBox.Show("An appointment already exists for this doctor at the selected date and time.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
