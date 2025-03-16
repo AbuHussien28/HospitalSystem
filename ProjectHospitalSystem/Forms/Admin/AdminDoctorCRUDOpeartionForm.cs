@@ -281,9 +281,10 @@ namespace ProjectHospitalSystem.Forms.Admin
             txt_Specialization.Clear();
             txtBoxDoctorSerachData.Clear();
         }
-        public void Reload()
+        public async void Reload()
         {
             ResetForm();
+            await LoadData();
         }
         #endregion
 

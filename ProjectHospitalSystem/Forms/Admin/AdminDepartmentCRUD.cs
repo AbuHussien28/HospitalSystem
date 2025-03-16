@@ -302,6 +302,7 @@ namespace ProjectHospitalSystem.Forms.Admin
         {
             ClearFrom();
             LoadDepartmentData();
+            LoadDoctors();
         }
         #endregion
 

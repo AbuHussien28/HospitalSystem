@@ -22,12 +22,6 @@ namespace ProjectHospitalSystem.Models
         public string LabResult { get; set; }
         [Required, MaxLength(150)]
         public string TreatmentDetails { get; set; }
-        //[ForeignKey("Patient")]
-        //public int? PatientId { get; set; }
-        //public virtual Patient Patient { get; set; }
-        //[ForeignKey("Doctor")]
-        //public int? DoctorDetailsId { get; set; }
-        //public virtual DoctorDetails Doctor { get; set; }
         public virtual Appointment Appointments { get; set; }
     }
 }
