@@ -82,24 +82,35 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         private void btn_AdminPaymentMethodUpdate_Click(object sender, EventArgs e)
         {
-            PaymentMethod updatedSelectedPaymentMethod = _context.PaymentMethods.Where(n => n.paymentMethodId == selectedPaymentMethodId).FirstOrDefault();
-            if (_context.PaymentMethods.Any(p => p.paymentMethodName.ToLower() == txt_AdminPaymentMethod.Text.ToLower() && p.paymentMethodId != selectedPaymentMethodId))
-            {
-                MessageBox.Show($"Payment Method with name '{txt_AdminPaymentMethod.Text}' already exists!",
-                    "Duplicate Payment Method", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            PaymentMethod updatedSelectedPaymentMethod = _context.PaymentMethods
+                .Where(n => n.paymentMethodId == selectedPaymentMethodId)
+                .FirstOrDefault();
+
             if (updatedSelectedPaymentMethod != null)
             {
+                if (updatedSelectedPaymentMethod.paymentMethodName == txt_AdminPaymentMethod.Text)
+                {
+                    MessageBox.Show("No changes detected. Update skipped.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                if (_context.PaymentMethods.Any(p => p.paymentMethodName.ToLower() == txt_AdminPaymentMethod.Text.ToLower() && p.paymentMethodId != selectedPaymentMethodId))
+                {
+                    MessageBox.Show($"Payment Method with name '{txt_AdminPaymentMethod.Text}' already exists!",
+                        "Duplicate Payment Method", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 updatedSelectedPaymentMethod.paymentMethodName = txt_AdminPaymentMethod.Text;
                 _context.SaveChanges();
                 LoadPaymentMethods();
                 txt_AdminPaymentMethod.Text = "";
-                MessageBox.Show($"Updated PaymentMethod: {updatedSelectedPaymentMethod.paymentMethodName} Success");
+                MessageBox.Show($"Updated PaymentMethod: {updatedSelectedPaymentMethod.paymentMethodName} Success", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 SetButtonVisibility(true);
             }
+            else
+            {
+                MessageBox.Show("Payment Method not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
-
         private void btn_AdminPaymentMethodRemove_Click(object sender, EventArgs e)
         {
             PaymentMethod removeSelectedPaymentMethod = _context.PaymentMethods.Where(n => n.paymentMethodId == selectedPaymentMethodId).FirstOrDefault();

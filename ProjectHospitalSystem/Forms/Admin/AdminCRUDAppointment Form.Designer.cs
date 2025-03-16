@@ -32,6 +32,7 @@
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             dgv_Appointment = new DataGridView();
+            IconImageAppoinment = new DataGridViewImageColumn();
             pictureBox1 = new PictureBox();
             lbReceptionsitNameSearch = new Label();
             pnlReceDetails = new Panel();
@@ -80,6 +81,7 @@
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dgv_Appointment.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgv_Appointment.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_Appointment.Columns.AddRange(new DataGridViewColumn[] { IconImageAppoinment });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -91,10 +93,19 @@
             dgv_Appointment.EnableHeadersVisualStyles = false;
             dgv_Appointment.Location = new Point(18, 66);
             dgv_Appointment.Name = "dgv_Appointment";
+            dgv_Appointment.RowHeadersVisible = false;
             dgv_Appointment.RowTemplate.Height = 40;
             dgv_Appointment.Size = new Size(723, 205);
             dgv_Appointment.TabIndex = 94;
-            dgv_Appointment.RowHeaderMouseDoubleClick += dgv_Appointment_RowHeaderMouseDoubleClick;
+            dgv_Appointment.CellMouseDoubleClick += dgv_Appointment_CellMouseDoubleClick;
+            // 
+            // IconImageAppoinment
+            // 
+            IconImageAppoinment.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            IconImageAppoinment.HeaderText = "Icon";
+            IconImageAppoinment.Image = Properties.Resources.IconAppoinmentDgv;
+            IconImageAppoinment.Name = "IconImageAppoinment";
+            IconImageAppoinment.Width = 47;
             // 
             // pictureBox1
             // 
@@ -130,9 +141,9 @@
             pnlReceDetails.Controls.Add(pBoxDeptName);
             pnlReceDetails.Controls.Add(lb_Doctor);
             pnlReceDetails.Controls.Add(lb_DeptName);
-            pnlReceDetails.Location = new Point(18, 312);
+            pnlReceDetails.Location = new Point(18, 294);
             pnlReceDetails.Name = "pnlReceDetails";
-            pnlReceDetails.Size = new Size(830, 127);
+            pnlReceDetails.Size = new Size(487, 229);
             pnlReceDetails.TabIndex = 103;
             // 
             // lbSelectedAppoinment
@@ -140,21 +151,21 @@
             lbSelectedAppoinment.AutoSize = true;
             lbSelectedAppoinment.BackColor = Color.Transparent;
             lbSelectedAppoinment.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lbSelectedAppoinment.Location = new Point(41, 66);
+            lbSelectedAppoinment.Location = new Point(41, 140);
             lbSelectedAppoinment.Name = "lbSelectedAppoinment";
-            lbSelectedAppoinment.Size = new Size(252, 21);
+            lbSelectedAppoinment.Size = new Size(162, 42);
             lbSelectedAppoinment.TabIndex = 114;
-            lbSelectedAppoinment.Text = "Select Appointment Date & Time:";
-            lbSelectedAppoinment.TextAlign = ContentAlignment.MiddleRight;
+            lbSelectedAppoinment.Text = "Select Appointment\r\n Date & Time:";
+            lbSelectedAppoinment.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // dtp_AppoinmnetDate
             // 
             dtp_AppoinmnetDate.CustomFormat = "yyyy-MM-dd HH:mm";
             dtp_AppoinmnetDate.Font = new Font("Segoe UI", 12F);
             dtp_AppoinmnetDate.Format = DateTimePickerFormat.Custom;
-            dtp_AppoinmnetDate.Location = new Point(299, 64);
+            dtp_AppoinmnetDate.Location = new Point(203, 145);
             dtp_AppoinmnetDate.Name = "dtp_AppoinmnetDate";
-            dtp_AppoinmnetDate.Size = new Size(219, 29);
+            dtp_AppoinmnetDate.Size = new Size(233, 29);
             dtp_AppoinmnetDate.TabIndex = 113;
             // 
             // cb_Doctor
@@ -163,7 +174,7 @@
             cb_Doctor.Font = new Font("Segoe UI", 12F);
             cb_Doctor.ForeColor = Color.Black;
             cb_Doctor.FormattingEnabled = true;
-            cb_Doctor.Location = new Point(592, 29);
+            cb_Doctor.Location = new Point(203, 78);
             cb_Doctor.Name = "cb_Doctor";
             cb_Doctor.Size = new Size(233, 29);
             cb_Doctor.TabIndex = 112;
@@ -183,7 +194,7 @@
             // pictureBox4
             // 
             pictureBox4.Image = Properties.Resources.IconPatBirth;
-            pictureBox4.Location = new Point(11, 66);
+            pictureBox4.Location = new Point(11, 140);
             pictureBox4.Name = "pictureBox4";
             pictureBox4.Size = new Size(24, 24);
             pictureBox4.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -193,7 +204,7 @@
             // pBoxDoctorName
             // 
             pBoxDoctorName.Image = Properties.Resources.IconDoctorData;
-            pBoxDoctorName.Location = new Point(450, 30);
+            pBoxDoctorName.Location = new Point(11, 75);
             pBoxDoctorName.Name = "pBoxDoctorName";
             pBoxDoctorName.Size = new Size(24, 24);
             pBoxDoctorName.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -215,7 +226,7 @@
             lb_Doctor.AutoSize = true;
             lb_Doctor.BackColor = Color.Transparent;
             lb_Doctor.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lb_Doctor.Location = new Point(480, 32);
+            lb_Doctor.Location = new Point(50, 78);
             lb_Doctor.Name = "lb_Doctor";
             lb_Doctor.Size = new Size(116, 21);
             lb_Doctor.TabIndex = 91;
@@ -256,7 +267,7 @@
             btn_delete.ForeColor = Color.White;
             btn_delete.Image = Properties.Resources.IconRemovedOCTOR;
             btn_delete.ImageAlign = ContentAlignment.MiddleLeft;
-            btn_delete.Location = new Point(772, 218);
+            btn_delete.Location = new Point(523, 470);
             btn_delete.Name = "btn_delete";
             btn_delete.Size = new Size(221, 53);
             btn_delete.TabIndex = 117;
@@ -264,6 +275,7 @@
             btn_delete.TextImageRelation = TextImageRelation.ImageBeforeText;
             btn_delete.UseVisualStyleBackColor = false;
             btn_delete.Visible = false;
+            btn_delete.Click += btn_delete_Click;
             // 
             // btn_Update
             // 
@@ -277,7 +289,7 @@
             btn_Update.ForeColor = Color.White;
             btn_Update.Image = Properties.Resources.IconUpdateAdmin;
             btn_Update.ImageAlign = ContentAlignment.MiddleLeft;
-            btn_Update.Location = new Point(772, 142);
+            btn_Update.Location = new Point(526, 385);
             btn_Update.Name = "btn_Update";
             btn_Update.Size = new Size(218, 53);
             btn_Update.TabIndex = 116;
@@ -299,7 +311,7 @@
             btn_add.ForeColor = Color.White;
             btn_add.Image = Properties.Resources.IconAddDate;
             btn_add.ImageAlign = ContentAlignment.MiddleLeft;
-            btn_add.Location = new Point(772, 66);
+            btn_add.Location = new Point(523, 310);
             btn_add.Name = "btn_add";
             btn_add.Size = new Size(218, 53);
             btn_add.TabIndex = 115;
@@ -361,7 +373,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(254, 251, 244);
-            ClientSize = new Size(1223, 760);
+            ClientSize = new Size(780, 558);
             Controls.Add(pBoxClearFilterDate);
             Controls.Add(pBoxFilterDate);
             Controls.Add(lb_clearFilter);
@@ -425,5 +437,6 @@
         private Label lb_clearFilter;
         private PictureBox pBoxFilterDate;
         private PictureBox pBoxClearFilterDate;
+        private DataGridViewImageColumn IconImageAppoinment;
     }
 }

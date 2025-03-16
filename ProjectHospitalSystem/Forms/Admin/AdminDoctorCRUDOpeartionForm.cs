@@ -105,8 +105,22 @@ namespace ProjectHospitalSystem.Forms.Admin
         private void btn_Update_Click(object sender, EventArgs e)
         {
             DoctorDetails doctor = _context.Doctors.Where(n => n.UserId == DoctorSelectedId).SingleOrDefault();
+
             if (doctor != null)
             {
+                bool isChanged = doctor.User.UserName != txt_username.Text ||
+                                 doctor.User.FName != txt_Fname.Text ||
+                                 doctor.User.LName != txt_Lname.Text ||
+                                 doctor.User.Email != txt_Email.Text ||
+                                 doctor.User.PhoneNumber != txt_phone.Text ||
+                                 doctor.Specialization != txt_Specialization.Text ||
+                                 doctor.DeptId != Convert.ToInt32(cb_DeptName.SelectedValue);
+
+                if (!isChanged)
+                {
+                    MessageBox.Show("No changes detected. Update skipped.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
                 doctor.User.UserName = txt_username.Text;
                 doctor.User.FName = txt_Fname.Text;
                 doctor.User.LName = txt_Lname.Text;
@@ -117,8 +131,12 @@ namespace ProjectHospitalSystem.Forms.Admin
                 _context.SaveChanges();
                 ResetForm();
                 LoadData();
-                MessageBox.Show("Updated Done");
+                MessageBox.Show("Update Successful", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 SetButtonAndTxtPasswordVisibility(isAddMode: true);
+            }
+            else
+            {
+                MessageBox.Show("Doctor not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -191,6 +209,9 @@ namespace ProjectHospitalSystem.Forms.Admin
                 MessageBox.Show($"Error loading filtered data: {ex.Message}");
             }
         }
+
+        private void pBoxShowPassword_Click(object sender, EventArgs e) => TogglePasswordVisibility();
+        private void pBoxShowConfrimPassword_Click(object sender, EventArgs e) => ToggleConfrimPasswordVisibility();
         #endregion
         #region Helper Methods
         private async Task LoadData()
@@ -248,6 +269,8 @@ namespace ProjectHospitalSystem.Forms.Admin
             lb_confirmPassword.Visible = isAddMode;
             pBoxPassword.Visible = isAddMode;
             pBoxConfirmPassword.Visible = isAddMode;
+            pBoxShowPassword.Visible = isAddMode;
+            pBoxShowConfrimPassword.Visible = isAddMode;
         }
 
 
@@ -285,6 +308,32 @@ namespace ProjectHospitalSystem.Forms.Admin
         {
             ResetForm();
             await LoadData();
+        }
+        private void TogglePasswordVisibility()
+        {
+            if (txt_Password.UseSystemPasswordChar)
+            {
+                pBoxShowPassword.Image = Properties.Resources.IconUnShowPassword;
+                txt_Password.UseSystemPasswordChar = false;
+            }
+            else
+            {
+                pBoxShowPassword.Image = Properties.Resources.IconShowPassword;
+                txt_Password.UseSystemPasswordChar = true;
+            }
+        }
+        private void ToggleConfrimPasswordVisibility()
+        {
+            if (txt_confirmPassword.UseSystemPasswordChar)
+            {
+                pBoxShowConfrimPassword.Image = Properties.Resources.IconUnShowPassword;
+                txt_confirmPassword.UseSystemPasswordChar = false;
+            }
+            else
+            {
+                pBoxShowConfrimPassword.Image = Properties.Resources.IconShowPassword;
+                txt_confirmPassword.UseSystemPasswordChar = true;
+            }
         }
         #endregion
 

@@ -174,21 +174,45 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         private void btn_Update_Click(object sender, EventArgs e)
         {
-            var patient = _context.Patients.SingleOrDefault(n => n.PatientId == _selectedPatientId);
-            if (IsPatientNameExists(txt_Fname.Text, txt_Lname.Text, _selectedPatientId))
+            try
             {
-                MessageBox.Show("A patient with the same name already exists.", "Duplicate Patient", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            if (patient != null)
-            {
+                var patient = _context.Patients.SingleOrDefault(n => n.PatientId == _selectedPatientId);
+
+                if (patient == null)
+                {
+                    MessageBox.Show("Patient not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                bool isChanged = patient.FirstName != txt_Fname.Text ||
+                                 patient.LastName != txt_Lname.Text ||
+                                 patient.DateOfBirth != dtp_BirthDate.Value ||
+                                 patient.Gender != (rb_Male.Checked ? "Male" : rb_Female.Checked ? "Female" : "Other") ||
+                                 patient.Email != txt_Email.Text ||
+                                 patient.PhoneNumber != txt_phone.Text ||
+                                 patient.Address != txt_Address.Text ||
+                                 patient.MedicalHistory != GetMedicalHistory();
+
+                if (!isChanged)
+                {
+                    MessageBox.Show("No changes detected. Update skipped.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                if (IsPatientNameExists(txt_Fname.Text, txt_Lname.Text, _selectedPatientId))
+                {
+                    MessageBox.Show("A patient with the same name already exists.", "Duplicate Patient", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 UpdatePatientData(patient);
                 _context.SaveChanges();
-                MessageBox.Show("Updated Done");
+                LoadDataAsync();
+                ClearFields();
+                MessageBox.Show("Patient updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 SetButtonVisibility(isAddMode: true, _user);
             }
-            LoadDataAsync();
-            ClearFields();
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating patient: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         private void UpdatePatientData(Patient patient)
         {

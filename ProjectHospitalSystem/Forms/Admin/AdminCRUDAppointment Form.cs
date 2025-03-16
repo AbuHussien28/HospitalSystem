@@ -13,6 +13,7 @@ namespace ProjectHospitalSystem.Forms.Admin
         HospitalSystemContext db;
         private int _selectedDoctorId;
         private DateTime _oldScheduleDate;
+        int _selectedId;
         public Appointment_Form()
         {
             InitializeComponent();
@@ -72,15 +73,15 @@ namespace ProjectHospitalSystem.Forms.Admin
             {
                 DateTime selectedDateTime = dtp_AppoinmnetDate.Value;
                 int doctorDetailsId = (int)cb_Doctor.SelectedValue;
-                var existingSchedule = db.Doctor_Schedules
-                    .FirstOrDefault(ds => ds.DoctorDetailsId == doctorDetailsId && ds.ScheduleDay.Date == selectedDateTime.Date);
                 if (!ValidateAppointmentDateTime())
                     return;
-                if (IsScheduleUnique(selectedDateTime, doctorDetailsId))
+                if (!IsScheduleUnique(selectedDateTime, doctorDetailsId))
                 {
                     MessageBox.Show("An appointment already exists for this doctor at the selected date and time.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+                var existingSchedule = db.Doctor_Schedules
+                    .FirstOrDefault(ds => ds.DoctorDetailsId == doctorDetailsId && ds.ScheduleDay.Date == selectedDateTime.Date);
                 if (existingSchedule == null)
                 {
                     var newSchedule = new Doctor_Schedule
@@ -118,53 +119,47 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         private void dgv_Appointment_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            int id = (int)dgv_Appointment.SelectedRows[0].Cells[0].Value;
-            var appointment = db.Appointments.FirstOrDefault(n => n.AppointmentId == id);
-            if (appointment != null)
-            {
-                _selectedDoctorId = appointment.DoctorDetailsId ?? 0;
-                _oldScheduleDate = appointment.AppointmentDateTime;
-                dtp_AppoinmnetDate.Value = appointment.AppointmentDateTime;
-                cb_Doctor.SelectedValue = appointment.DoctorDetailsId;
-                cb_Depart.Hide();
-                cb_Doctor.Hide();
-                lb_DeptName.Hide();
-                pBoxDeptName.Hide();
-                pBoxDoctorName.Hide();
-                lb_Doctor.Hide();
-                btn_add.Hide();
-                btn_Update.Show();
-                btn_delete.Show();
-            }
+           
         }
         private void btn_Update_Click(object sender, EventArgs e)
         {
+            if (_selectedId == 0) 
+            {
+                MessageBox.Show("Please select a row to update.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (!ValidateAppointmentDateTime())
                 return;
+           
             try
             {
-                int appointmentId = (int)dgv_Appointment.SelectedRows[0].Cells["AppointmentId"].Value;
-                DateTime selectedDateTime = dtp_AppoinmnetDate.Value;
-                var appointment = db.Appointments.FirstOrDefault(a => a.AppointmentId == appointmentId);
+                var appointment = db.Appointments.FirstOrDefault(a => a.AppointmentId == _selectedId);
+
                 if (appointment == null)
                 {
                     MessageBox.Show("Appointment not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+
+                DateTime selectedDateTime = dtp_AppoinmnetDate.Value;
                 if (appointment.AppointmentDateTime == selectedDateTime)
                 {
                     MessageBox.Show("No changes detected. Please modify the appointment before updating.", "No Changes", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
+                if (!IsScheduleUnique(selectedDateTime, appointment.DoctorDetailsId))
+                {
+                    MessageBox.Show("An appointment already exists for this doctor at the selected date and time.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 appointment.AppointmentDateTime = selectedDateTime;
                 db.SaveChanges();
-                MessageBox.Show("Appointment updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                MessageBox.Show("Appointment date updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 getAppointmentDate();
                 ClearFields();
-            }
-            catch (InvalidOperationException ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
@@ -180,49 +175,46 @@ namespace ProjectHospitalSystem.Forms.Admin
                 btn_delete.Hide();
                 pBoxDeptName.Show();
                 pBoxDoctorName.Show();
+                btn_add.Show();
             }
         }
 
         private void btn_delete_Click(object sender, EventArgs e)
         {
-            if (dgv_Appointment.SelectedRows.Count > 0)
+            if (_selectedId == 0) 
             {
-                DialogResult result = MessageBox.Show(
-                    "Are you sure you want to delete this appointment?",
-                    "Confirm Delete",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
+                MessageBox.Show("Please select an appointment to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            DialogResult result = MessageBox.Show(
+                "Are you sure you want to delete this appointment?",
+                "Confirm Delete",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
 
-                if (result == DialogResult.Yes)
+            if (result == DialogResult.Yes)
+            {
+                try
                 {
-                    try
-                    {
-                        int appointmentId = (int)dgv_Appointment.SelectedRows[0].Cells["AppointmentId"].Value;
+                    var appointment = db.Appointments.FirstOrDefault(a => a.AppointmentId == _selectedId);
 
-                        var appointmentService = new AppointmentService(db);
-                        appointmentService.DeleteAppointmentAsync(appointmentId).Wait();
+                    if (appointment != null)
+                    {
+                        db.Appointments.Remove(appointment);
+                        db.SaveChanges();
 
                         MessageBox.Show("Appointment deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         getAppointmentDate();
                         ClearFields();
                     }
-                    catch (InvalidOperationException ex)
-                    {
-                        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Error deleting appointment: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Please select an appointment to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"Error deleting appointment: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            ClearFields();
         }
-      private void lbBtnFilter_Click(object sender, EventArgs e)
+        private void lbBtnFilter_Click(object sender, EventArgs e)
         {
             try
             {
@@ -244,6 +236,7 @@ namespace ProjectHospitalSystem.Forms.Admin
                     .ToList();
                 dgv_Appointment.DataSource = filteredAppointments;
                 dgv_Appointment.Columns["AppointmentId"].Visible = false;
+                dgv_Appointment.Columns["DoctorDetailsId"].Visible = false;
                 pBoxClearFilterDate.Show();
                 lb_clearFilter.Show();
                 lbBtnFilter.Hide();
@@ -284,9 +277,24 @@ namespace ProjectHospitalSystem.Forms.Admin
             }
             return true;
         }
-        private bool IsScheduleUnique(DateTime scheduleDay, int doctorDetailsId)
+        private bool IsScheduleUnique(DateTime scheduleDay, int? doctorDetailsId)
         {
-            return !db.Doctor_Schedules.Any(ds => ds.ScheduleDay.Date == scheduleDay.Date && ds.DoctorDetailsId == doctorDetailsId);
+            DateTime truncatedDateTime = new DateTime(
+                scheduleDay.Year,
+                scheduleDay.Month,
+                scheduleDay.Day,
+                scheduleDay.Hour,
+                scheduleDay.Minute,
+                0
+            );
+            bool isUnique = !db.Appointments.Any(a =>
+                a.DoctorDetailsId == doctorDetailsId &&
+                a.AppointmentDateTime.Year == truncatedDateTime.Year &&
+                a.AppointmentDateTime.Month == truncatedDateTime.Month &&
+                a.AppointmentDateTime.Day == truncatedDateTime.Day &&
+                a.AppointmentDateTime.Hour == truncatedDateTime.Hour &&
+                a.AppointmentDateTime.Minute == truncatedDateTime.Minute);
+            return isUnique;
         }
         private void ClearFields()
         {
@@ -303,6 +311,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             btn_delete.Hide();
             btn_add.Show();
             dtp_FilterDate.Value = DateTime.Today;
+            _selectedId = 0;
 
         }
         public void Reload()
@@ -315,5 +324,35 @@ namespace ProjectHospitalSystem.Forms.Admin
             pBoxFilterDate.Show();
         }
         #endregion
+
+        private void dgv_Appointment_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+           if (e.RowIndex >= 0 && e.RowIndex < dgv_Appointment.Rows.Count)
+            {
+                if (dgv_Appointment.Columns.Contains("AppointmentId"))
+                {
+                    _selectedId = (int)dgv_Appointment.Rows[e.RowIndex].Cells["AppointmentId"].Value;
+                    var appointment = db.Appointments.FirstOrDefault(a => a.AppointmentId == _selectedId);
+
+                    if (appointment != null)
+                    {
+                        dtp_AppoinmnetDate.Value = appointment.AppointmentDateTime;
+                        cb_Depart.Hide();
+                        cb_Doctor.Hide();
+                        lb_DeptName.Hide();
+                        pBoxDeptName.Hide();
+                        pBoxDoctorName.Hide();
+                        lb_Doctor.Hide();
+                        btn_add.Hide();
+                        btn_Update.Show();
+                        btn_delete.Show();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Appointment not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
     }
 }

@@ -87,6 +87,7 @@
             imageList1.Images.SetKeyName(6, "IconHome.png");
             imageList1.Images.SetKeyName(7, "IconLogout.png");
             imageList1.Images.SetKeyName(8, "IconAppoimnet.png");
+            imageList1.Images.SetKeyName(9, "IconAdminTab.png");
             // 
             // AdminTabContol
             // 
@@ -126,6 +127,7 @@
             // tabPageAdminRole
             // 
             tabPageAdminRole.Controls.Add(panelAdmin);
+            tabPageAdminRole.ImageKey = "IconAdminTab.png";
             tabPageAdminRole.Location = new Point(4, 31);
             tabPageAdminRole.Name = "tabPageAdminRole";
             tabPageAdminRole.Padding = new Padding(3);

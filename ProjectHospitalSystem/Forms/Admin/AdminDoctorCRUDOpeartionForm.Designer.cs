@@ -39,7 +39,9 @@
             txtBoxDoctorSerachData = new TextBox();
             lbDoctorNameSearch = new Label();
             pnlDoctorDetails = new Panel();
+            pBoxShowConfrimPassword = new PictureBox();
             pictureBox10 = new PictureBox();
+            pBoxShowPassword = new PictureBox();
             pBoxConfirmPassword = new PictureBox();
             pictureBox8 = new PictureBox();
             pictureBox9 = new PictureBox();
@@ -69,7 +71,9 @@
             pictureBox1 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dgv_AdminDoctors).BeginInit();
             pnlDoctorDetails.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pBoxShowConfrimPassword).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox10).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pBoxShowPassword).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pBoxConfirmPassword).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox8).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox9).BeginInit();
@@ -217,7 +221,9 @@
             // pnlDoctorDetails
             // 
             pnlDoctorDetails.BackColor = Color.WhiteSmoke;
+            pnlDoctorDetails.Controls.Add(pBoxShowConfrimPassword);
             pnlDoctorDetails.Controls.Add(pictureBox10);
+            pnlDoctorDetails.Controls.Add(pBoxShowPassword);
             pnlDoctorDetails.Controls.Add(pBoxConfirmPassword);
             pnlDoctorDetails.Controls.Add(pictureBox8);
             pnlDoctorDetails.Controls.Add(pictureBox9);
@@ -249,6 +255,18 @@
             pnlDoctorDetails.Size = new Size(830, 225);
             pnlDoctorDetails.TabIndex = 91;
             // 
+            // pBoxShowConfrimPassword
+            // 
+            pBoxShowConfrimPassword.BackColor = Color.White;
+            pBoxShowConfrimPassword.Image = Properties.Resources.IconShowPassword;
+            pBoxShowConfrimPassword.Location = new Point(791, 150);
+            pBoxShowConfrimPassword.Name = "pBoxShowConfrimPassword";
+            pBoxShowConfrimPassword.Size = new Size(24, 24);
+            pBoxShowConfrimPassword.SizeMode = PictureBoxSizeMode.AutoSize;
+            pBoxShowConfrimPassword.TabIndex = 117;
+            pBoxShowConfrimPassword.TabStop = false;
+            pBoxShowConfrimPassword.Click += pBoxShowConfrimPassword_Click;
+            // 
             // pictureBox10
             // 
             pictureBox10.Image = Properties.Resources.IconDepartment;
@@ -258,6 +276,18 @@
             pictureBox10.SizeMode = PictureBoxSizeMode.AutoSize;
             pictureBox10.TabIndex = 114;
             pictureBox10.TabStop = false;
+            // 
+            // pBoxShowPassword
+            // 
+            pBoxShowPassword.BackColor = Color.White;
+            pBoxShowPassword.Image = Properties.Resources.IconShowPassword;
+            pBoxShowPassword.Location = new Point(349, 152);
+            pBoxShowPassword.Name = "pBoxShowPassword";
+            pBoxShowPassword.Size = new Size(24, 24);
+            pBoxShowPassword.SizeMode = PictureBoxSizeMode.AutoSize;
+            pBoxShowPassword.TabIndex = 116;
+            pBoxShowPassword.TabStop = false;
+            pBoxShowPassword.Click += pBoxShowPassword_Click;
             // 
             // pBoxConfirmPassword
             // 
@@ -587,7 +617,9 @@
             ((System.ComponentModel.ISupportInitialize)dgv_AdminDoctors).EndInit();
             pnlDoctorDetails.ResumeLayout(false);
             pnlDoctorDetails.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pBoxShowConfrimPassword).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox10).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pBoxShowPassword).EndInit();
             ((System.ComponentModel.ISupportInitialize)pBoxConfirmPassword).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox8).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox9).EndInit();
@@ -638,5 +670,7 @@
         private PictureBox pictureBox6;
         private PictureBox pictureBox4;
         private PictureBox pictureBox10;
+        private PictureBox pBoxShowConfrimPassword;
+        private PictureBox pBoxShowPassword;
     }
 }

@@ -71,8 +71,7 @@ namespace ProjectHospitalSystem.Forms.Admin
             else if (selectedTab == tabPageAdminRole) 
             {
                 LoadForm(newAdmin, panelAdmin);
-                newAdmin.getData();
-                newAdmin.ClearFileds();
+                newAdmin.Reload();
 
             }
             else if (selectedTab == tabPageReceptionsit)
