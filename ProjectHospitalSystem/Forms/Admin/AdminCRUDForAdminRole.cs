@@ -68,6 +68,8 @@ namespace ProjectHospitalSystem.Forms.Admin
                 lb_password.Hide();
                 txt_confirmPassword.Hide();
                 lb_confirmPassword.Hide();
+                pBoxPassword.Hide();
+                pBoxConfirmPassword.Hide();
                 pBoxShowPassword.Hide();
                 pBoxShowConfrimPassword.Hide();
             }
@@ -137,6 +139,8 @@ namespace ProjectHospitalSystem.Forms.Admin
                 lb_password.Show();
                 txt_confirmPassword.Show();
                 lb_confirmPassword.Show();
+                pBoxPassword.Show();
+                pBoxConfirmPassword.Show();
                 pBoxShowPassword.Show();
                 pBoxShowConfrimPassword.Show();
             }
@@ -235,6 +239,8 @@ namespace ProjectHospitalSystem.Forms.Admin
             lb_password.Show();
             txt_confirmPassword.Show();
             lb_confirmPassword.Show();
+            pBoxPassword.Show();
+            pBoxConfirmPassword.Show();
             pBoxShowPassword.Show();
             pBoxShowConfrimPassword.Show();
             btn_Add.Show();

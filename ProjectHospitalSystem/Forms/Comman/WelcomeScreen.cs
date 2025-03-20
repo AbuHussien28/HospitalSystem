@@ -128,11 +128,13 @@ namespace ProjectHospitalSystem
                 case "Doctor":
                     var doctorDashboard = new DoctorUser(user);
                     doctorDashboard.Show();
+                    this.Hide();
                     break;
 
                 case "Receptionist":
-                    var receptionistDashboard = new Dashboard1(user.UserId);
+                    var receptionistDashboard = new HomeReception(user);
                     receptionistDashboard.Show();
+                    this.Hide();
                     break;
 
                 default:

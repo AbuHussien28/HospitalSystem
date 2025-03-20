@@ -25,13 +25,6 @@ namespace ProjectHospitalSystem.Forms.Receptionist
             userid = uid;
             db = new HospitalSystemContext();
             ConfigureAutoComplete();
-            //materialSkinManager = MaterialSkinManager.Instance;
-            //materialSkinManager.AddFormToManage(this);
-            //materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-            //materialSkinManager.ColorScheme = new ColorScheme(
-            //    Primary.Blue800, Primary.Blue800, Primary.Blue800,
-            //    Accent.LightBlue700, TextShade.WHITE
-            //);
         }
         private async void ConfigureAutoComplete()
         {
@@ -163,7 +156,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
 
 
             dgv_doctors.DataSource = filteredDoctors;
-           
+
         }
 
         private void btn_bookApp_Click(object sender, EventArgs e)
@@ -207,7 +200,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
             int doctorUserId = doctor.UserId ?? 1;
             string specializationOrDept = doctor.Dept?.DeptName ?? doctor.Specialization ?? "Not Available";
 
-         
+
             if (comboBox_date.SelectedItem == null || comboBox_date.SelectedItem.ToString() == "No Schedule")
             {
                 MessageBox.Show("Please select a valid appointment time.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -274,10 +267,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
 
             if (e.RowIndex >= 0)
             {
-
                 DataGridViewRow row = dgv_doctors.Rows[e.RowIndex];
-
-
                 string doctorName = row.Cells[0].Value?.ToString() ?? "";
                 string departmentName = row.Cells[2].Value?.ToString() ?? "";
                 comEdit_doctor.Text = doctorName;
@@ -324,5 +314,54 @@ namespace ProjectHospitalSystem.Forms.Receptionist
         {
 
         }
+
+        private void dgv_doctors_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0) // Ensure the click is on a valid cell
+            {
+                DataGridViewRow row = dgv_doctors.Rows[e.RowIndex];
+
+                // Safely get the cell values
+                string doctorName = row.Cells["FullName"].Value?.ToString() ?? "";
+                string departmentName = row.Cells["DeptName"].Value?.ToString() ?? "";
+
+                if (string.IsNullOrEmpty(doctorName))
+                {
+                    MessageBox.Show("Invalid selection. No doctor found!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                comEdit_doctor.Text = doctorName;
+                comboxEdit_dept.Text = departmentName;
+
+                var doctor = db.Doctors
+                               .Include(d => d.doctorSchedule)
+                               .Include(d => d.User)
+                               .Include(d => d.Dept)
+                               .FirstOrDefault(d => (d.User.FName + " " + d.User.LName) == doctorName);
+
+                if (doctor == null)
+                {
+                    MessageBox.Show("Doctor not found in the database!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                comboBox_date.Properties.Items.Clear();
+                if (doctor.doctorSchedule == null || !doctor.doctorSchedule.Any())
+                {
+                    comboBox_date.Properties.Items.Add("No Schedule");
+                    comboBox_date.SelectedIndex = 0;
+                    return;
+                }
+
+                foreach (var schedule in doctor.doctorSchedule)
+                {
+                    comboBox_date.Properties.Items.Add(schedule.ScheduleDay.ToString("yyyy-MM-dd HH:mm"));
+                }
+                comboBox_date.SelectedIndex = 0;
+            }
+        }
+
+  
     }
 }

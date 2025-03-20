@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DevExpress.XtraRichEdit.Layout;
+using Microsoft.EntityFrameworkCore;
 using ProjectHospitalSystem.Migrations;
 using ProjectHospitalSystem.Models;
 using System;
@@ -77,6 +78,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
             comb_searchBy.SelectedIndex = 0;
             combx_status.SelectedIndex = 0;
             SearchAppointments();
+            ResetForm();
         }
         private void SearchAppointments()
         {
@@ -144,6 +146,9 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                 {
                     Rbtn_Nsent.Checked = true;
                 }
+                btn_new.Visible = false;
+                btn_edit.Visible = true;
+                btn_delete.Visible = true;
             }
         }
 
@@ -159,8 +164,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
 
         private void btn_new_Click(object sender, EventArgs e)
         {
-
-             New_Appointment  newa= new New_Appointment(userid);
+            New_Appointment  newa= new New_Appointment(userid);
             newa.Show();
         }
 
@@ -204,12 +208,11 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                                     CreateBillForAppointment(appointment);
                                 }
                             }
-
+                       
                             db.SaveChanges();
                             MessageBox.Show("Appointment status updated successfully!");
                         }
                     }
-
                     appointment.Note = txt_note.Text;
                     appointment.ReminderSent = Rbtn_sent.Checked;
                     appointment.AppointmentDateTime = Convert.ToDateTime(txt_date.Text);
@@ -217,6 +220,9 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                     db.SaveChanges();
                     LoadAppointemtData();
                     MessageBox.Show("Appointment updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    btn_new.Visible = true;
+                    btn_edit.Visible = false;
+                    btn_delete.Visible = false;
                 }
             }
             else
@@ -253,6 +259,9 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                         db.SaveChanges();
                         LoadAppointemtData();
                         MessageBox.Show("Appointment Canceled successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        btn_new.Visible = true;
+                        btn_edit.Visible = false;
+                        btn_delete.Visible = false;
                     }
                 }
             }
@@ -261,6 +270,27 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                 MessageBox.Show("Please select an appointment to cancel.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+        private void ResetForm()
+        {
+            txt_patient.Text = string.Empty;
+            txt_doctor.Text = string.Empty;
+            txt_dept.Text = string.Empty;
+            txt_note.Text = string.Empty;
+            txt_date.Text = string.Empty;
+            if (combx_status.Items.Count > 0)
+                combx_status.SelectedIndex = 0;
+            Rbtn_sent.Checked = false;
+            Rbtn_Nsent.Checked = false;
+            txt_search.Text = string.Empty;
+            dgv_appointments.DataSource = null;
+            btn_new.Visible = true;
+            btn_edit.Visible = false;
+            btn_delete.Visible = false;
+            LoadAppointemtData();
+        }
+
+        public void Reload() => ResetForm();
+      
 
     }
 }

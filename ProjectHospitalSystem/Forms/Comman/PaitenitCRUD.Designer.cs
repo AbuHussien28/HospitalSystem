@@ -1066,6 +1066,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(254, 251, 244);
             ClientSize = new Size(1377, 836);
             Controls.Add(pictureBox8);
             Controls.Add(txtBoxPatientSerachData);
