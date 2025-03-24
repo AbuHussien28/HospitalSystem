@@ -71,50 +71,65 @@ namespace ProjectHospitalSystem.Forms.Admin
         {
             try
             {
-                DateTime selectedDateTime = dtp_AppoinmnetDate.Value;
-                int doctorDetailsId = (int)cb_Doctor.SelectedValue;
-                if (!ValidateAppointmentDateTime())
-                    return;
-                if (!IsScheduleUnique(selectedDateTime, doctorDetailsId))
+                int? doctorDetailsId = cb_Doctor.SelectedValue as int?;
+
+                if (doctorDetailsId == null)
                 {
-                    MessageBox.Show("An appointment already exists for this doctor at the selected date and time.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Please select a doctor.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                var existingSchedule = db.Doctor_Schedules
-                    .FirstOrDefault(ds => ds.DoctorDetailsId == doctorDetailsId && ds.ScheduleDay.Date == selectedDateTime.Date);
-                if (existingSchedule == null)
+
+                DateTime selectedDateTime = dtp_AppoinmnetDate.Value;
+                selectedDateTime = new DateTime(
+                    selectedDateTime.Year, selectedDateTime.Month, selectedDateTime.Day,
+                    selectedDateTime.Hour, selectedDateTime.Minute, 0); 
+                bool isDuplicate = db.Appointments.Any(a =>
+                    a.DoctorDetailsId == doctorDetailsId &&
+                    a.AppointmentDateTime == selectedDateTime);
+                if (isDuplicate)
+                {
+                    MessageBox.Show("This time slot is already booked for the selected doctor.",
+                                  "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                var newAppointment = new Appointment
+                {
+                    DoctorDetailsId = doctorDetailsId,
+                    Note = "Not Assigend", 
+                    AppointmentDateTime = selectedDateTime,
+                    Status = AppointmentStatus.Upcoming 
+                };
+
+                db.Appointments.Add(newAppointment);
+                var scheduleExists = db.Doctor_Schedules
+                    .Any(ds => ds.DoctorDetailsId == doctorDetailsId &&
+                              ds.ScheduleDay == selectedDateTime);
+                if (!scheduleExists)
                 {
                     var newSchedule = new Doctor_Schedule
                     {
                         DoctorDetailsId = doctorDetailsId,
-                        ScheduleDay = selectedDateTime.Date
+                        ScheduleDay = selectedDateTime 
                     };
                     db.Doctor_Schedules.Add(newSchedule);
-                    db.SaveChanges();
                 }
-                var newAppointment = new Appointment
-                {
-                    AppointmentDateTime = selectedDateTime,
-                    Status = AppointmentStatus.Upcoming,
-                    Note = "Not Assigned for Doctor",
-                    ReminderSent = false,
-                    DoctorDetailsId = doctorDetailsId
-                };
 
-                db.Appointments.Add(newAppointment);
                 db.SaveChanges();
 
-                MessageBox.Show("Appointment added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Appointment added successfully!", "Success",
+                              MessageBoxButtons.OK, MessageBoxIcon.Information);
                 getAppointmentDate();
                 ClearFields();
             }
-            catch (InvalidOperationException ex)
+            catch (DbUpdateException dbEx)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Database error: {dbEx.InnerException?.Message ?? dbEx.Message}",
+                              "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error adding appointment: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error: {ex.Message}",
+                              "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void dgv_Appointment_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -279,22 +294,9 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         private bool IsScheduleUnique(DateTime scheduleDay, int? doctorDetailsId)
         {
-            DateTime truncatedDateTime = new DateTime(
-                scheduleDay.Year,
-                scheduleDay.Month,
-                scheduleDay.Day,
-                scheduleDay.Hour,
-                scheduleDay.Minute,
-                0
-            );
-            bool isUnique = !db.Appointments.Any(a =>
-                a.DoctorDetailsId == doctorDetailsId &&
-                a.AppointmentDateTime.Year == truncatedDateTime.Year &&
-                a.AppointmentDateTime.Month == truncatedDateTime.Month &&
-                a.AppointmentDateTime.Day == truncatedDateTime.Day &&
-                a.AppointmentDateTime.Hour == truncatedDateTime.Hour &&
-                a.AppointmentDateTime.Minute == truncatedDateTime.Minute);
-            return isUnique;
+            return !db.Appointments.Any(a =>
+       a.DoctorDetailsId == doctorDetailsId &&
+       a.AppointmentDateTime == scheduleDay);
         }
         private void ClearFields()
         {
