@@ -242,16 +242,10 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                 MessageBox.Show("Appointment booked successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ClearFields();
             }
-
-            MessageBox.Show("Appointment booked successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            ClearFields();
-
-
             if (reminder)
             {
                 SendConfirmationEmail(patient.Email, patientFullName, doctorFullName, specializationOrDept, finalAppointmentDateTime);
             }
-
         }
         private void ClearFields()
         {
@@ -304,24 +298,11 @@ namespace ProjectHospitalSystem.Forms.Receptionist
 
 
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txt_SearchPatient_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void dgv_doctors_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0) // Ensure the click is on a valid cell
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0) 
             {
                 DataGridViewRow row = dgv_doctors.Rows[e.RowIndex];
-
-                // Safely get the cell values
                 string doctorName = row.Cells["FullName"].Value?.ToString() ?? "";
                 string departmentName = row.Cells["DeptName"].Value?.ToString() ?? "";
 

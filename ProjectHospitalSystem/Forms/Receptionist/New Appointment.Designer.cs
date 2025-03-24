@@ -344,7 +344,6 @@
             txt_SearchPatient.Name = "txt_SearchPatient";
             txt_SearchPatient.Size = new Size(233, 30);
             txt_SearchPatient.TabIndex = 90;
-            txt_SearchPatient.TextChanged += txt_SearchPatient_TextChanged;
             // 
             // lb_patientName
             // 
