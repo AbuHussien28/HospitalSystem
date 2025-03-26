@@ -9,6 +9,7 @@ namespace ProjectHospitalSystem.Forms.Doctor
         private int medicalRecordId;
         private int? patientId;
         private int? appintmentId;
+        private DateTime birthDateTime;
         public Edit_Medical_Record(int medicalRecordId, int? patientId, int? appintmentId)
         {
             InitializeComponent();
@@ -18,6 +19,11 @@ namespace ProjectHospitalSystem.Forms.Doctor
             this.appintmentId = appintmentId;
 
             patientName.Text = db?.Patients.Where(n => n.PatientId == patientId).Select(n => n.FullName).FirstOrDefault();
+            doctorName.Text = db.Appointments.Where(n => n.AppointmentId == appintmentId).Select(n => n.User.UserName).FirstOrDefault();
+            deptName.Text = db.Departments.Join(db.Doctors, dept => dept.DeptId, doc => doc.DeptId, (dept, doc) => new { dept.DeptName, doc.User.UserName }).Where(d => d.UserName == doctorName.Text).Select(d => d.DeptName).FirstOrDefault();
+            birthDateTime = db.Patients.Where(n => n.PatientId == patientId).Select(n => n.DateOfBirth).FirstOrDefault();
+            patientAge.Text = (DateTime.Now.Year - birthDateTime.Year).ToString();
+            patientDateVisit.Text = db.Appointments.Where(db => db.PatientId == patientId && db.AppointmentId == appintmentId).Select(db => db.AppointmentDateTime).FirstOrDefault().ToString();
             try
             {
                 var record = db?.MedicalRecords.Find(medicalRecordId);
