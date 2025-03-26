@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProjectHospitalSystem.Forms.Receptionist.Services;
 using ProjectHospitalSystem.Models;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,8 @@ namespace ProjectHospitalSystem.Forms.Doctor
 {
     public partial class MedicalRecordDetailForm : Form
     {
-        private  HospitalSystemContext _context;
-        private  int _medicalId;
+        private HospitalSystemContext _context;
+        private int _medicalId;
         private MedicalRecord _record;
         public MedicalRecordDetailForm(int medicalId)
         {
@@ -60,6 +61,38 @@ namespace ProjectHospitalSystem.Forms.Doctor
             {
                 MessageBox.Show($"Error loading record: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
+            }
+        }
+
+        private void btnExportToWord_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_record == null)
+                {
+                    MessageBox.Show("No medical record loaded.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "Word Document (*.docx)|*.docx",
+                    Title = "Export Medical Record to Word",
+                    FileName = $"MedicalRecord_{_record.MedicalId}_{_record.Appointments.Patient.LastName}.docx"
+                };
+
+                if (saveFileDialog.ShowDialog() != DialogResult.OK)
+                    return;
+
+                string filePath = saveFileDialog.FileName;
+                var exportWord = new ExportToWordData(_context);
+                exportWord.ExportMedicalRecordToWord(_record, filePath);
+
+                MessageBox.Show("Medical record exported to Word successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

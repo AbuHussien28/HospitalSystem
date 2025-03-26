@@ -104,7 +104,11 @@ namespace ProjectHospitalSystem.Forms.Doctor
                         AppointmentTime = m.Appointments.AppointmentDateTime.ToString("yyyy-MM-dd HH:mm")
                     })
                     .ToList();
-
+                if (displayData.Count == 0)
+                {
+                    MessageBox.Show("Not Medical Record for this Period ");
+                    return;
+                }
                 dgvMedicalRecords.DataSource = displayData;
                 FormatDataGridViewColumns();
             }

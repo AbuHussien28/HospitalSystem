@@ -48,6 +48,7 @@
             txt_prescription = new TextBox();
             txt_Diaqnois = new TextBox();
             pictureBox1 = new PictureBox();
+            btnExportToWord = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox11).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox10).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox9).BeginInit();
@@ -285,11 +286,31 @@
             pictureBox1.TabIndex = 153;
             pictureBox1.TabStop = false;
             // 
+            // btnExportToWord
+            // 
+            btnExportToWord.BackColor = Color.FromArgb(254, 251, 244);
+            btnExportToWord.Cursor = Cursors.Hand;
+            btnExportToWord.FlatAppearance.BorderSize = 0;
+            btnExportToWord.FlatStyle = FlatStyle.Flat;
+            btnExportToWord.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold);
+            btnExportToWord.ForeColor = Color.Black;
+            btnExportToWord.Image = Properties.Resources.IconExportWord;
+            btnExportToWord.ImageAlign = ContentAlignment.MiddleLeft;
+            btnExportToWord.Location = new Point(852, 35);
+            btnExportToWord.Name = "btnExportToWord";
+            btnExportToWord.Size = new Size(191, 56);
+            btnExportToWord.TabIndex = 168;
+            btnExportToWord.Text = "Save Medical Record ";
+            btnExportToWord.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnExportToWord.UseVisualStyleBackColor = false;
+            btnExportToWord.Click += btnExportToWord_Click;
+            // 
             // MedicalRecordDetailForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1104, 984);
+            Controls.Add(btnExportToWord);
             Controls.Add(pictureBox11);
             Controls.Add(pictureBox10);
             Controls.Add(pictureBox9);
@@ -348,5 +369,6 @@
         private TextBox txt_prescription;
         private TextBox txt_Diaqnois;
         private PictureBox pictureBox1;
+        private Button btnExportToWord;
     }
 }
