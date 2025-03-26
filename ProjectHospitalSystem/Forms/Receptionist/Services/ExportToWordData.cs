@@ -50,6 +50,47 @@ namespace ProjectHospitalSystem.Forms.Receptionist.Services
                 body.AppendChild(new Paragraph(new Run(new DocumentFormat.OpenXml.Wordprocessing.Text("Thank you for choosing our hospital!"))));
             }
         }
+        public void ExportMedicalRecordToWord(MedicalRecord record, string filePath)
+        {
+            using (var wordDoc = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
+            {
+                var mainPart = wordDoc.AddMainDocumentPart();
+                mainPart.Document = new Document();
+                var body = mainPart.Document.AppendChild(new Body());
+
+                // Add header information
+                AddCenteredText(body, "Hospital Name: ITI Hospital");
+                AddCenteredText(body, "Address: ITI Menofia Branch");
+                AddCenteredText(body, "Phone: 0235355628");
+                AddCenteredText(body, "MEDICAL RECORD");
+                body.AppendChild(new Paragraph(new Run(new Break())));
+                body.AppendChild(new Paragraph(new Run(new Text($"Patient Name: {record.Appointments.Patient.FirstName} {record.Appointments.Patient.LastName}"))));
+                body.AppendChild(new Paragraph(new Run(new Text($"Age: {(DateTime.Now.Year - record.Appointments.Patient.DateOfBirth.Year)} years"))));
+                body.AppendChild(new Paragraph(new Run(new Text($"Visit Date: {record.DateOfVist.ToString("yyyy-MM-dd HH:mm")}"))));
+                body.AppendChild(new Paragraph(new Run(new Text($"Doctor: {record.Appointments.Doctor.User.FName} {record.Appointments.Doctor.User.LName}"))));
+                body.AppendChild(new Paragraph(new Run(new Text($"Department: {record.Appointments.Doctor.Dept.DeptName}"))));
+                AddSectionHeader(body, "Diagnosis");
+                body.AppendChild(new Paragraph(new Run(new Text(record.Diaqnois ?? "No diagnosis provided"))));
+                AddSectionHeader(body, "Lab Results");
+                body.AppendChild(new Paragraph(new Run(new Text(record.LabResult ?? "No lab results provided"))));
+                AddSectionHeader(body, "Treatment Details");
+                body.AppendChild(new Paragraph(new Run(new Text(record.TreatmentDetails ?? "No treatment details provided"))));
+                AddSectionHeader(body, "Prescription");
+                body.AppendChild(new Paragraph(new Run(new Text(record.Prescription ?? "No prescription provided"))));
+                body.AppendChild(new Paragraph(new Run(new Break())));
+                AddCenteredText(body, "This document is confidential and intended for medical use only");
+                AddCenteredText(body, "Thank you for choosing our hospital!");
+            }
+        }
+
+        private static void AddSectionHeader(Body body, string text)
+        {
+            var paragraph = new Paragraph();
+            var run = new Run(new Text(text));
+            run.PrependChild(new RunProperties(new Bold()));
+            paragraph.Append(run);
+            body.Append(paragraph);
+        }
         private static void AddCenteredText(Body body, string text)
         {
             var paragraph = new Paragraph();
