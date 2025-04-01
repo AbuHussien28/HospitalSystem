@@ -501,6 +501,7 @@
             txt_confirmPassword.Name = "txt_confirmPassword";
             txt_confirmPassword.Size = new Size(233, 29);
             txt_confirmPassword.TabIndex = 101;
+            txt_confirmPassword.UseSystemPasswordChar = true;
             // 
             // lb_confirmPassword
             // 
@@ -525,6 +526,7 @@
             txt_Password.Name = "txt_Password";
             txt_Password.Size = new Size(233, 29);
             txt_Password.TabIndex = 99;
+            txt_Password.UseSystemPasswordChar = true;
             // 
             // lb_password
             // 

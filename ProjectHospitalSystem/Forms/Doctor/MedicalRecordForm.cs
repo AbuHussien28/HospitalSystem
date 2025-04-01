@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -221,6 +222,43 @@ namespace ProjectHospitalSystem.Forms.Doctor
                                   MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+        #endregion
+        #region Reload Methods
+
+        public void Reload()
+        {
+            try
+            {
+                ResetFilters();
+                dgvMedicalRecords.DataSource = null;
+                LoadInitialData();
+                UpdateButtonStates();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to reload data: {ex.Message}",
+                          "Error",
+                          MessageBoxButtons.OK,
+                          MessageBoxIcon.Error);
+            }
+        }
+
+        private void ResetFilters()
+        {
+            dtpFromDate.Value = DateTime.Now.AddDays(-30);
+            dtpToDate.Value = DateTime.Now;
+            cbPatientName.SelectedIndex = -1;
+            cbPatientName.Text = string.Empty;
+            dtpFromDate.Checked = false;
+            dtpToDate.Checked = false;
+        }
+
+        private void UpdateButtonStates()
+        {
+            btnFilter.Visible = true;
+            btnReset.Visible = false;
         }
         #endregion
     }

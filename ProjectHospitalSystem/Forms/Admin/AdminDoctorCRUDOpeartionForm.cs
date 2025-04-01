@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using ProjectHospitalSystem.Models;
 using ProjectHospitalSystem.Models.DTO;
 using System;
@@ -75,7 +76,8 @@ namespace ProjectHospitalSystem.Forms.Admin
             _context.Doctors.Add(doc);
             _context.SaveChanges();
             LoadData();
-
+            ResetForm();
+            MessageBox.Show("New Doctor Added Successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void dgv_AdminDoctors_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -129,8 +131,8 @@ namespace ProjectHospitalSystem.Forms.Admin
                 doctor.Specialization = txt_Specialization.Text;
                 doctor.DeptId = Convert.ToInt32(cb_DeptName.SelectedValue);
                 _context.SaveChanges();
-                ResetForm();
                 LoadData();
+                ResetForm();
                 MessageBox.Show("Update Successful", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 SetButtonAndTxtPasswordVisibility(isAddMode: true);
             }
@@ -145,23 +147,68 @@ namespace ProjectHospitalSystem.Forms.Admin
         {
             try
             {
-                if (MessageBox.Show("are you sure to delete this Doctor", "confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (DoctorSelectedId == 0)
                 {
-                    DoctorDetails doctor = _context.Doctors.Where(n => n.UserId == DoctorSelectedId).SingleOrDefault();
-                    if (doctor != null)
-                    {
-                        _context.Doctors.Remove(doctor);
-                        _context.SaveChanges();
-                        ResetForm();
-                        LoadData();
-                        MessageBox.Show("deleted");
-                        SetButtonAndTxtPasswordVisibility(isAddMode: true);
-                    }
+                    MessageBox.Show("Please select a doctor to delete.",
+                        "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
+                var doctorToDelete = _context.Doctors
+                    .Include(d => d.User)
+                    .Include(d => d.Appointments)
+                    .Include(d => d.doctorSchedule)
+                    .FirstOrDefault(d => d.UserId == DoctorSelectedId);
+
+                if (doctorToDelete == null)
+                {
+                    MessageBox.Show("Doctor not found.",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (doctorToDelete.Appointments.Any())
+                {
+                    MessageBox.Show($"Cannot delete Dr. {doctorToDelete.User.FName} {doctorToDelete.User.LName} because they have scheduled appointments.",
+                        "Delete Restricted", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (doctorToDelete.doctorSchedule.Any())
+                {
+                    MessageBox.Show($"Cannot delete Dr. {doctorToDelete.User.FName} {doctorToDelete.User.LName} because they have scheduled working hours.",
+                        "Delete Restricted", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var confirmResult = MessageBox.Show(
+                    $"Are you sure you want to delete Dr. {doctorToDelete.User.FName} {doctorToDelete.User.LName}?",
+                    "Confirm Deletion",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (confirmResult == DialogResult.Yes)
+                {
+                    _context.Doctors.Remove(doctorToDelete);
+                    _context.Users.Remove(doctorToDelete.User);
+                    _context.SaveChanges();
+                    ResetForm();
+                    LoadData();
+                    MessageBox.Show($"Dr. {doctorToDelete.User.FName} {doctorToDelete.User.LName} was deleted successfully.",
+                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (DbUpdateException dbEx)
+            {
+                string errorMessage = dbEx.InnerException != null
+                    ? dbEx.InnerException.Message
+                    : dbEx.Message;
+
+                MessageBox.Show($"Database error while deleting doctor:\n{errorMessage}",
+                    "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show($"An unexpected error occurred:\n{ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -301,8 +348,21 @@ namespace ProjectHospitalSystem.Forms.Admin
             txt_Lname.Clear();
             txt_phone.Clear();
             txt_Email.Clear();
+            txt_Password.Clear();
+            txt_confirmPassword.Clear();
             txt_Specialization.Clear();
             txtBoxDoctorSerachData.Clear();
+            txt_Password.Show();
+            lb_password.Show();
+            txt_confirmPassword.Show();
+            lb_confirmPassword.Show();
+            pBoxPassword.Show();
+            pBoxConfirmPassword.Show();
+            pBoxShowPassword.Show();
+            pBoxShowConfrimPassword.Show();
+            btn_AddDoctor.Visible = true;
+            btn_Update.Visible = false;
+            btn_remove.Visible = false;
         }
         public async void Reload()
         {

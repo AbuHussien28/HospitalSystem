@@ -57,9 +57,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist.Services
                 var mainPart = wordDoc.AddMainDocumentPart();
                 mainPart.Document = new Document();
                 var body = mainPart.Document.AppendChild(new Body());
-
-                // Add header information
-                AddCenteredText(body, "Hospital Name: ITI Hospital");
+               AddCenteredText(body, "Hospital Name: ITI Hospital");
                 AddCenteredText(body, "Address: ITI Menofia Branch");
                 AddCenteredText(body, "Phone: 0235355628");
                 AddCenteredText(body, "MEDICAL RECORD");

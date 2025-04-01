@@ -91,10 +91,9 @@ namespace ProjectHospitalSystem.Forms.Receptionist
         {
             try
             {
-                // put the yourEmail Here 
-                string senderEmail = "";
-                // put the your Pasword Here 
-                string senderPassword = "";
+
+                string senderEmail = "ayaelzoghby651@gmail.com";
+                string senderPassword = "fwvu ubds dssr aurw";
 
                 MailMessage mail = new MailMessage();
                 mail.From = new MailAddress(senderEmail);
@@ -156,16 +155,12 @@ namespace ProjectHospitalSystem.Forms.Receptionist
 
 
             dgv_doctors.DataSource = filteredDoctors;
-
         }
 
         private void btn_bookApp_Click(object sender, EventArgs e)
         {
 
-
             bool reminder = Rbtn_sent.Checked;
-
-
             string patientFullName = txt_SearchPatient.Text.Trim();
             if (string.IsNullOrEmpty(patientFullName))
             {
@@ -179,9 +174,8 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                 MessageBox.Show("Patient not found!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             int pid = patient.PatientId;
-
-
             string doctorFullName = comEdit_doctor.Text.Trim();
             if (string.IsNullOrEmpty(doctorFullName))
             {
@@ -196,17 +190,16 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                 MessageBox.Show("Doctor not found!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             int doctorId = doctor.DoctorDetailsId;
             int doctorUserId = doctor.UserId ?? 1;
             string specializationOrDept = doctor.Dept?.DeptName ?? doctor.Specialization ?? "Not Available";
-
 
             if (comboBox_date.SelectedItem == null || comboBox_date.SelectedItem.ToString() == "No Schedule")
             {
                 MessageBox.Show("Please select a valid appointment time.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
 
             string selectedSchedule = comboBox_date.SelectedItem.ToString();
             DateTime finalAppointmentDateTime;
@@ -215,37 +208,39 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                 MessageBox.Show("Invalid appointment format!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            var existingAppointment = db.Appointments
+                .FirstOrDefault(a => a.PatientId == pid && a.AppointmentDateTime == finalAppointmentDateTime);
 
-
-            var newAppointment = new Appointment
-            {
-                Status = 0,
-                Note = txt_note.Text,
-                ReminderSent = reminder,
-                UserId = doctorUserId,
-                DoctorDetailsId = doctorId,
-                PatientId = pid,
-                AppointmentDateTime = finalAppointmentDateTime
-            };
-            db.Appointments.Add(newAppointment);
-            var existApp = db.Appointments
- .Any(a => a.PatientId == pid && a.AppointmentDateTime == finalAppointmentDateTime);
-
-            if (existApp)
+            if (existingAppointment != null)
             {
                 MessageBox.Show("This patient already has an appointment at the selected time.", "Duplicate Appointment", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            else
+
+            var availableAppointment = db.Appointments
+                .FirstOrDefault(a => a.DoctorDetailsId == doctorId &&
+                                   a.AppointmentDateTime == finalAppointmentDateTime &&
+                                   a.PatientId == null);
+
+            if (availableAppointment != null)
             {
+                availableAppointment.PatientId = pid;
+                availableAppointment.Note = txt_note.Text;
+                availableAppointment.ReminderSent = reminder;
                 db.SaveChanges();
                 MessageBox.Show("Appointment booked successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                ClearFields();
             }
+
+
+
             if (reminder)
             {
                 SendConfirmationEmail(patient.Email, patientFullName, doctorFullName, specializationOrDept, finalAppointmentDateTime);
             }
+
+            ClearFields();
+            HomeRecp homeRecp = new HomeRecp(userid);
+            homeRecp.Reload();
         }
         private void ClearFields()
         {
@@ -256,51 +251,10 @@ namespace ProjectHospitalSystem.Forms.Receptionist
             comboBox_date.Clear();
 
         }
-        private void dgv_doctors_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-
-            if (e.RowIndex >= 0)
-            {
-                DataGridViewRow row = dgv_doctors.Rows[e.RowIndex];
-                string doctorName = row.Cells[0].Value?.ToString() ?? "";
-                string departmentName = row.Cells[2].Value?.ToString() ?? "";
-                comEdit_doctor.Text = doctorName;
-                comboxEdit_dept.Text = departmentName;
-                if (string.IsNullOrEmpty(doctorName))
-                {
-                    MessageBox.Show("Invalid selection. No doctor found!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                var doctor = db.Doctors
-                               .Include(d => d.doctorSchedule)
-                               .Include(d => d.User)
-                               .Include(d => d.Dept)
-                               .FirstOrDefault(d => (d.User.FName + " " + d.User.LName) == doctorName);
-
-                if (doctor == null)
-                {
-                    MessageBox.Show("Doctor not found in the database!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                comboBox_date.Properties.Items.Clear();
-                if (doctor.doctorSchedule == null)
-                {
-                    comboBox_date.Properties.Items.Add("No Schedule");
-                    comboBox_date.SelectedIndex = 0;
-                    return;
-                }
-                foreach (var schedule in doctor.doctorSchedule)
-                {
-                    comboBox_date.Properties.Items.Add(schedule.ScheduleDay.ToString("yyyy-MM-dd HH:mm"));
-                }
-                comboBox_date.SelectedIndex = 0;
-            }
-
-
-        }
         private void dgv_doctors_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0) 
+
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 DataGridViewRow row = dgv_doctors.Rows[e.RowIndex];
                 string doctorName = row.Cells["FullName"].Value?.ToString() ?? "";
@@ -328,19 +282,34 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                 }
 
                 comboBox_date.Properties.Items.Clear();
-                if (doctor.doctorSchedule == null || !doctor.doctorSchedule.Any())
+                var availableSchedules = db.Doctor_Schedules
+                    .Where(s => s.DoctorDetailsId == doctor.DoctorDetailsId && s.ScheduleDay > DateTime.Now)
+                    .Select(s => s.ScheduleDay)
+                    .ToList();
+                var bookedAppointments = db.Appointments
+                    .Where(a => a.DoctorDetailsId == doctor.DoctorDetailsId && a.PatientId != null)
+                    .Select(a => a.AppointmentDateTime)
+                    .ToList();
+                var freeSchedules = availableSchedules
+                    .Where(s => !bookedAppointments.Contains(s))
+                    .OrderBy(d => d)
+                    .ToList();
+                if (freeSchedules.Any())
                 {
-                    comboBox_date.Properties.Items.Add("No Schedule");
+                    foreach (var schedule in freeSchedules)
+                    {
+                        comboBox_date.Properties.Items.Add(schedule.ToString("yyyy-MM-dd HH:mm"));
+                    }
                     comboBox_date.SelectedIndex = 0;
-                    return;
                 }
-
-                foreach (var schedule in doctor.doctorSchedule)
+                else
                 {
-                    comboBox_date.Properties.Items.Add(schedule.ScheduleDay.ToString("yyyy-MM-dd HH:mm"));
+                    comboBox_date.Properties.Items.Add("No Available Slots");
+                    comboBox_date.SelectedIndex = 0;
                 }
-                comboBox_date.SelectedIndex = 0;
             }
+
+
         }
 
   

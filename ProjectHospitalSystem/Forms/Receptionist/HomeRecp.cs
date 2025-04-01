@@ -32,7 +32,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
 
         private async void ConfigureAutoComplete()
         {
-            using (var db = new HospitalSystemContext()) 
+            using (var db = new HospitalSystemContext())
             {
                 var patientNames = await db.Patients
                                        .Where(p => !string.IsNullOrEmpty(p.FirstName) && !string.IsNullOrEmpty(p.LastName))
@@ -54,13 +54,11 @@ namespace ProjectHospitalSystem.Forms.Receptionist
 
         private void btn_patients_Click(object sender, EventArgs e)
         {
-            Patients patients = new Patients(userid);
-            patients.Show();
         }
 
         private void btn_Appoint_Click(object sender, EventArgs e)
         {
-            Appointments appointments = new Appointments();
+            Appointments appointments = new Appointments(userid);
             appointments.Show();
         }
 
@@ -131,7 +129,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
         }
         private void LoadTodayAppointments()
         {
-            using (var db = new HospitalSystemContext()) 
+            using (var db = new HospitalSystemContext())
             {
                 var todayAppointments = db.Appointments
                            .Include(a => a.Patient)
@@ -181,11 +179,6 @@ namespace ProjectHospitalSystem.Forms.Receptionist
             {
                 return;
             }
-            if (!dgv_Appup.Columns.Contains("Status"))
-            {
-                MessageBox.Show("Column 'Status' not found in DataGridView. Check the query.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
             foreach (DataGridViewRow row in dgv_Appup.Rows)
             {
                 if (row.Cells["Status"].Value != null)
@@ -202,15 +195,10 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                         row.DefaultCellStyle.BackColor = Color.LightBlue;
                         row.Cells["StatusIcon"].Value = Properties.Resources.IconUpcoming;
                     }
-                    else if(status== "Cancel") 
+                    else if (status == "Cancel")
                     {
                         row.DefaultCellStyle.BackColor = Color.RosyBrown;
                         row.Cells["StatusIcon"].Value = Properties.Resources.IconCanecel;
-                    }
-                    else 
-                    {
-                        row.DefaultCellStyle.BackColor = Color.Black;
-                        row.Cells["StatusIcon"].Value = Properties.Resources.IconNotFound;
                     }
                 }
             }
@@ -229,7 +217,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
         }
         private void ShowAppointmentDetails(int appointmentId)
         {
-            panelShowDetails.Visible= true;
+            panelShowDetails.Visible = true;
             var appointment = db.Appointments
                                 .Include(a => a.Patient)
                                 .Include(a => a.Doctor)
@@ -323,21 +311,6 @@ namespace ProjectHospitalSystem.Forms.Receptionist
             db.Dispose();
             base.OnFormClosed(e);
         }
-        private int GetDailyAppointmentsCount()
-        {
-            using (var db = new HospitalSystemContext()) 
-            {
-                try
-                {
-                    return db.Appointments.Count(a => a.AppointmentDateTime.Date == DateTime.Today);
-
-                }
-                catch (Exception ex) 
-                {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return 0;
-                }
-            }
-        }
+        private void pcboxUpdate_Click(object sender, EventArgs e)=> Reload();
     }
 }

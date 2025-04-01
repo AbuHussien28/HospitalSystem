@@ -1,6 +1,10 @@
-﻿using MaterialSkin;
+﻿using DevExpress.XtraReports.UI;
+using DevExpress.XtraReports.UserDesigner;
+using MaterialSkin;
 using MaterialSkin.Controls;
+using ProjectHospitalSystem.Forms.Doctor;
 using ProjectHospitalSystem.Models;
+using ProjectHospitalSystem.Reports;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,9 +15,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media.Media3D;
-using ProjectHospitalSystem.Reports;
-using DevExpress.XtraReports.UI;
-using DevExpress.XtraReports.UserDesigner;
 
 namespace ProjectHospitalSystem.Forms.Admin
 {
@@ -28,6 +29,7 @@ namespace ProjectHospitalSystem.Forms.Admin
         private Appointment_Form Appointment_Form;
         private Reports_Logging Reports;
         private New_Admin newAdmin;
+        private DashBoardForSystemAdmin dashboard;
         public AdminUserDashBoardScreen(User user)
         {
             InitializeComponent();
@@ -45,12 +47,14 @@ namespace ProjectHospitalSystem.Forms.Admin
             Appointment_Form = new Appointment_Form();
             Reports = new Reports_Logging();
             newAdmin =new  New_Admin();
-
+            dashboard=new DashBoardForSystemAdmin();
         }
 
         private void AdminUserDashBoardScreen_Load(object sender, EventArgs e)
         {
             InitializeDateTime();
+            AdminTabContol.SelectedTab = tabPageHome;
+            LoadForm(dashboard, panelHome);
         }
         private void tabPageHome_Click(object sender, EventArgs e)
         {
@@ -63,7 +67,11 @@ namespace ProjectHospitalSystem.Forms.Admin
         private void AdminTabContol_SelectedIndexChanged(object sender, EventArgs e)
         {
             var selectedTab = AdminTabContol.SelectedTab;
-            if (selectedTab == tabPageDoctor)
+            if (selectedTab == tabPageHome)
+            {
+                dashboard.Reload();
+            }
+            else if (selectedTab == tabPageDoctor)
             {
                 LoadForm(doctorForm, panelDoctorData);
                 doctorForm.Reload();
@@ -88,7 +96,6 @@ namespace ProjectHospitalSystem.Forms.Admin
             {
                 LoadForm(AdminDepartmentCRUD, panelDepartment);
                 AdminDepartmentCRUD.Reload();
-
             }
             else if (selectedTab == tabPagePaymentMethod)
             {

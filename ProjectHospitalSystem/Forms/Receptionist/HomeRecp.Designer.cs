@@ -60,6 +60,7 @@
             label2 = new Label();
             pictureBox6 = new PictureBox();
             dailyAppointmentsLabel = new Label();
+            pcboxUpdate = new PictureBox();
             panelShowDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pcBoxStatus).BeginInit();
@@ -69,6 +70,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_Appup).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pcboxUpdate).BeginInit();
             SuspendLayout();
             // 
             // imageList1
@@ -400,12 +402,24 @@
             dailyAppointmentsLabel.Size = new Size(0, 21);
             dailyAppointmentsLabel.TabIndex = 124;
             // 
+            // pcboxUpdate
+            // 
+            pcboxUpdate.Image = Properties.Resources.IconUpdateAdmin;
+            pcboxUpdate.Location = new Point(678, 30);
+            pcboxUpdate.Name = "pcboxUpdate";
+            pcboxUpdate.Size = new Size(16, 16);
+            pcboxUpdate.SizeMode = PictureBoxSizeMode.AutoSize;
+            pcboxUpdate.TabIndex = 125;
+            pcboxUpdate.TabStop = false;
+            pcboxUpdate.Click += pcboxUpdate_Click;
+            // 
             // HomeRecp
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(254, 251, 244);
             ClientSize = new Size(1159, 765);
+            Controls.Add(pcboxUpdate);
             Controls.Add(dailyAppointmentsLabel);
             Controls.Add(pictureBox6);
             Controls.Add(label2);
@@ -428,6 +442,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgv_Appup).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pcboxUpdate).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -460,5 +475,6 @@
         private Label label2;
         private PictureBox pictureBox6;
         private Label dailyAppointmentsLabel;
+        private PictureBox pcboxUpdate;
     }
 }

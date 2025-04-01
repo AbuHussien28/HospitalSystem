@@ -66,11 +66,42 @@ namespace ProjectHospitalSystem.Forms.Admin
                 cb_Doctor.DataSource = null;
             }
         }
+        private void dgv_Appointment_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.RowIndex < dgv_Appointment.Rows.Count)
+            {
+                if (dgv_Appointment.Columns.Contains("AppointmentId"))
+                {
+                    _selectedId = (int)dgv_Appointment.Rows[e.RowIndex].Cells["AppointmentId"].Value;
+                    var appointment = db.Appointments.FirstOrDefault(a => a.AppointmentId == _selectedId);
 
+                    if (appointment != null)
+                    {
+                        dtp_AppoinmnetDate.Value = appointment.AppointmentDateTime;
+                        cb_Depart.Hide();
+                        cb_Doctor.Hide();
+                        lb_DeptName.Hide();
+                        pBoxDeptName.Hide();
+                        pBoxDoctorName.Hide();
+                        lb_Doctor.Hide();
+                        btn_add.Hide();
+                        btn_Update.Show();
+                        btn_delete.Show();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Appointment not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
         private void btn_add_Click(object sender, EventArgs e)
         {
             try
             {
+                if (!ValidateAppointmentDateTime())
+                    return;
+
                 int? doctorDetailsId = cb_Doctor.SelectedValue as int?;
 
                 if (doctorDetailsId == null)
@@ -132,10 +163,6 @@ namespace ProjectHospitalSystem.Forms.Admin
                               "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void dgv_Appointment_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-           
-        }
         private void btn_Update_Click(object sender, EventArgs e)
         {
             if (_selectedId == 0) 
@@ -146,7 +173,6 @@ namespace ProjectHospitalSystem.Forms.Admin
 
             if (!ValidateAppointmentDateTime())
                 return;
-           
             try
             {
                 var appointment = db.Appointments.FirstOrDefault(a => a.AppointmentId == _selectedId);
@@ -191,6 +217,10 @@ namespace ProjectHospitalSystem.Forms.Admin
                 pBoxDeptName.Show();
                 pBoxDoctorName.Show();
                 btn_add.Show();
+                lbBtnFilter.Show();
+                pBoxFilterDate.Show();
+                lb_clearFilter.Hide();
+                pBoxClearFilterDate.Hide();
             }
         }
 
@@ -284,12 +314,25 @@ namespace ProjectHospitalSystem.Forms.Admin
         #region Helper Methods
         private bool ValidateAppointmentDateTime()
         {
-            if (dtp_AppoinmnetDate.Value <= DateTime.Now)
+            DateTime today = DateTime.Today;
+            DateTime selectedDate = dtp_AppoinmnetDate.Value.Date;
+            if (selectedDate < today)
             {
-                MessageBox.Show("Please select a date and time in the future.", "Invalid Date", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Appointment date cannot be in the past. Please select today or a future date.",
+                               "Invalid Date",
+                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 dtp_AppoinmnetDate.Focus();
                 return false;
             }
+            if (selectedDate == today && dtp_AppoinmnetDate.Value.TimeOfDay < DateTime.Now.TimeOfDay)
+            {
+                MessageBox.Show("Cannot schedule an appointment for a time that has already passed today.",
+                               "Invalid Time",
+                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dtp_AppoinmnetDate.Focus();
+                return false;
+            }
+
             return true;
         }
         private bool IsScheduleUnique(DateTime scheduleDay, int? doctorDetailsId)
@@ -327,34 +370,6 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         #endregion
 
-        private void dgv_Appointment_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-           if (e.RowIndex >= 0 && e.RowIndex < dgv_Appointment.Rows.Count)
-            {
-                if (dgv_Appointment.Columns.Contains("AppointmentId"))
-                {
-                    _selectedId = (int)dgv_Appointment.Rows[e.RowIndex].Cells["AppointmentId"].Value;
-                    var appointment = db.Appointments.FirstOrDefault(a => a.AppointmentId == _selectedId);
-
-                    if (appointment != null)
-                    {
-                        dtp_AppoinmnetDate.Value = appointment.AppointmentDateTime;
-                        cb_Depart.Hide();
-                        cb_Doctor.Hide();
-                        lb_DeptName.Hide();
-                        pBoxDeptName.Hide();
-                        pBoxDoctorName.Hide();
-                        lb_Doctor.Hide();
-                        btn_add.Hide();
-                        btn_Update.Show();
-                        btn_delete.Show();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Appointment not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
-        }
+       
     }
 }

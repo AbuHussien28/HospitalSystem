@@ -109,7 +109,6 @@ namespace ProjectHospitalSystem.Forms.Receptionist
             {
                 LoadAllPatients();
             }
-
         }
 
         private void LoadAllPatients()
@@ -163,12 +162,9 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                     RemainingBalance = b.TotalAmount - b.Payments.Sum(p => p.AmountPaid)
                 })
                 .ToList();
-
-
             dgv_Bills.DataSource = filteredBills;
             dgv_Bills.Columns["BillId"].Visible = false;
-            //dgv_Bills.Refresh();
-
+            dgv_Bills.Refresh();
         }
         public void LoadBillsData()
         {
@@ -326,7 +322,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                     Filter = "Word Document (*.docx)|*.docx",
                     Title = "Export Bill to Word"
                 };
-
+                LoadBills();
                 if (saveFileDialog.ShowDialog() != DialogResult.OK)
                     return;
                 string filePath = saveFileDialog.FileName;

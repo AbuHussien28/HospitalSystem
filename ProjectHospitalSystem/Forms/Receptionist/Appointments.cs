@@ -19,9 +19,10 @@ namespace ProjectHospitalSystem.Forms.Receptionist
     public partial class Appointments : Form
     {
         HospitalSystemContext db; int userid;
-        public Appointments()
+        public Appointments(int UserId)
         {
             InitializeComponent();
+            userid = UserId;
             db = new HospitalSystemContext();
         }
         private void LoadAppointemtData()
@@ -49,22 +50,36 @@ namespace ProjectHospitalSystem.Forms.Receptionist
         }
         private void CreateBillForAppointment(Appointment appointment)
         {
-            Bill newBill = new Bill
+            if (!appointment.PatientId.HasValue || !appointment.UserId.HasValue || appointment.Doctor?.Dept == null)
             {
-                PatientId = appointment.PatientId.Value,
-                DepartmentId = appointment.Doctor.Dept.DeptId,
-                UserId = appointment.UserId.Value,
-                AppointmentId = appointment.AppointmentId,
-                OriginalAmount = appointment.Doctor.Dept.FeeAmount,
-                LateFee = 0,
-                DueDate = appointment.AppointmentDateTime.AddDays(3),
-                Status = BillStatus.unPaid,
-                GenertedDate = appointment.AppointmentDateTime
-            };
+                MessageBox.Show("Cannot create bill - missing required information (Patient, User, or Department data).",
+                               "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-            db.Bills.Add(newBill);
-            db.SaveChanges();
-           
+            try
+            {
+                Bill newBill = new Bill
+                {
+                    PatientId = appointment.PatientId.Value,
+                    DepartmentId = appointment.Doctor.Dept.DeptId,
+                    UserId = appointment.UserId.Value,
+                    AppointmentId = appointment.AppointmentId,
+                    OriginalAmount = appointment.Doctor.Dept.FeeAmount,
+                    LateFee = 0,
+                    DueDate = appointment.AppointmentDateTime.AddDays(3),
+                    Status = BillStatus.unPaid,
+                    GenertedDate = appointment.AppointmentDateTime
+                };
+
+                db.Bills.Add(newBill);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error creating bill: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
         private void Appointments_Load(object sender, EventArgs e)
         {
@@ -170,7 +185,14 @@ namespace ProjectHospitalSystem.Forms.Receptionist
 
         private void btn_edit_Click(object sender, EventArgs e)
         {
-            if (dgv_appointments.SelectedRows.Count > 0)
+            if (dgv_appointments.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select an appointment to edit.",
+                               "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
             {
                 int selectedIndex = dgv_appointments.SelectedRows[0].Index;
                 string patientName = dgv_appointments.Rows[selectedIndex].Cells["PatientName"].Value.ToString();
@@ -181,53 +203,54 @@ namespace ProjectHospitalSystem.Forms.Receptionist
                     .Include(a => a.Patient)
                     .Include(a => a.Doctor)
                     .ThenInclude(d => d.User)
+                    .Include(a => a.Doctor.Dept)
                     .FirstOrDefault(a =>
                         (a.Patient.FirstName + " " + a.Patient.LastName) == patientName &&
                         (a.Doctor.User.FName + " " + a.Doctor.User.LName) == doctorName &&
                         a.AppointmentDateTime == appointmentDate);
 
-                if (appointment != null)
+                if (appointment == null)
                 {
-                    if (appointment != null)
-                    {
-                        if (combx_status.SelectedItem != null)
-                        {
-                            string selectedStatus = combx_status.SelectedItem.ToString();
-
-                            if (selectedStatus == "Upcoming")
-                                appointment.Status = AppointmentStatus.Upcoming;
-                            else if (selectedStatus == "Cancel")
-                                appointment.Status = AppointmentStatus.Cancel;
-                            else if (selectedStatus == "Done")
-                            {
-                                appointment.Status = AppointmentStatus.Done;
-
-                               
-                                if (appointment.Bill == null)
-                                {
-                                    CreateBillForAppointment(appointment);
-                                }
-                            }
-                       
-                            db.SaveChanges();
-                            MessageBox.Show("Appointment status updated successfully!");
-                        }
-                    }
-                    appointment.Note = txt_note.Text;
-                    appointment.ReminderSent = Rbtn_sent.Checked;
-                    appointment.AppointmentDateTime = Convert.ToDateTime(txt_date.Text);
-
-                    db.SaveChanges();
-                    LoadAppointemtData();
-                    MessageBox.Show("Appointment updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    btn_new.Visible = true;
-                    btn_edit.Visible = false;
-                    btn_delete.Visible = false;
+                    MessageBox.Show("Appointment not found in database.",
+                                   "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
+                appointment.Note = txt_note.Text;
+                appointment.ReminderSent = Rbtn_sent.Checked;
+                appointment.AppointmentDateTime = Convert.ToDateTime(txt_date.Text);
+
+                // Handle status change
+                if (combx_status.SelectedItem != null)
+                {
+                    string selectedStatus = combx_status.SelectedItem.ToString();
+
+                    appointment.Status = selectedStatus switch
+                    {
+                        "Upcoming" => AppointmentStatus.Upcoming,
+                        "Cancel" => AppointmentStatus.Cancel,
+                        "Done" => AppointmentStatus.Done,
+                        _ => appointment.Status
+                    };
+
+                    // Special handling for "Done" status
+                    if (selectedStatus == "Done" && appointment.Bill == null)
+                    {
+                        CreateBillForAppointment(appointment);
+                    }
+                }
+
+                db.SaveChanges();
+                LoadAppointemtData();
+
+                MessageBox.Show("Appointment updated successfully!",
+                              "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                ResetForm();
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Please select an appointment to edit.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"Error updating appointment: {ex.Message}",
+                               "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

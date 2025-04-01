@@ -560,7 +560,7 @@
             dtp_BirthDate.Location = new Point(173, 250);
             dtp_BirthDate.Name = "dtp_BirthDate";
             dtp_BirthDate.Size = new Size(249, 29);
-            dtp_BirthDate.TabIndex = 72;
+            dtp_BirthDate.TabIndex = 6;
             // 
             // rb_Female
             // 
@@ -570,7 +570,7 @@
             rb_Female.Location = new Point(291, 285);
             rb_Female.Name = "rb_Female";
             rb_Female.Size = new Size(78, 25);
-            rb_Female.TabIndex = 87;
+            rb_Female.TabIndex = 8;
             rb_Female.TabStop = true;
             rb_Female.Text = "Female";
             rb_Female.UseVisualStyleBackColor = true;
@@ -583,7 +583,7 @@
             rb_Male.Location = new Point(201, 285);
             rb_Male.Name = "rb_Male";
             rb_Male.Size = new Size(62, 25);
-            rb_Male.TabIndex = 71;
+            rb_Male.TabIndex = 7;
             rb_Male.TabStop = true;
             rb_Male.Text = "Male";
             rb_Male.UseVisualStyleBackColor = true;
@@ -815,7 +815,7 @@
             txt_phone.Margin = new Padding(5);
             txt_phone.Name = "txt_phone";
             txt_phone.Size = new Size(249, 29);
-            txt_phone.TabIndex = 4;
+            txt_phone.TabIndex = 3;
             // 
             // label1
             // 
@@ -839,7 +839,7 @@
             txt_Address.Margin = new Padding(5);
             txt_Address.Name = "txt_Address";
             txt_Address.Size = new Size(249, 29);
-            txt_Address.TabIndex = 3;
+            txt_Address.TabIndex = 4;
             // 
             // lb_AddressPaitnit
             // 

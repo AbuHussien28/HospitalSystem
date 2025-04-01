@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using ProjectHospitalSystem.Models;
 using System;
 using System.Collections.Generic;
@@ -113,15 +114,64 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         private void btn_AdminPaymentMethodRemove_Click(object sender, EventArgs e)
         {
-            PaymentMethod removeSelectedPaymentMethod = _context.PaymentMethods.Where(n => n.paymentMethodId == selectedPaymentMethodId).FirstOrDefault();
-            if (removeSelectedPaymentMethod != null && MessageBox.Show($"are you sure to delete {removeSelectedPaymentMethod.paymentMethodName}", "confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            try
             {
-                _context.PaymentMethods.Remove(removeSelectedPaymentMethod);
-                _context.SaveChanges();
-                LoadPaymentMethods();
-                txt_AdminPaymentMethod.Text = "";
-                MessageBox.Show($"Deleted PaymentMethod: {removeSelectedPaymentMethod.paymentMethodName} Success");
-                SetButtonVisibility(true);
+                if (selectedPaymentMethodId == 0)
+                {
+                    MessageBox.Show("Please select a payment method to delete.",
+                        "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                var paymentMethodToDelete = _context.PaymentMethods
+                    .FirstOrDefault(p => p.paymentMethodId == selectedPaymentMethodId);
+
+                if (paymentMethodToDelete == null)
+                {
+                    MessageBox.Show("Payment method not found.",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                bool isUsedInPayments = _context.payments
+                    .Any(p => p.PaymentMethodId == selectedPaymentMethodId);
+
+                if (isUsedInPayments)
+                {
+                    MessageBox.Show($"Cannot delete '{paymentMethodToDelete.paymentMethodName}' because it's being used in existing payments.",
+                        "Delete Restricted", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                var confirmResult = MessageBox.Show(
+                    $"Are you sure you want to delete the payment method: {paymentMethodToDelete.paymentMethodName}?",
+                    "Confirm Deletion",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (confirmResult == DialogResult.Yes)
+                {
+                    _context.PaymentMethods.Remove(paymentMethodToDelete);
+                    _context.SaveChanges();
+                    LoadPaymentMethods();
+                    txt_AdminPaymentMethod.Clear();
+                    SetButtonVisibility(true);
+
+                    MessageBox.Show($"Payment method '{paymentMethodToDelete.paymentMethodName}' was deleted successfully.",
+                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (DbUpdateException dbEx)
+            {
+                string errorMessage = dbEx.InnerException != null
+                    ? dbEx.InnerException.Message
+                    : dbEx.Message;
+
+                MessageBox.Show($"Database error while deleting payment method:\n{errorMessage}",
+                    "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An unexpected error occurred:\n{ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void dgv_AdminPaymentMethod_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)

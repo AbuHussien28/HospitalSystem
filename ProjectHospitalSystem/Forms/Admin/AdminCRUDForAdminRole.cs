@@ -191,6 +191,11 @@ namespace ProjectHospitalSystem.Forms.Admin
                 MessageBox.Show("All fields are required.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
+            if (!ValidateEmail(txt_email.Text))
+            {
+                MessageBox.Show("Email Address Not Valid");
+                return false;
+            }
             if (txt_password.Text != txt_confirmPassword.Text)
             {
                 MessageBox.Show("Password and Confirm Password do not match.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -210,6 +215,10 @@ namespace ProjectHospitalSystem.Forms.Admin
                 pBoxShowPassword.Image = Properties.Resources.IconShowPassword;
                 txt_password.UseSystemPasswordChar = true;
             }
+        }
+        public bool ValidateEmail(string email)
+        {
+            return email.Contains("@") && email.Contains(".");
         }
         private void ToggleConfrimPasswordVisibility()
         {

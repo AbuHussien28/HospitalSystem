@@ -33,6 +33,8 @@
             imageList1 = new ImageList(components);
             AdminTabContol = new MaterialSkin.Controls.MaterialTabControl();
             tabPageHome = new TabPage();
+            panelHome = new Panel();
+            label5 = new Label();
             tabPageAdminRole = new TabPage();
             panelAdmin = new Panel();
             label4 = new Label();
@@ -58,6 +60,8 @@
             lblDateTime = new Label();
             panel1 = new Panel();
             AdminTabContol.SuspendLayout();
+            tabPageHome.SuspendLayout();
+            panelHome.SuspendLayout();
             tabPageAdminRole.SuspendLayout();
             panelAdmin.SuspendLayout();
             tabPageDoctor.SuspendLayout();
@@ -116,6 +120,7 @@
             // tabPageHome
             // 
             tabPageHome.BackColor = Color.FromArgb(254, 251, 244);
+            tabPageHome.Controls.Add(panelHome);
             tabPageHome.ImageKey = "IconHome.png";
             tabPageHome.Location = new Point(4, 31);
             tabPageHome.Name = "tabPageHome";
@@ -123,6 +128,28 @@
             tabPageHome.Size = new Size(1603, 771);
             tabPageHome.TabIndex = 0;
             tabPageHome.Text = "Home";
+            // 
+            // panelHome
+            // 
+            panelHome.BackColor = Color.FromArgb(254, 251, 244);
+            panelHome.Controls.Add(label5);
+            panelHome.Dock = DockStyle.Fill;
+            panelHome.Location = new Point(3, 3);
+            panelHome.Name = "panelHome";
+            panelHome.Size = new Size(1597, 765);
+            panelHome.TabIndex = 3;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Dock = DockStyle.Bottom;
+            label5.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.ForeColor = Color.White;
+            label5.Location = new Point(0, 748);
+            label5.Name = "label5";
+            label5.Size = new Size(0, 17);
+            label5.TabIndex = 42;
+            label5.TextAlign = ContentAlignment.MiddleRight;
             // 
             // tabPageAdminRole
             // 
@@ -140,9 +167,10 @@
             // 
             panelAdmin.BackColor = Color.FromArgb(254, 251, 244);
             panelAdmin.Controls.Add(label4);
-            panelAdmin.Location = new Point(6, 6);
+            panelAdmin.Dock = DockStyle.Fill;
+            panelAdmin.Location = new Point(3, 3);
             panelAdmin.Name = "panelAdmin";
-            panelAdmin.Size = new Size(1513, 946);
+            panelAdmin.Size = new Size(1597, 765);
             panelAdmin.TabIndex = 2;
             // 
             // label4
@@ -151,7 +179,7 @@
             label4.Dock = DockStyle.Bottom;
             label4.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label4.ForeColor = Color.White;
-            label4.Location = new Point(0, 929);
+            label4.Location = new Point(0, 748);
             label4.Name = "label4";
             label4.Size = new Size(0, 17);
             label4.TabIndex = 42;
@@ -174,9 +202,10 @@
             // 
             panelDoctorData.BackColor = Color.FromArgb(254, 251, 244);
             panelDoctorData.Controls.Add(label1);
-            panelDoctorData.Location = new Point(-1, 3);
+            panelDoctorData.Dock = DockStyle.Fill;
+            panelDoctorData.Location = new Point(3, 3);
             panelDoctorData.Name = "panelDoctorData";
-            panelDoctorData.Size = new Size(1513, 946);
+            panelDoctorData.Size = new Size(1597, 765);
             panelDoctorData.TabIndex = 1;
             // 
             // label1
@@ -185,7 +214,7 @@
             label1.Dock = DockStyle.Bottom;
             label1.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.White;
-            label1.Location = new Point(0, 929);
+            label1.Location = new Point(0, 748);
             label1.Name = "label1";
             label1.Size = new Size(0, 17);
             label1.TabIndex = 42;
@@ -206,9 +235,10 @@
             // 
             panelReceptionsit.BackColor = Color.FromArgb(254, 251, 244);
             panelReceptionsit.Controls.Add(label2);
-            panelReceptionsit.Location = new Point(6, 8);
+            panelReceptionsit.Dock = DockStyle.Fill;
+            panelReceptionsit.Location = new Point(0, 0);
             panelReceptionsit.Name = "panelReceptionsit";
-            panelReceptionsit.Size = new Size(1509, 651);
+            panelReceptionsit.Size = new Size(1603, 771);
             panelReceptionsit.TabIndex = 2;
             // 
             // label2
@@ -217,7 +247,7 @@
             label2.Dock = DockStyle.Bottom;
             label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.White;
-            label2.Location = new Point(0, 634);
+            label2.Location = new Point(0, 754);
             label2.Name = "label2";
             label2.Size = new Size(0, 17);
             label2.TabIndex = 42;
@@ -238,10 +268,12 @@
             // 
             panelPatient.AutoScroll = true;
             panelPatient.AutoSize = true;
+            panelPatient.BackColor = Color.FromArgb(254, 251, 244);
             panelPatient.Controls.Add(label3);
-            panelPatient.Location = new Point(3, 3);
+            panelPatient.Dock = DockStyle.Fill;
+            panelPatient.Location = new Point(0, 0);
             panelPatient.Name = "panelPatient";
-            panelPatient.Size = new Size(1662, 934);
+            panelPatient.Size = new Size(1603, 771);
             panelPatient.TabIndex = 0;
             // 
             // label3
@@ -250,7 +282,7 @@
             label3.Dock = DockStyle.Bottom;
             label3.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.White;
-            label3.Location = new Point(0, 917);
+            label3.Location = new Point(0, 754);
             label3.Name = "label3";
             label3.Size = new Size(0, 17);
             label3.TabIndex = 42;
@@ -269,9 +301,10 @@
             // 
             // panelDepartment
             // 
-            panelDepartment.Location = new Point(3, 3);
+            panelDepartment.Dock = DockStyle.Fill;
+            panelDepartment.Location = new Point(0, 0);
             panelDepartment.Name = "panelDepartment";
-            panelDepartment.Size = new Size(1539, 702);
+            panelDepartment.Size = new Size(1603, 771);
             panelDepartment.TabIndex = 1;
             // 
             // tabPagePaymentMethod
@@ -287,9 +320,11 @@
             // 
             // panelPaymentMethod
             // 
-            panelPaymentMethod.Location = new Point(3, 3);
+            panelPaymentMethod.BackColor = Color.FromArgb(254, 251, 244);
+            panelPaymentMethod.Dock = DockStyle.Fill;
+            panelPaymentMethod.Location = new Point(0, 0);
             panelPaymentMethod.Name = "panelPaymentMethod";
-            panelPaymentMethod.Size = new Size(1512, 702);
+            panelPaymentMethod.Size = new Size(1603, 771);
             panelPaymentMethod.TabIndex = 2;
             // 
             // tabPageReports
@@ -305,9 +340,11 @@
             // 
             // panelReports
             // 
-            panelReports.Location = new Point(3, 3);
+            panelReports.BackColor = Color.FromArgb(254, 251, 244);
+            panelReports.Dock = DockStyle.Fill;
+            panelReports.Location = new Point(0, 0);
             panelReports.Name = "panelReports";
-            panelReports.Size = new Size(1512, 702);
+            panelReports.Size = new Size(1603, 771);
             panelReports.TabIndex = 3;
             // 
             // tabAppoinments
@@ -323,9 +360,11 @@
             // 
             // panelAppoiments
             // 
-            panelAppoiments.Location = new Point(3, 3);
+            panelAppoiments.BackColor = Color.FromArgb(254, 251, 244);
+            panelAppoiments.Dock = DockStyle.Fill;
+            panelAppoiments.Location = new Point(0, 0);
             panelAppoiments.Name = "panelAppoiments";
-            panelAppoiments.Size = new Size(1543, 702);
+            panelAppoiments.Size = new Size(1603, 771);
             panelAppoiments.TabIndex = 3;
             // 
             // tabPageLogOut
@@ -374,6 +413,9 @@
             WindowState = FormWindowState.Maximized;
             Load += AdminUserDashBoardScreen_Load;
             AdminTabContol.ResumeLayout(false);
+            tabPageHome.ResumeLayout(false);
+            panelHome.ResumeLayout(false);
+            panelHome.PerformLayout();
             tabPageAdminRole.ResumeLayout(false);
             panelAdmin.ResumeLayout(false);
             panelAdmin.PerformLayout();
@@ -425,5 +467,7 @@
         private TabPage tabPageAdminRole;
         private Panel panelAdmin;
         private Label label4;
+        private Panel panelHome;
+        private Label label5;
     }
 }

@@ -127,7 +127,7 @@
             dataGridViewCellStyle1.BackColor = SystemColors.ButtonFace;
             dgvMedicalRecords.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgvMedicalRecords.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvMedicalRecords.BackgroundColor = Color.White;
+            dgvMedicalRecords.BackgroundColor = Color.FromArgb(254, 251, 244);
             dgvMedicalRecords.BorderStyle = BorderStyle.None;
             dgvMedicalRecords.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dgvMedicalRecords.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
@@ -154,7 +154,7 @@
             dgvMedicalRecords.Name = "dgvMedicalRecords";
             dgvMedicalRecords.RowHeadersVisible = false;
             dgvMedicalRecords.RowTemplate.Height = 40;
-            dgvMedicalRecords.Size = new Size(1120, 385);
+            dgvMedicalRecords.Size = new Size(1148, 385);
             dgvMedicalRecords.TabIndex = 118;
             dgvMedicalRecords.CellContentClick += dgvMedicalRecords_CellContentClick;
             // 
@@ -251,7 +251,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(254, 251, 244);
-            ClientSize = new Size(1145, 495);
+            ClientSize = new Size(1174, 495);
             Controls.Add(pictureBox3);
             Controls.Add(pictureBox2);
             Controls.Add(pictureBox1);

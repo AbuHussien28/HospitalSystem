@@ -139,11 +139,23 @@
   <data name="IconAddDate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconAddDate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="IconQrCode" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconQrCode.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconDoctor128px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconDoctor128px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="IconSerachDoctor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconSerachDoctor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="IconProfileChange" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconProfileChange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="IconRecPaitData" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconRecPaitData.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconDoctorProfileFemale" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconDoctorProfileFemale.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconAgePait" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconAgePait.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -157,8 +169,14 @@
   <data name="IconRecepSearch" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconRecepSearch.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="IconRevenue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconRevenue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="IconDeptDgv" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconDeptDgv.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconAddressPat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconAddressPat.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconDone" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconDone1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -178,9 +196,6 @@
   <data name="IconPaymentScreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconPaymentScreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IconUnShowPassword" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconUnShowPassword.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="IconReceptiGerentedDate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconReceptiGerentedDate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -196,9 +211,6 @@
   <data name="IconRemaningBlance" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconRemaningBlance.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IconAddMecical" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconAddMecical.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="IconDoctorAppoiments" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconDoctorAppoiments.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -213,9 +225,6 @@
   </data>
   <data name="IconProjectStatus" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconProjectStatus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="IconExit128Px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconExit128Px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Icon Filter" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icon Filter.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -238,6 +247,9 @@
   <data name="IconBillId" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconBillId.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="IconProfileDetails" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconProfileDetails.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="IconTreatments" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconTreatments.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -253,8 +265,14 @@
   <data name="IconDeptName" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconDeptName.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="IconExel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconExel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="IconEmail" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconEmail.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconProfileForm" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconProfileForm.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconHeathBeav" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconHeathBeav.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -280,14 +298,29 @@
   <data name="IconRemider" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconRemider.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="IconMedical" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconMedical.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="IconDGVPat" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconDGVPat.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconUnFilter" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconUnFilter.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="IconTotalAmount" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconTotalAmount.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconSearch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconSearch.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconRecDoctor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconRecDoctor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="IconPaymentDate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconPaymentDate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconPassword" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconPassword.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconPay1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconPay1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -301,17 +334,17 @@
   <data name="IconExportWord" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconExportWord.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IconTotalAmount" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconTotalAmount.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="IconQrCode1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconQrCode1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconDoctorAdminDgv" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconDoctorAdminDgv.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IconAddressPat" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconAddressPat.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="IconExit128Px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconExit128Px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IconBill" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconBill.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="IconAddMecical" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconAddMecical.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconPatientSerach" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconPatientSerach.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -319,14 +352,20 @@
   <data name="IconAddPat" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconAddPat.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="IconRecepDgv" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconRecepDgv.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconDepartments128px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconDepartments128px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="IconDoctorData" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconDoctorData.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconReportBtn" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconReportBtn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IconRecDoctor" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconRecDoctor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="IconDoctorProfileFemale2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconDoctorProfileFemale2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconFeeAmount" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconFeeAmount.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -334,20 +373,29 @@
   <data name="IconLabResult" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconLabResult.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ITIMedicalRecord2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ITIMedicalRecord2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="IconDueDate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconDueDate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconOrignalAmount" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconOrignalAmount.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IconPassword" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconPassword.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="IconDoctorProfile1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconDoctorProfile1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconDoctorAppoiment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconDoctorAppoiment.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LoginIconForBtn" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LoginIconForBtn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconUserPassword" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconUserPassword.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconDoctorProfileFemale1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconDoctorProfileFemale1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconExit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconExit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -357,6 +405,9 @@
   </data>
   <data name="IconDeptName1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconDeptName1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconBill" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconBill.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconPaientent" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconPaientent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -373,8 +424,8 @@
   <data name="IconAddDoctor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconAddDoctor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IconRecepDgv" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconRecepDgv.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="IconDoctorProfile" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconDoctorProfile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconChooseReport" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconChooseReport.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -382,8 +433,8 @@
   <data name="IconLateFee" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconLateFee.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ITIMedicalRecord2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ITIMedicalRecord2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="IconPatientData" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconPatientData.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconAppoinmentDgv" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconAppoinmentDgv.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -391,10 +442,10 @@
   <data name="LoginImageScreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LoginImageScreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IconSearch" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconSearch.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="IconUnShowPassword" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconUnShowPassword.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IconMedical" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconMedical.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="IconPaientent128px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconPaientent128px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using ProjectHospitalSystem.Models;
 using ProjectHospitalSystem.Models.DTO;
 using System;
@@ -100,39 +101,66 @@ namespace ProjectHospitalSystem.Forms.Admin
             try
             {
                 if (!ValidateInputs()) return;
-                if (IsPatientNameExists(txt_Fname.Text, txt_Lname.Text))
+
+                if (IsPatientNameExists(txt_Fname.Text.Trim(), txt_Lname.Text.Trim()))
                 {
-                    MessageBox.Show("A patient with the same name already exists.", "Duplicate Patient", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("A patient with the same name already exists.",
+                                  "Duplicate Patient",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 var patient = new Patient
                 {
-                    FirstName = txt_Fname.Text,
-                    LastName = txt_Lname.Text,
-                    DateOfBirth = dtp_BirthDate.Value,
+                    FirstName = txt_Fname.Text.Trim(),
+                    LastName = txt_Lname.Text.Trim(),
+                    DateOfBirth = dtp_BirthDate.Value.Date,
                     MedicalHistory = GetMedicalHistory(),
                     Gender = rb_Male.Checked ? "Male" : rb_Female.Checked ? "Female" : "Other",
-                    Email = txt_Email.Text,
+                    Email = txt_Email.Text.Trim(),
                     PhoneNumber = txt_phone.Text,
-                    Address = txt_Address.Text,
+                    Address = txt_Address.Text.Trim(),
                 };
-
                 _context.Patients.Add(patient);
                 _context.SaveChanges();
                 LoadDataAsync();
                 ClearFields();
-            }
+
+                MessageBox.Show("Patient added successfully!", "Success",
+                              MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error adding patient: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Unexpected error: {ex.InnerException}", "Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+}
+        private void c_box_otherChronic_CheckedChanged(object sender, EventArgs e)
+        {
+            txt_otherChronic.Visible = c_box_otherChronic.Checked;
+            if (!c_box_otherChronic.Checked) txt_otherChronic.Clear();
         }
-        private void c_box_otherChronic_CheckedChanged(object sender, EventArgs e) => txt_otherChronic.Visible = c_box_otherChronic.Checked;
-        private void c_box_otherSurgical_CheckedChanged(object sender, EventArgs e) => txt_otherSurgical.Visible = c_box_otherSurgical.Checked;
-        private void c_box_otherInfectious_CheckedChanged(object sender, EventArgs e) => txt_otherInfectious.Visible = c_box_otherInfectious.Checked;
-        private void c_box_otherAllergies_CheckedChanged(object sender, EventArgs e) => txt_otherAllergies.Visible = c_box_otherAllergies.Checked;
-        private void c_box_otherFactors_CheckedChanged(object sender, EventArgs e) => txt_otherFactor.Visible = c_box_otherFactors.Checked;
+
+        private void c_box_otherSurgical_CheckedChanged(object sender, EventArgs e)
+        {
+            txt_otherSurgical.Visible = c_box_otherSurgical.Checked;
+            if (!c_box_otherSurgical.Checked) txt_otherSurgical.Clear();
+        }
+        private void c_box_otherInfectious_CheckedChanged(object sender, EventArgs e)
+        {
+            txt_otherInfectious.Visible = c_box_otherInfectious.Checked;
+            if (!c_box_otherInfectious.Checked) txt_otherInfectious.Clear();
+        }
+        private void c_box_otherAllergies_CheckedChanged(object sender, EventArgs e)
+        {
+            txt_otherAllergies.Visible = c_box_otherAllergies.Checked;
+            if (!c_box_otherAllergies.Checked) txt_otherAllergies.Clear();
+        }
+        private void c_box_otherFactors_CheckedChanged(object sender, EventArgs e)
+        {
+            txt_otherFactor.Visible = c_box_otherFactors.Checked;
+            if (!c_box_otherFactors.Checked) txt_otherFactor.Clear();
+        }
         private void dgv_AdminPaitent_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex < 0 || e.RowIndex >= dgv_AdminPaitent.Rows.Count)
@@ -176,42 +204,43 @@ namespace ProjectHospitalSystem.Forms.Admin
         {
             try
             {
-                var patient = _context.Patients.SingleOrDefault(n => n.PatientId == _selectedPatientId);
+                if (!ValidateInputs()) return;
 
+                var patient = _context.Patients.SingleOrDefault(n => n.PatientId == _selectedPatientId);
                 if (patient == null)
                 {
                     MessageBox.Show("Patient not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                bool isChanged = patient.FirstName != txt_Fname.Text ||
-                                 patient.LastName != txt_Lname.Text ||
-                                 patient.DateOfBirth != dtp_BirthDate.Value ||
-                                 patient.Gender != (rb_Male.Checked ? "Male" : rb_Female.Checked ? "Female" : "Other") ||
-                                 patient.Email != txt_Email.Text ||
-                                 patient.PhoneNumber != txt_phone.Text ||
-                                 patient.Address != txt_Address.Text ||
-                                 patient.MedicalHistory != GetMedicalHistory();
-
-                if (!isChanged)
-                {
-                    MessageBox.Show("No changes detected. Update skipped.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
                 if (IsPatientNameExists(txt_Fname.Text, txt_Lname.Text, _selectedPatientId))
                 {
-                    MessageBox.Show("A patient with the same name already exists.", "Duplicate Patient", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("A patient with the same name already exists.", "Duplicate Patient",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (!HasChanges(patient))
+                {
+                    MessageBox.Show("No changes detected. Update skipped.", "Info",
+                                   MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 UpdatePatientData(patient);
                 _context.SaveChanges();
                 LoadDataAsync();
                 ClearFields();
-                MessageBox.Show("Patient updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Patient updated successfully.", "Success",
+                              MessageBoxButtons.OK, MessageBoxIcon.Information);
                 SetButtonVisibility(isAddMode: true, _user);
+            }
+            catch (DbUpdateException dbEx)
+            {
+                MessageBox.Show($"Database error: {dbEx.Message}", "Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error updating patient: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error updating patient: {ex.Message}", "Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void UpdatePatientData(Patient patient)
@@ -229,22 +258,40 @@ namespace ProjectHospitalSystem.Forms.Admin
         {
             if (MessageBox.Show("Are you sure you want to delete this patient?", "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                var patient = _context.Patients.SingleOrDefault(n => n.PatientId == _selectedPatientId);
-
-                if (patient != null)
+                try
                 {
-                    _context.Patients.Remove(patient);
-                    _context.SaveChanges();
-                    LoadDataAsync();
-                    ClearFields();
-                    MessageBox.Show("Deleted Done");
-                    SetButtonVisibility(isAddMode: true, _user);
-                }
-                else
-                {
-                    MessageBox.Show("Patient not found.");
-                }
+                    var patient = _context.Patients.SingleOrDefault(n => n.PatientId == _selectedPatientId);
 
+                    if (patient != null)
+                    {
+                        _context.Patients.Remove(patient);
+                        _context.SaveChanges();
+                        MessageBox.Show("Patient deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        SetButtonVisibility(isAddMode: true, _user);
+                        LoadDataAsync();
+                        ClearFields();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Patient not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (ex.InnerException != null && ex.InnerException.Message.Contains("REFERENCE constraint"))
+                    {
+                        MessageBox.Show("This patient cannot be deleted because they have associated records (appointments, prescriptions, etc.).",
+                                       "Deletion Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Error deleting patient: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error deleting patient: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
         private async void txtBoxPatientSerachData_TextChanged(object sender, EventArgs e)
@@ -362,16 +409,79 @@ namespace ProjectHospitalSystem.Forms.Admin
         {
             ResetMedicalHistoryControls();
 
+            if (string.IsNullOrWhiteSpace(medicalHistory))
+                return;
             var conditions = medicalHistory.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+
+            var conditionToCheckboxMap = new Dictionary<string, CheckBox>(StringComparer.OrdinalIgnoreCase)
+    {
+        { "High Blood Pressure (Hypertension)", cbox_HeartBlood },
+        { "Heart Diseases", cbox_HeartDisease },
+        { "Diabetes", cbox_Diabetes },
+        { "Kidney Diseases", cbox_Kindey },
+        { "Liver Diseases", c_boxLiver },
+        { "Respiratory Diseases (e.g., Asthma)", c_boxRespiratory },
+        { "Open-Heart Surgery", c_boxOpenHeartSurgery },
+        { "Appendectomy (Appendix Removal)", c_boxAppendectomy },
+        { "Eye Surgery", c_boxEye },
+        { "Cosmetic Surgery", c_boxCosmeticSurgery },
+        { "Other Surgery 1", checkBox16 },
+        { "Other Surgery 2", checkBox17 },
+        { "Hepatitis (A, B, or C)", c_boxHepatitis },
+        { "HIV/AIDS", c_boxHIVOrAIDS },
+        { "Tuberculosis (TB)", c_boxTuberculosis },
+        { "Previous COVID-19 Infection", c_box_covid19 },
+        { "Drug Allergies", c_boxDrugAllergies },
+        { "Food Allergies", c_boxFoodAllergie },
+        { "Genetic Diseases", c_boxGeneticDiseases },
+        { "Dust or Animal Allergies", c_boxDust },
+        { "Smoking", cbox_Smoking },
+        { "Alcohol Addiction", cb_Alcoho }
+    };
 
             foreach (var condition in conditions)
             {
-                var trimmedCondition = condition.Trim();
-
-                if (SetPredefinedCondition(trimmedCondition)) continue;
-
-                SetOtherCondition(trimmedCondition);
+                if (conditionToCheckboxMap.TryGetValue(condition.Trim(), out CheckBox checkbox))
+                {
+                    checkbox.Checked = true;
+                    continue;
+                }
+                if (condition.Contains("[Chronic]"))
+                {
+                    c_box_otherChronic.Checked = true;
+                    txt_otherChronic.Text = condition.Replace("[Chronic]", "").Trim();
+                    continue;
+                }
+                if (condition.Contains("[Surgical]"))
+                {
+                    c_box_otherSurgical.Checked = true;
+                    txt_otherSurgical.Text = condition.Replace("[Surgical]", "").Trim();
+                    continue;
+                }
+                if (condition.Contains("[Infectious]"))
+                {
+                    c_box_otherInfectious.Checked = true;
+                    txt_otherInfectious.Text = condition.Replace("[Infectious]", "").Trim();
+                    continue;
+                }
+                if (condition.Contains("[Allergies]"))
+                {
+                    c_box_otherAllergies.Checked = true;
+                    txt_otherAllergies.Text = condition.Replace("[Allergies]", "").Trim();
+                    continue;
+                }
+                if (condition.Contains("[Factors]"))
+                {
+                    c_box_otherFactors.Checked = true;
+                    txt_otherFactor.Text = condition.Replace("[Factors]", "").Trim();
+                    continue;
+                }
             }
+            txt_otherChronic.Visible = c_box_otherChronic.Checked;
+            txt_otherSurgical.Visible = c_box_otherSurgical.Checked;
+            txt_otherInfectious.Visible = c_box_otherInfectious.Checked;
+            txt_otherAllergies.Visible = c_box_otherAllergies.Checked;
+            txt_otherFactor.Visible = c_box_otherFactors.Checked;
         }
         private void ResetMedicalHistoryControls()
         {
@@ -388,6 +498,7 @@ namespace ProjectHospitalSystem.Forms.Admin
                         else if (childControl is TextBox textBox && textBox.Name.StartsWith("txt_other"))
                         {
                             textBox.Clear();
+                            textBox.Visible = false; 
                         }
                     }
                 }
@@ -412,29 +523,6 @@ namespace ProjectHospitalSystem.Forms.Admin
 
             return false;
         }
-        private void SetOtherCondition(string condition)
-        {
-            var otherConditions = new Dictionary<string, Tuple<CheckBox, TextBox>>
-            {
-                { "[Chronic]", Tuple.Create(c_box_otherChronic, txt_otherChronic) },
-                { "[Surgical]", Tuple.Create(c_box_otherSurgical, txt_otherSurgical) },
-                { "[Infectious]", Tuple.Create(c_box_otherInfectious, txt_otherInfectious) },
-                { "[Allergies]", Tuple.Create(c_box_otherAllergies, txt_otherAllergies) },
-                { "[Factors]", Tuple.Create(c_box_otherFactors, txt_otherFactor) }
-            };
-
-            foreach (var entry in otherConditions)
-            {
-                if (condition.StartsWith(entry.Key, StringComparison.OrdinalIgnoreCase))
-                {
-                    entry.Value.Item1.Checked = true;
-                    entry.Value.Item2.Text = condition.Replace(entry.Key, "").Trim();
-                    return;
-                }
-            }
-
-            AssignToFirstAvailableOtherTextbox(condition);
-        }
         private void AssignToFirstAvailableOtherTextbox(string condition)
         {
             var otherTextboxes = new[] { txt_otherChronic, txt_otherSurgical, txt_otherInfectious, txt_otherAllergies, txt_otherFactor };
@@ -454,25 +542,57 @@ namespace ProjectHospitalSystem.Forms.Admin
         #region  Validate
         private bool ValidateInputs()
         {
-            if (string.IsNullOrWhiteSpace(txt_Fname.Text) ||
-                string.IsNullOrWhiteSpace(txt_Lname.Text) ||
-                string.IsNullOrWhiteSpace(txt_phone.Text) ||
-                string.IsNullOrWhiteSpace(txt_Email.Text) ||
-                string.IsNullOrWhiteSpace(txt_Address.Text))
+            txt_Fname.Text = txt_Fname.Text.Trim();
+            txt_Lname.Text = txt_Lname.Text.Trim();
+            txt_Email.Text = txt_Email.Text.Trim();
+            txt_phone.Text = txt_phone.Text.Trim();
+            txt_Address.Text = txt_Address.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(txt_Fname.Text) || txt_Fname.Text.Length < 2)
             {
-                MessageBox.Show("Please fill in all required fields.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please enter a valid first name (at least 2 characters).",
+                              "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txt_Fname.Focus();
                 return false;
             }
 
-            if (dtp_BirthDate.Value > DateTime.Today)
+            if (string.IsNullOrWhiteSpace(txt_Lname.Text) || txt_Lname.Text.Length < 2)
             {
-                MessageBox.Show("Please select a valid birth date.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please enter a valid last name (at least 2 characters).",
+                              "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txt_Lname.Focus();
+                return false;
+            }
+
+            if (!ValidateEmail(txt_Email.Text))
+            {
+                MessageBox.Show("Please enter a valid email address.",
+                              "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txt_Email.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txt_phone.Text) || !txt_phone.Text.All(char.IsDigit))
+            {
+                MessageBox.Show("Please enter a valid phone number (digits only).",
+                              "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txt_phone.Focus();
+                return false;
+            }
+
+            if (dtp_BirthDate.Value > DateTime.Today.AddYears(-5) ||
+                dtp_BirthDate.Value < DateTime.Today.AddYears(-120))
+            {
+                MessageBox.Show("Please select a valid birth date (between 5 and 120 years ago).",
+                              "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dtp_BirthDate.Focus();
                 return false;
             }
 
             if (!rb_Male.Checked && !rb_Female.Checked)
             {
-                MessageBox.Show("Please select Gender", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please select a gender.",
+                              "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
@@ -492,7 +612,23 @@ namespace ProjectHospitalSystem.Forms.Admin
                    ValidateCheckBoxGroup(gb_OtherFactor);
         }
         private bool ValidateCheckBoxGroup(GroupBox groupBox) => groupBox.Controls.OfType<CheckBox>().Any(checkBox => checkBox.Checked);
-        public bool ValidateEmail(string email) => email.Contains("@") && email.Contains(".");
+        public bool ValidateEmail(string email) 
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(email)) return false;
+
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email &&
+                       email.Contains(".") &&
+                       email.IndexOf('@') > 0 &&
+                       email.IndexOf('@') < email.LastIndexOf('.');
+            }
+            catch
+            {
+                return false;
+            }
+        }
         private bool IsPatientNameExists(string firstName, string lastName, int? excludePatientId = null)
         {
             var query = _context.Patients
@@ -506,6 +642,29 @@ namespace ProjectHospitalSystem.Forms.Admin
 
             return query.Any();
         }
+        private bool HasChanges(Patient patient)
+        {
+            return patient.FirstName != txt_Fname.Text ||
+                   patient.LastName != txt_Lname.Text ||
+                   patient.DateOfBirth != dtp_BirthDate.Value ||
+                   patient.Gender != (rb_Male.Checked ? "Male" : "Female") ||
+                   patient.Email != txt_Email.Text ||
+                   patient.PhoneNumber != txt_phone.Text ||
+                   patient.Address != txt_Address.Text ||
+                   HasMedicalHistoryChanged(patient);
+        }
+        private bool HasMedicalHistoryChanged(Patient patient)
+        {
+            var currentHistory = GetMedicalHistory();
+            if (string.IsNullOrEmpty(patient.MedicalHistory))
+                return !string.IsNullOrEmpty(currentHistory);
+            if (string.IsNullOrEmpty(currentHistory))
+                return !string.IsNullOrEmpty(patient.MedicalHistory);
+            var existing = patient.MedicalHistory.Split(',').Select(s => s.Trim()).ToHashSet(StringComparer.OrdinalIgnoreCase);
+            var updated = currentHistory.Split(',').Select(s => s.Trim()).ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            return !existing.SetEquals(updated);
+        }
         #endregion
         #region Clear Fields Reload Forms
         private void ClearFields()
@@ -516,6 +675,9 @@ namespace ProjectHospitalSystem.Forms.Admin
             rb_Male.Checked = false;
             rb_Female.Checked = false;
             ClearTextBox();
+            btn_AddPaitenit.Visible= true;
+            btn_Update.Visible = false;
+            btn_remove.Visible = false;
         }
         private void ClearControls(Control control)
         {

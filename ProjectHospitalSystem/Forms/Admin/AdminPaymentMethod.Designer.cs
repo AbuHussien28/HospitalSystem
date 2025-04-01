@@ -73,7 +73,7 @@
             dgv_AdminPaymentMethod.Name = "dgv_AdminPaymentMethod";
             dgv_AdminPaymentMethod.RowHeadersVisible = false;
             dgv_AdminPaymentMethod.RowTemplate.Height = 40;
-            dgv_AdminPaymentMethod.Size = new Size(177, 283);
+            dgv_AdminPaymentMethod.Size = new Size(252, 283);
             dgv_AdminPaymentMethod.TabIndex = 94;
             dgv_AdminPaymentMethod.CellMouseDoubleClick += dgv_AdminPaymentMethod_CellMouseDoubleClick;
             // 
@@ -91,7 +91,7 @@
             txt_AdminPaymentMethod.BorderStyle = BorderStyle.FixedSingle;
             txt_AdminPaymentMethod.Font = new Font("Segoe UI", 12F);
             txt_AdminPaymentMethod.ForeColor = Color.Black;
-            txt_AdminPaymentMethod.Location = new Point(355, 33);
+            txt_AdminPaymentMethod.Location = new Point(502, 107);
             txt_AdminPaymentMethod.Margin = new Padding(5);
             txt_AdminPaymentMethod.Name = "txt_AdminPaymentMethod";
             txt_AdminPaymentMethod.Size = new Size(233, 29);
@@ -102,7 +102,7 @@
             lb_AdminPaymentMethod.AutoSize = true;
             lb_AdminPaymentMethod.BackColor = Color.Transparent;
             lb_AdminPaymentMethod.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lb_AdminPaymentMethod.Location = new Point(198, 35);
+            lb_AdminPaymentMethod.Location = new Point(345, 109);
             lb_AdminPaymentMethod.Name = "lb_AdminPaymentMethod";
             lb_AdminPaymentMethod.Size = new Size(149, 21);
             lb_AdminPaymentMethod.TabIndex = 89;
@@ -121,7 +121,7 @@
             btn_AdminPaymentMethodRemove.ForeColor = Color.White;
             btn_AdminPaymentMethodRemove.Image = Properties.Resources.IconRemovedOCTOR;
             btn_AdminPaymentMethodRemove.ImageAlign = ContentAlignment.MiddleLeft;
-            btn_AdminPaymentMethodRemove.Location = new Point(207, 219);
+            btn_AdminPaymentMethodRemove.Location = new Point(631, 168);
             btn_AdminPaymentMethodRemove.Name = "btn_AdminPaymentMethodRemove";
             btn_AdminPaymentMethodRemove.Size = new Size(104, 53);
             btn_AdminPaymentMethodRemove.TabIndex = 103;
@@ -143,7 +143,7 @@
             btn_AdminPaymentMethodUpdate.ForeColor = Color.White;
             btn_AdminPaymentMethodUpdate.Image = Properties.Resources.IconUpdateAdmin;
             btn_AdminPaymentMethodUpdate.ImageAlign = ContentAlignment.MiddleLeft;
-            btn_AdminPaymentMethodUpdate.Location = new Point(207, 141);
+            btn_AdminPaymentMethodUpdate.Location = new Point(490, 168);
             btn_AdminPaymentMethodUpdate.Name = "btn_AdminPaymentMethodUpdate";
             btn_AdminPaymentMethodUpdate.Size = new Size(104, 53);
             btn_AdminPaymentMethodUpdate.TabIndex = 102;
@@ -165,7 +165,7 @@
             btn_AdminPaymentMethodAdd.ForeColor = Color.White;
             btn_AdminPaymentMethodAdd.Image = Properties.Resources.IconPaymentMethodAdd;
             btn_AdminPaymentMethodAdd.ImageAlign = ContentAlignment.MiddleLeft;
-            btn_AdminPaymentMethodAdd.Location = new Point(207, 72);
+            btn_AdminPaymentMethodAdd.Location = new Point(345, 168);
             btn_AdminPaymentMethodAdd.Name = "btn_AdminPaymentMethodAdd";
             btn_AdminPaymentMethodAdd.Size = new Size(104, 53);
             btn_AdminPaymentMethodAdd.TabIndex = 101;
@@ -181,7 +181,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(254, 251, 244);
-            ClientSize = new Size(624, 307);
+            ClientSize = new Size(999, 307);
             Controls.Add(btn_AdminPaymentMethodRemove);
             Controls.Add(btn_AdminPaymentMethodUpdate);
             Controls.Add(btn_AdminPaymentMethodAdd);

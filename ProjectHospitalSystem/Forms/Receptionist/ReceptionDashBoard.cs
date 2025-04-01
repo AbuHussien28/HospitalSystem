@@ -8,7 +8,7 @@ using System.Data;
 
 namespace ProjectHospitalSystem.Forms.Receptionist
 {
-    public partial class HomeReception : MaterialForm
+    public partial class ReceptionDashBoard : MaterialForm
     {
         int userid; 
         User user;
@@ -18,7 +18,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
         private PaitenitCRUD paitenit;
         private HomeRecp HomeRecp;
         private AutoCompleteStringCollection autoCompleteCollection = new AutoCompleteStringCollection();
-        public HomeReception(User user)
+        public ReceptionDashBoard(User user)
         {
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
@@ -27,7 +27,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
             InitializeComponent();
             this.user = user;
             userid = user.UserId;
-            appointments = new Appointments();
+            appointments = new Appointments(userid);
             bills = new Bills();
             Reports = new Reports_Logging();
             paitenit = new PaitenitCRUD(user);
@@ -62,7 +62,7 @@ namespace ProjectHospitalSystem.Forms.Receptionist
             }
             else if (selectedTab == tabPageAllAppoinments)
             {
-                appointments = new Appointments();
+                appointments = new Appointments(userid);
                 LoadForm(appointments, panelAppointmets);
                 appointments.Reload();
             }

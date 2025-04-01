@@ -45,6 +45,7 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         private void btn_DepartmentFeeAdd_Click(object sender, EventArgs e)
         {
+
             if (!IsDoctorSelected())
             {
                 MessageBox.Show("Please choose a managing doctor.");
@@ -52,13 +53,13 @@ namespace ProjectHospitalSystem.Forms.Admin
                 return;
             }
 
-            int selectedDoctorId = (int)cb_DepartmentFDoctorName.SelectedValue;
-
             if (!ValidateInputs())
             {
                 MessageBox.Show("Please fill all fields.");
                 return;
             }
+            int selectedDoctorId = (int)cb_DepartmentFDoctorName.SelectedValue;
+
             if (!IsFeeValid())
             {
                 MessageBox.Show("Please enter a valid amount.");
@@ -92,8 +93,10 @@ namespace ProjectHospitalSystem.Forms.Admin
                 _context.Departments.Add(newDept);
                 _context.SaveChanges();
                 LoadDepartmentData();
+                ClearFrom();
                 MessageBox.Show("Department Added Successfully");
-            }
+
+        }
             catch (DbUpdateException dbEx)
             {
                 MessageBox.Show($"Database Update Error: {dbEx.Message}");
@@ -172,7 +175,14 @@ namespace ProjectHospitalSystem.Forms.Admin
         {
             if (MessageBox.Show("Are you sure to Delete this Department ?", "confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
+
                 Department dept = _context.Departments.SingleOrDefault(d => d.DeptId == deptSelectedId);
+                if (!CanDeleteDepartment(deptSelectedId))
+                {
+                    MessageBox.Show("Cannot delete department because it has doctors or appointments assigned.",
+                        "Delete Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 if (dept != null)
                 {
                     _context.Departments.Remove(dept);
@@ -226,10 +236,12 @@ namespace ProjectHospitalSystem.Forms.Admin
                 Department department = _context.Departments.SingleOrDefault(d => d.DeptId == deptSelectedId);
                 if (department != null)
                 {
+                    LoadDoctors();
                     txt_DepartmentDeptName.Text = department.DeptName;
                     txt_DepartmentDeptDesc.Text = department.Dept_Desc;
                     nuValueDeptFee.Value =department.FeeAmount;
                     cb_DepartmentFDoctorName.SelectedValue = department.DoctorMgnId ?? -1;
+
                 }
                 SetButtonVisibility(isAddMode: false);
             }
@@ -239,14 +251,50 @@ namespace ProjectHospitalSystem.Forms.Admin
         #region Data Loading Methods
         private void LoadDoctors()
         {
-            var doctors = connection.Query(@"
-             SELECT d.DoctorDetailsId,  u.FName + ' ' + u.LName AS FullName FROM Doctors d
-             INNER JOIN Users u ON d.UserId = u.UserId").ToList();
-            cb_DepartmentFDoctorName.DataSource = doctors;
-            cb_DepartmentFDoctorName.DisplayMember = "FullName";
-            cb_DepartmentFDoctorName.ValueMember = "DoctorDetailsId";
-            cb_DepartmentFDoctorName.SelectedIndex = -1;
-            cb_DepartmentFDoctorName.Text = "Choose Doctor Manager";
+            try
+            {
+                var doctors = connection.Query<dynamic>(@"
+            SELECT d.DoctorDetailsId, u.FName + ' ' + u.LName AS FullName 
+            FROM Doctors d
+            INNER JOIN Users u ON d.UserId = u.UserId
+            WHERE d.DoctorDetailsId NOT IN (
+                SELECT DISTINCT DoctorMgnId 
+                FROM Departments 
+                WHERE DoctorMgnId IS NOT NULL
+            )
+            ORDER BY FullName").ToList();
+                if (deptSelectedId != 0)
+                {
+                    var currentDept = _context.Departments.FirstOrDefault(d => d.DeptId == deptSelectedId);
+                    if (currentDept != null && currentDept.DoctorMgnId.HasValue)
+                    {
+                        var currentManager = connection.QueryFirstOrDefault<dynamic>(@"
+                    SELECT d.DoctorDetailsId, u.FName + ' ' + u.LName AS FullName 
+                    FROM Doctors d
+                    INNER JOIN Users u ON d.UserId = u.UserId
+                    WHERE d.DoctorDetailsId = @DoctorId",
+                            new { DoctorId = currentDept.DoctorMgnId.Value });
+
+                        if (currentManager != null)
+                        {
+                            if (!doctors.Any(d => d.DoctorDetailsId == currentManager.DoctorDetailsId))
+                            {
+                                doctors = new List<dynamic>(doctors) { currentManager }.ToList();
+                            }
+                        }
+                    }
+                }
+
+                cb_DepartmentFDoctorName.DataSource = doctors;
+                cb_DepartmentFDoctorName.DisplayMember = "FullName";
+                cb_DepartmentFDoctorName.ValueMember = "DoctorDetailsId";
+                cb_DepartmentFDoctorName.SelectedIndex = -1;
+                cb_DepartmentFDoctorName.Text = "Choose Doctor Manager";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading doctors: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         private async Task LoadDepartmentData()
         {
@@ -291,6 +339,9 @@ namespace ProjectHospitalSystem.Forms.Admin
             nuValueDeptFee.Value = 0.01m;
             cb_DepartmentFDoctorName.SelectedIndex = -1;
             cb_DepartmentFDoctorName.Text = "Choose Doctor Manager";
+            btn_DepartmentFeeAdd.Visible = true;
+            btn_DepartmentFeeUpdate.Visible = false;
+            btn_DepartmentFeeRemove.Visible = false;
         }
         private void SetButtonVisibility(bool isAddMode)
         {
@@ -303,6 +354,11 @@ namespace ProjectHospitalSystem.Forms.Admin
             ClearFrom();
             LoadDepartmentData();
             LoadDoctors();
+        }
+        private bool CanDeleteDepartment(int departmentId)
+        {
+            return !_context.Doctors.Any(d => d.DeptId == departmentId) &&
+                   !_context.Appointments.Any(a => a.Doctor.DeptId == departmentId);
         }
         #endregion
 

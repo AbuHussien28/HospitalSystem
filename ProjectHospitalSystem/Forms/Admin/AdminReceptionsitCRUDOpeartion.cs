@@ -103,11 +103,12 @@ namespace ProjectHospitalSystem.Forms.Admin
 
                 if (user != null)
                 {
-                    if (user.UserName == username ||
-                         user.FName == txt_Fname.Text.Trim() ||
-                         user.LName == txt_Lname.Text.Trim() ||
-                         user.Email == txt_Email.Text.Trim() ||
-                        user.PhoneNumber == txt_phone.Text.Trim())
+                    bool isChanged = user.UserName != txt_username.Text ||
+                                user.FName != txt_Fname.Text ||
+                               user.LName != txt_Lname.Text ||
+                               user.Email != txt_Email.Text ||
+                                user.PhoneNumber != txt_phone.Text;
+                    if (!isChanged)
                     {
                         MessageBox.Show("not Updated Data", "note", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
@@ -119,18 +120,16 @@ namespace ProjectHospitalSystem.Forms.Admin
                         txt_username.Focus();
                         return;
                     }
-
-
-                    user.UserName = username;
-                    user.FName = txt_Fname.Text.Trim();
-                    user.LName = txt_Lname.Text.Trim();
-                    user.Email = txt_Email.Text.Trim();
-                    user.PhoneNumber = txt_phone.Text.Trim();
-                    _context.SaveChanges();
-                    LoadData();
-                    ResetForm();
-                    MessageBox.Show("Receptionist updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    SetButtonAndTxtPasswordVisibility(isAddMode: true);
+                        user.UserName = username;
+                        user.FName = txt_Fname.Text.Trim();
+                        user.LName = txt_Lname.Text.Trim();
+                        user.Email = txt_Email.Text.Trim();
+                        user.PhoneNumber = txt_phone.Text.Trim();
+                        _context.SaveChanges();
+                        LoadData();
+                        ResetForm();
+                        MessageBox.Show("Receptionist updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        SetButtonAndTxtPasswordVisibility(isAddMode: true);                    
                 }
             }
             catch (Exception ex)
@@ -341,6 +340,8 @@ namespace ProjectHospitalSystem.Forms.Admin
             txt_Lname.Clear();
             txt_phone.Clear();
             txt_Email.Clear();
+            txt_Password.Clear();
+            txt_confirmPassword.Clear();
         }
         private bool IsUsernameUnique(string username, int? currentUserId = null)
         {
@@ -376,6 +377,7 @@ namespace ProjectHospitalSystem.Forms.Admin
         }
         public void Reload()
         {
+            SetButtonAndTxtPasswordVisibility(isAddMode: true);
             ResetForm();
         }
 

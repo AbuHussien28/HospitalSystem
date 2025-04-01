@@ -124,11 +124,11 @@
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dgv_Department.DefaultCellStyle = dataGridViewCellStyle3;
             dgv_Department.EnableHeadersVisualStyles = false;
-            dgv_Department.Location = new Point(16, 68);
+            dgv_Department.Location = new Point(21, 64);
             dgv_Department.Name = "dgv_Department";
             dgv_Department.RowHeadersVisible = false;
             dgv_Department.RowTemplate.Height = 40;
-            dgv_Department.Size = new Size(390, 218);
+            dgv_Department.Size = new Size(1135, 254);
             dgv_Department.TabIndex = 102;
             dgv_Department.CellContentClick += dgv_Department_CellContentClick;
             // 
@@ -152,12 +152,12 @@
             btn_DepartmentFeeRemove.ForeColor = Color.White;
             btn_DepartmentFeeRemove.Image = Properties.Resources.IconRemovedOCTOR;
             btn_DepartmentFeeRemove.ImageAlign = ContentAlignment.MiddleLeft;
-            btn_DepartmentFeeRemove.Location = new Point(919, 213);
+            btn_DepartmentFeeRemove.Location = new Point(1052, 342);
             btn_DepartmentFeeRemove.Name = "btn_DepartmentFeeRemove";
             btn_DepartmentFeeRemove.Size = new Size(104, 53);
             btn_DepartmentFeeRemove.TabIndex = 105;
             btn_DepartmentFeeRemove.Text = "Remove";
-            btn_DepartmentFeeRemove.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btn_DepartmentFeeRemove.TextImageRelation = TextImageRelation.TextBeforeImage;
             btn_DepartmentFeeRemove.UseVisualStyleBackColor = false;
             btn_DepartmentFeeRemove.Visible = false;
             btn_DepartmentFeeRemove.Click += btn_DepartmentFeeRemove_Click;
@@ -174,12 +174,12 @@
             btn_DepartmentFeeUpdate.ForeColor = Color.White;
             btn_DepartmentFeeUpdate.Image = Properties.Resources.IconUpdateAdmin;
             btn_DepartmentFeeUpdate.ImageAlign = ContentAlignment.MiddleLeft;
-            btn_DepartmentFeeUpdate.Location = new Point(919, 144);
+            btn_DepartmentFeeUpdate.Location = new Point(841, 342);
             btn_DepartmentFeeUpdate.Name = "btn_DepartmentFeeUpdate";
             btn_DepartmentFeeUpdate.Size = new Size(104, 53);
             btn_DepartmentFeeUpdate.TabIndex = 104;
             btn_DepartmentFeeUpdate.Text = "Update";
-            btn_DepartmentFeeUpdate.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btn_DepartmentFeeUpdate.TextImageRelation = TextImageRelation.TextBeforeImage;
             btn_DepartmentFeeUpdate.UseVisualStyleBackColor = false;
             btn_DepartmentFeeUpdate.Visible = false;
             btn_DepartmentFeeUpdate.Click += btn_DepartmentFeeUpdate_Click;
@@ -196,13 +196,13 @@
             btn_DepartmentFeeAdd.ForeColor = Color.White;
             btn_DepartmentFeeAdd.Image = Properties.Resources.IconAddBtn;
             btn_DepartmentFeeAdd.ImageAlign = ContentAlignment.MiddleLeft;
-            btn_DepartmentFeeAdd.Location = new Point(919, 75);
+            btn_DepartmentFeeAdd.Location = new Point(640, 342);
             btn_DepartmentFeeAdd.Name = "btn_DepartmentFeeAdd";
             btn_DepartmentFeeAdd.Size = new Size(104, 53);
             btn_DepartmentFeeAdd.TabIndex = 103;
             btn_DepartmentFeeAdd.Text = "Add ";
             btn_DepartmentFeeAdd.TextAlign = ContentAlignment.MiddleRight;
-            btn_DepartmentFeeAdd.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btn_DepartmentFeeAdd.TextImageRelation = TextImageRelation.TextBeforeImage;
             btn_DepartmentFeeAdd.UseVisualStyleBackColor = false;
             btn_DepartmentFeeAdd.Visible = false;
             btn_DepartmentFeeAdd.Click += btn_DepartmentFeeAdd_Click;
@@ -229,7 +229,7 @@
             txt_DepartmentDeptName.Margin = new Padding(5);
             txt_DepartmentDeptName.Name = "txt_DepartmentDeptName";
             txt_DepartmentDeptName.Size = new Size(233, 29);
-            txt_DepartmentDeptName.TabIndex = 131;
+            txt_DepartmentDeptName.TabIndex = 1;
             // 
             // lb_DepartmentDeptDescrp
             // 
@@ -253,7 +253,7 @@
             txt_DepartmentDeptDesc.Margin = new Padding(5);
             txt_DepartmentDeptDesc.Name = "txt_DepartmentDeptDesc";
             txt_DepartmentDeptDesc.Size = new Size(233, 29);
-            txt_DepartmentDeptDesc.TabIndex = 132;
+            txt_DepartmentDeptDesc.TabIndex = 3;
             // 
             // pictureBox2
             // 
@@ -333,7 +333,7 @@
             pnlReceDetails.Controls.Add(pictureBox6);
             pnlReceDetails.Controls.Add(lb_DepartmentDeptDescrp);
             pnlReceDetails.Controls.Add(pictureBox4);
-            pnlReceDetails.Location = new Point(419, 75);
+            pnlReceDetails.Location = new Point(76, 350);
             pnlReceDetails.Name = "pnlReceDetails";
             pnlReceDetails.Size = new Size(494, 198);
             pnlReceDetails.TabIndex = 143;
@@ -346,7 +346,7 @@
             nuValueDeptFee.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             nuValueDeptFee.Name = "nuValueDeptFee";
             nuValueDeptFee.Size = new Size(233, 23);
-            nuValueDeptFee.TabIndex = 146;
+            nuValueDeptFee.TabIndex = 2;
             nuValueDeptFee.ThousandsSeparator = true;
             // 
             // label1
@@ -366,7 +366,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(254, 251, 244);
-            ClientSize = new Size(1053, 389);
+            ClientSize = new Size(1369, 646);
             Controls.Add(pnlReceDetails);
             Controls.Add(btn_DepartmentFeeRemove);
             Controls.Add(btn_DepartmentFeeUpdate);
@@ -376,6 +376,7 @@
             Controls.Add(txtBoxDepartmentSerachData);
             Controls.Add(lbDepartmentNameSearch);
             Name = "AdminDepartmentCRUD";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "AdminDepartmentCRUD";
             Load += AdminDepartmentCRUD_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

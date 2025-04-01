@@ -382,7 +382,7 @@
             // pictureBox4
             // 
             pictureBox4.Image = Properties.Resources.IconDailyApp;
-            pictureBox4.Location = new Point(490, 29);
+            pictureBox4.Location = new Point(450, 29);
             pictureBox4.Name = "pictureBox4";
             pictureBox4.Size = new Size(24, 24);
             pictureBox4.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -393,7 +393,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(520, 23);
+            label2.Location = new Point(480, 23);
             label2.Name = "label2";
             label2.Size = new Size(267, 30);
             label2.TabIndex = 145;
