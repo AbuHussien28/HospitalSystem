@@ -49,7 +49,7 @@ Before running the system, install:
 |------|---------|----------|  
 | Admin | `Ad.Ali` | `1234` |  
 | Doctor | `Dr.Ahmed` | `1234` |  
-| Receptionist | `Rec.Ali` | `1234` |  
+| Receptionist | `Rec.AYAElz` | `1234` |  
 
 ## 🔹 Doctor Appointment Notifications  
 - **5 minutes before an appointment**, the system will send a notification via:  
