@@ -10,8 +10,8 @@
 ✅ **Appointment System** – Book, edit, and cancel appointments.  
 ✅ **Billing System** – Generate invoices, track payments, and support multiple payment methods.  
 ✅ **Reports & Statistics** – Generate reports on patients, doctors, and appointments.  
-✅ **Notification System** – Notify doctors **5 minutes** before their scheduled appointment via email or in-app notifications.  
-✅ **Export Medical Records & Bills** – Allows exporting patient records and invoices in **PDF or Excel** format.  
+✅ **Notification System** – Notify doctors **5 minutes** before their scheduled appointment via in-app notifications.  
+✅ **Export Medical Records & Bills** – Allows exporting patient records and invoices in **Word or Excel** format.  
 ✅ **Late Fee for Overdue Payments** – Automatically applies a late fee if a payment is overdue.  
 ✅ **(Optional) Medical Device Integration** – Store digital medical test reports.  
 
@@ -53,11 +53,12 @@ Before running the system, install:
 
 ## 🔹 Doctor Appointment Notifications  
 - **5 minutes before an appointment**, the system will send a notification via:  
-  ✅ **Email** (Must be configured in settings).  
   ✅ **In-app notification** (A pop-up alert).  
-
+## 🔹 Patient Appointment Notifications  
+ the system will send a notification via:  
+✅ **Email** (Must be configured in settings).   
 ## 🔹 Export Medical Records & Bills  
-- Medical records and invoices can be exported in **PDF or Excel** format for easy access and record-keeping.  
+- Medical records and invoices can be exported in **Word** format for easy access and record-keeping.  
 
 ## 🔹 Late Fee for Overdue Payments  
 - If a **bill's due date** has passed, a **late fee** will be added automatically.  
