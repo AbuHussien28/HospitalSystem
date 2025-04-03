@@ -15,6 +15,7 @@
 ✅ **Export Medical Records & Bills** – Allows exporting patient records and invoices in **Word or Excel** format.  
 ✅ **Late Fee for Overdue Payments** – Automatically applies a late fee if a payment is overdue.  
 ✅ **(Optional) Medical Device Integration** – Store digital medical test reports.  
+✅ **QR Code Patient Profiles** 
 
 ## 🔹 Technology Stack  
 
