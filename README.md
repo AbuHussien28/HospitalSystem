@@ -1,7 +1,8 @@
 # 🏥 Hospital Management System  
 
 🚀 **Hospital Management System** is a powerful desktop application built using **C#, .NET Framework, Entity Framework Core, Dapper, and SQL Server** to manage hospital operations efficiently, including **patient management, doctor scheduling, appointments, and billing**.  
-
+🎥 Watch the System in Action!
+👉 [YouTube Demo](https://youtu.be/0yyrzDoSEiQ)
 ## 🔹 Key Features  
 
 ✅ **User Management** – Add, update, and remove users (Admins, Doctors, Receptionists).  
