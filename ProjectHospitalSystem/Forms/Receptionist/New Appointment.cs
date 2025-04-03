@@ -91,9 +91,9 @@ namespace ProjectHospitalSystem.Forms.Receptionist
         {
             try
             {
-
-                string senderEmail = "ayaelzoghby651@gmail.com";
-                string senderPassword = "fwvu ubds dssr aurw";
+                //Put your Email and password Here
+                string senderEmail = "";
+                string senderPassword = "";
 
                 MailMessage mail = new MailMessage();
                 mail.From = new MailAddress(senderEmail);

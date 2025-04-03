@@ -19,6 +19,7 @@ namespace ProjectHospitalSystem.Forms.Admin
     public partial class AdminDepartmentCRUD : Form
     {
         private HospitalSystemContext _context;
+        private const int MaxDeptDescLength = 70;
         Department Dept;
         private SqlConnection connection;
         int deptSelectedId;
@@ -72,7 +73,11 @@ namespace ProjectHospitalSystem.Forms.Admin
                     "Doctor Already Assigned", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
+            if (txt_DepartmentDeptDesc.Text.Length > MaxDeptDescLength)
+            {
+                MessageBox.Show($"Description is too long. Maximum length is {MaxDeptDescLength} characters.");
+                return;
+            }
             if (DepartmentNameExists(txt_DepartmentDeptName.Text))
             {
                 MessageBox.Show($"Department with name '{txt_DepartmentDeptName.Text}' already exists!",
@@ -80,8 +85,8 @@ namespace ProjectHospitalSystem.Forms.Admin
                 return;
             }
 
-            try
-            {
+            //try
+            //{
                 var newDept = new Department
                 {
                     DeptName = txt_DepartmentDeptName.Text,
@@ -96,15 +101,15 @@ namespace ProjectHospitalSystem.Forms.Admin
                 ClearFrom();
                 MessageBox.Show("Department Added Successfully");
 
-        }
-            catch (DbUpdateException dbEx)
-            {
-                MessageBox.Show($"Database Update Error: {dbEx.Message}");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error adding department: {ex.Message}");
-            }
+        //}
+        //    catch (DbUpdateException dbEx)
+        //    {
+        //        MessageBox.Show($"Database Update Error: {dbEx.Message}");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Error adding department: {ex.Message}");
+        //    }
         }
 
         private void btn_DepartmentFeeUpdate_Click(object sender, EventArgs e)
